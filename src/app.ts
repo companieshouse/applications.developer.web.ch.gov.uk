@@ -1,40 +1,44 @@
-import * as express from "express";
-import * as nunjucks from "nunjucks";
-import * as path from "path";
-import router from "./routers";
+import { createLogger, createLoggerMiddleware } from "ch-structured-logging";
+import nunjucks, { ConfigureOptions } from "nunjucks";
+
+import config from "./config";
+import express from "express";
+import helmet from "helmet";
+import path from "path";
+
+const logger = createLogger(config.applicationNamespace);
 
 const app = express();
 
-// set some app variables from the environment
-app.set("port", process.env.PORT || "3000");
-app.set("dev", process.env.NODE_ENV === "development");
+const nunjucksConfig: ConfigureOptions = {
+    autoescape: true,
+    noCache: false,
+    express: app
+};
 
-// where nunjucks templates should resolve to
-const viewPath = path.join(__dirname, "views");
+if (config.env === "development") {
 
-// set up the template engine
-const env = nunjucks.configure([
-  viewPath,
-  "node_modules/govuk-frontend/",
-  "node_modules/govuk-frontend/components",
-], {
-  autoescape: true,
-  express: app,
-});
-
-app.set("views", viewPath);
-app.set("view engine", "html");
-
-// add global variables to all templates
-env.addGlobal("PIWIK_URL", "https://example.com");
-env.addGlobal("PIWIK_SITE_ID", "123");
-
-// serve static assets in development. this will not execute in production.
-if (process.env.NODE_ENV === "development") {
-  app.use("/static", express.static("dist/static"));
-  env.addGlobal("CSS_URL", "/static/app.css");
+    logger.info("Configuring nunjucks for development mode");
+    nunjucksConfig.watch = true;
+    nunjucksConfig.noCache = true;
 }
-// apply our default router to /
-app.use("/", router);
 
-export default app;
+nunjucks
+    .configure([
+        "views",
+        "node_modules/govuk-frontend/",
+        "node_modules/govuk-frontend/components/"
+    ], nunjucksConfig);
+
+app.set("view engine", "html");
+app.use(`/public`, express.static(path.join(__dirname, "../dist")));
+
+app.use(createLoggerMiddleware(config.applicationNamespace));
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
+
+// Add routers
+
+app.listen(config.port, function () {
+    logger.info(`Server started on port ${config.port}`);
+});
