@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block pageTitle %}
+  Register application
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        New API client key
+      </h1>
+      {{ govukInput({
+        label: {
+          text: "Key name"
+        },
+        id: "key-name",
+        name: "key-name"
+      }) }}
+      {{ govukRadios({
+        idPrefix: "key-type",
+        name: "key-type",
+        fieldset: {
+          legend: {
+            text: "Select API client key"
+          }
+        },
+        items: [
+          {
+            value: "rest",
+            text: "REST"
+          },
+          {
+            value: "stream",
+            text: "Streaming"
+          },
+          {
+            value: "web",
+            text: "Web"
+          }
+        ]
+      }) }}
+      {{ govukButton({
+        text: "Create",
+        classes: "govuk-!-margin-right-1"
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        classes: "govuk-button--secondary",
+        href: "manage-applications"
+      }) }}
+    </div>
+  </div>
+{% endblock %}

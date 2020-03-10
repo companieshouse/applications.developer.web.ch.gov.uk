@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block pageTitle %}
+  Edit application
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukBackLink({
+      text: "Back to all applications",
+      href: "manage-applications"
+      }) }}
+      <h1 class="govuk-heading-xl">
+        {{ case.app }}
+      </h1>
+      <h2 class="govuk-heading-l">
+        Update application
+      </h2>
+      {{ govukInput({
+        label: {
+          text: "Application name"
+        },
+        id: "event-name",
+        name: "event-name"
+      }) }}
+      {{ govukInput({
+          label: {
+            text: "Privacy Policy URL (optional)"
+          },
+          id: "event-name",
+          name: "event-name"
+        }) }}
+      {{ govukInput({
+          label: {
+            text: "Terms & Conditions URL (optional)"
+          },
+          id: "event-name",
+          name: "event-name"
+         }) }}
+      {{ govukButton({
+        text: "Update",
+        classes: "govuk-!-margin-right-1"
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        classes: "govuk-button--secondary",
+        href: "manage-applications"
+      }) }}
+      <h2 class="govuk-heading-l">
+        Delete application
+      </h2>
+      <p class="govuk-body">Once you delete this application all information and keys assoiscated with this will also be removed</p>
+      {{ govukButton({
+        text: "Delete application",
+        classes: "govuk-button--warning",
+        href: 'manage-applications'
+      }) }}
+    </div>
+  </div>
+{% endblock %}

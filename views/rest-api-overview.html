@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Manage profile
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        The Companies House API overview
+      </h1>
+      <p>The Companies House API is a REST API that provides a simple, consistent approach to requesting and modifying data. REST stands for Representational State Transfer, an architectural software style in which standard HTTP request methods are used to
+        retrieve and modify representations of data. This is identical to the process of retrieving a web page or submitting a web form.
+      </p>
+      <p>Previous versions of the Companies House API implemented an XML-RPC style of interface. Data was retrieved or submitted by POSTing XML documents to the service, each defining the method to be called and the data to be processed.
+      </p>
+      <p>The difference between both API approaches is defined below.
+      </p>
+
+      <h2 class="govuk-heading-l">Representational State Transfer (REST) web services
+      </h2>
+      <p>REST is an architectural software style in which standard HTTP requests are used to provide a simple and consistent approach to requesting and modifying data.
+      </p>
+
+      <p>In a RESTful style of API, data resources are allocated unique URLs and manipulated through standard HTTP verbs such as
+        <code>GET</code>
+        to request a resource,
+        <code>POST</code>
+        to create a resource,
+        <code>PUT</code>
+        to change a resource, and
+        <code>DELETE</code>
+        to remove a resource.
+      </p>
+
+      <p>In contrast to the above XML-RPC examples, the equivalent RESTful API request for a customer record would be: GET http://api.example.domain/customer/12345 HTTP/1.1
+      </p>
+
+      <p>The resource request is made using the GET method, and that there is no request body.
+      </p>
+
+      <p>In a RESTful API, a resource is modified by POSTing a revised resource representation, in this case JSON, to the same resource URL:
+      </p>
+
+      <p>POST http://api.example.domain/customer/12345 HTTP/1.1 Content-Type: text/json { "CustomerName": "Joe Bloggs", "Address" : "", "etc" : "etc" }
+      </p>
+      <p>Similarly, a resource may be deleted by sending a DELETE request to the resource URL:
+      </p>
+      <p>DELETE http://api.example.domain/customer/12345 HTTP/1.1
+      </p>
+      <p>REST uses the existing features of the HTTP protocol and does not permit the designer to define application specific operations. In addition, because each resource has a globally unique URI and is able to make use of the GET method for resource
+        requests, these APIs benefit from existing network components such as caches, proxies and intelligent routing.
+      </p>
+      <h2 class="govuk-heading-l">The JSON data format
+      </h2>
+      <p>JSON, or JavaScript Object Notation, is an open, standard format for storing and exchanging data. It is easier to use than XML and more compact. It can be used as a data format by any programming language, which makes it ideal for HTTP-based API
+        services.
+      </p>
+    </div>
+  </div>
+{% endblock %}

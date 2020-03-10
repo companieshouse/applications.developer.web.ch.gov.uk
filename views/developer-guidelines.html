@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  Manage profile
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Developer guidelines
+      </h1>
+      <h2 class="govuk-heading-l">API rate limits
+      </h2>
+      <p>Rate limiting is applied to the Companies House API to ensure a high-quality service is delivered for all users, and to protect client applications from unexpected loops.</p>
+      <p>You can make up to 600 requests within a five-minute period. If you exceed this limit, you will receive a 429 Too Many Requests HTTP status code for each request made within the remainder of the five-minute window. At the end of the period, your
+        rate limit will reset back to its maximum value of 600 requests.
+      </p>
+      <p>If you have an application that requires a higher rate limit than this default, contact us.
+      </p>
+
+      <h2 class="govuk-heading-l">Enumerated types
+      </h2>
+      <p>A majority of the resources returned by the Companies House API contain members that reference enumeration types. This helps make the resources self-documenting, and allows clients to interpret the meaning of a resource member without needing to
+        parse a text description.
+      </p>
+      <p>Enumeration types are used to supplement or replace a text description, which allows clients to display their own version of a description or provide descriptions in multiple languages.
+      </p>
+      <p>The collection of enumeration types used by Companies House are available on
+        <a href="https://github.com/companieshouse/api-enumerations">GitHub</a>. These files provide mapping between enumeration type and text description, and are divided into sets or classes. Each API resource member will define which class of enumeration is being returned.</p>
+      <p>A planned enhancement to the enumeration scheme is the provision of API endpoints that will return the enumeration class catalogue. This avoids enumerations having to be hard-coded within a client, and by periodically checking for change through
+        ETags, clients do not have to download the full catalogue.
+      </p>
+
+      <h2 class="govuk-heading-l">Data resources
+      </h2>
+      <p>Data is mostly returned as JSON documents. Your application must be able to handle the order of document members changing over time and expect to receive members it has not seen before.
+      </p>
+
+      <h2 class="govuk-heading-l">Application security
+      </h2>
+      <p>The API can only be accessed over Transport Layer Security (TLS). We recommend using TLS 1.2.
+      </p>
+
+      <h2 class="govuk-heading-l">API key security
+      </h2>
+      <p>It is important to keep your API keys secure. This will prevent them from being discovered, your account from being compromised and your rate-limit quota from being exceeded.
+      </p>
+
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <strong>Do not embed API keys in your code.</strong>
+          Storing keys in your application code increases the risk that they will be discovered, particularly if any of your source code is made public or it can be viewed by people who should not have access to the key. Instead, you should consider storing
+          them inside environment variables or configuration.</li>
+        <li>
+          <strong>Do not store API keys in your source tree.
+          </strong>If you store API keys in files, for example configuration or environment files, do not store them inside the application source tree. If all or part of the source is made public the key may be compromised.
+        </li>
+        <li>
+          <strong>Restrict API key use by IP address and domain.</strong>
+          Limit the use of a key to a specific IP address or domain to reduce its usefulness if it becomes compromised.</li>
+        <li>
+          <strong>Regenerate your API keys.</strong>
+          Regenerate your API keys regularly, including with each application release, to lessen the chance that a key will be discovered.</li>
+        <li>
+          <strong>Delete API keys when they are no longer required.</strong>
+          Remove unused keys from your Developer Hub registered-applications page to limit the number of entry points into your account.</li>
+      </ul>
+
+    </div>
+  </div>
+{% endblock %}

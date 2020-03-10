@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block pageTitle %}
+  Application overview
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        Application overview
+      </h1>
+      {{ govukButton({
+        text: "Add an application",
+        href: "register"
+      }) }}
+      <h2 class="govuk-heading-l">Test applications</h2>
+      <p class="govuk-body">In development</p>
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Application name</th>
+            </tr>
+          </thead>
+          {% for case in cases %}
+            {% if case.status === 'Test' %}
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">
+                  <a href="view-application?id={{ case.id }}">{{ case.app }}</a>
+                </th>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <h2 class="govuk-heading-l">Live applications</h2>
+      <p class="govuk-body">Released and in use publicly</p>
+      <table class="govuk-table">
+        <tbody class="govuk-table__body">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Application name</th>
+            </tr>
+          </thead>
+          {% for case in cases %}
+            {% if case.status === 'Live' %}
+              <tr class="govuk-table__row">
+                <th scope="row" class="govuk-table__header">
+                  <a href="view-application?id={{ case.id }}">{{ case.app }}</a>
+                </th>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

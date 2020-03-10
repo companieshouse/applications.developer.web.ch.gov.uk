@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+{% block pageTitle %}
+  View application
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    {% include "includes/sidebar.html" %}
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukBackLink({
+        text: "Back to all applications",
+        href: "manage-applications"
+      }) }}
+      <h1 class="govuk-heading-xl">
+        {{ case.app }}
+      </h1>
+      <h2 class="govuk-heading-l">Manage application</h2>
+      <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Application environment
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ case.status }}
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Privacy Policy URL
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Terms & Conditions URL
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+      </dl>
+      <a href="edit?id={{ case.id }}" class="govuk-button govuk-button--secondary" role="button" draggable="false">Manage application</a>
+      <h2 class="govuk-heading-l">Keys for this application</h2>
+      <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Key name
+          </dt>
+          <dd class="govuk-summary-list__value">{{ case.keyname }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <a href="">Delete key</a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Key type
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ case.apis.type }}
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        {% if case.status === 'Test' %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              API key ID
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <span class='api-value'>
+                {{ case.apis.test }}</span>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="#">
+                Copy<span class="govuk-visually-hidden">
+                  key</span>
+              </a>
+            </dd>
+          </div>
+        {% endif %}
+        {% if case.status === 'Live' %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Live API key
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <span class='api-value'>{{ case.apis.live }}</span>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="#">
+                Copy<span class="govuk-visually-hidden">
+                  key</span>
+              </a>
+            </dd>
+          </div>
+        {% endif %}
+
+        {% if case.status === 'Future' %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Future API key
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <span class='api-value'>{{ case.apis.future }}</span>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="#">
+                Copy<span class="govuk-visually-hidden">
+                  key</span>
+              </a>
+            </dd>
+          </div>
+        {% endif %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Restricted IPs
+          </dt>
+          <dd class="govuk-summary-list__value">
+            194.75.36.81
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            JavaScript domains
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Redirect URIs
+          </dt>
+          <dd class="govuk-summary-list__value"></dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+      </dl>
+      <div class="govuk-!-margin-top-6">
+        <a href="add-new-key.html" class="govuk-button" role="button" draggable="false">Add new key</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
