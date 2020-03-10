@@ -1,7 +1,7 @@
 interface ApplicationConfiguration {
     port: number;
-    // apiAddress: string;
-    // internalApiKey: string;
+    apiAddress: string;
+    internalApiKey: string;
     env: string;
     applicationNamespace: string;
     proxy?: {
