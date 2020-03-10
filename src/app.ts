@@ -1,6 +1,7 @@
 import { createLogger, createLoggerMiddleware } from "ch-structured-logging";
 import nunjucks, { ConfigureOptions } from "nunjucks";
 
+import ApplicationRouter from "./routers/ApplicationRouter";
 import config from "./config";
 import express from "express";
 import helmet from "helmet";
@@ -37,6 +38,7 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 
 // Add routers
+app.use(ApplicationRouter.create());
 
 app.listen(config.port, function () {
     logger.info(`Server started on port ${config.port}`);

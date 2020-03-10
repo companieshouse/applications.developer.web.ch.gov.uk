@@ -1,7 +1,9 @@
+import { Request, Response } from "express";
+
 class ApplicationController {
 
-    constructor(parameters) {
-        
+    public static getCreateNewApplication(request: Request, response: Response) {
+        return response.send("Hi");
     }
 }
 
