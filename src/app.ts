@@ -5,6 +5,7 @@ import ApplicationRouter from "./routers/ApplicationRouter";
 import config from "./config";
 import express from "express";
 import helmet from "helmet";
+import path from "path";
 
 const logger = createLogger(config.applicationNamespace);
 
@@ -31,7 +32,7 @@ nunjucks
     ], nunjucksConfig);
 
 app.set("view engine", "html");
-// app.use(`/public`, express.static(path.join(__dirname, "../static")));
+app.use("/public", express.static(path.join(__dirname, "../dist")));
 
 app.use(createLoggerMiddleware(config.applicationNamespace));
 app.use(helmet());

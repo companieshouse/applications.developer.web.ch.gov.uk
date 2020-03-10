@@ -6,89 +6,91 @@
   <div class="govuk-grid-row">
     {% include "includes/sidebar.html" %}
     <div class="govuk-grid-column-two-thirds">
-      {{ govukBackLink({
-        text: "Back to all applications",
-        href: "manage-applications"
-      }) }}
-      <h1 class="govuk-heading-xl">
-        New application
-      </h1>
-      {{ govukInput({
-        label: {
-          text: "Application name"
-        },
-        id: "event-name",
-        name: "event-name"
-      }) }}
-      {{ govukTextarea({
-        name: "more-detail",
-        id: "more-detail",
-        label: {
-          text: "Description of application"
-        }
-      }) }}
-      {% set test %}
-      {{ govukCheckboxes({
-        idPrefix: "waste",
-        name: "waste",
-        fieldset: {
-          legend: {
-            text: "In development for upcoming Companies House changes"
+      <form method="POST" action="/">
+        {{ govukBackLink({
+          text: "Back to all applications",
+          href: "manage-applications"
+        }) }}
+        <h1 class="govuk-heading-xl">
+          New application
+        </h1>
+        {{ govukInput({
+          label: {
+            text: "Application name"
+          },
+          id: "event-name",
+          name: "event-name"
+        }) }}
+        {{ govukTextarea({
+          name: "more-detail",
+          id: "more-detail",
+          label: {
+            text: "Description of application"
           }
-        },
-        items: [
-          {
-            value: "yes",
-            text: "Yes"
-          }
-        ]
-      }) }}
-      {% endset -%}
-      {{ govukRadios({
-        idPrefix: "environment",
-        name: "environment",
-        fieldset: {
-          legend: {
-            text: "Choose an environment for your application"
-          }
-        },
-        items: [
-          {
-            value: "test",
-            text: "Test",
-            conditional: {
-              html: test
+        }) }}
+        {% set test %}
+        {{ govukCheckboxes({
+          idPrefix: "waste",
+          name: "waste",
+          fieldset: {
+            legend: {
+              text: "In development for upcoming Companies House changes"
             }
           },
-          {
-            value: "live",
-            text: "Live"
-          }
-        ]
-      }) }}
-      {{ govukInput({
-        label: {
-          text: "Terms & Conditions URL (optional)"
-        },
-        id: "event-name",
-        name: "event-name"
-      }) }}
-      {{ govukInput({
-        label: {
-          text: "Privacy Policy URL (optional)"
-        },
-        id: "event-name",
-        name: "event-name"
-      }) }}
-      {{ govukButton({
-        text: "Create",
-        classes: "govuk-!-margin-right-1"
-      }) }}
-      {{ govukButton({
-        text: "Cancel",
-        classes: "govuk-button--secondary",
-        href: "manage-applications"
-      }) }}
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            }
+          ]
+        }) }}
+        {% endset -%}
+        {{ govukRadios({
+          idPrefix: "environment",
+          name: "environment",
+          fieldset: {
+            legend: {
+              text: "Choose an environment for your application"
+            }
+          },
+          items: [
+            {
+              value: "test",
+              text: "Test",
+              conditional: {
+                html: test
+              }
+            },
+            {
+              value: "live",
+              text: "Live"
+            }
+          ]
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Terms & Conditions URL (optional)"
+          },
+          id: "event-name",
+          name: "event-name"
+        }) }}
+        {{ govukInput({
+          label: {
+            text: "Privacy Policy URL (optional)"
+          },
+          id: "event-name",
+          name: "event-name"
+        }) }}
+        {{ govukButton({
+          text: "Create",
+          classes: "govuk-!-margin-right-1"
+        }) }}
+        {{ govukButton({
+          text: "Cancel",
+          classes: "govuk-button--secondary",
+          href: "manage-applications"
+        }) }}
+      </form>
     </div>
   </div>
 {% endblock %}
