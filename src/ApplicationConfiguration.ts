@@ -10,4 +10,4 @@ interface ApplicationConfiguration {
     };
 }
 
-export = ApplicationConfiguration;
+export default ApplicationConfiguration;
