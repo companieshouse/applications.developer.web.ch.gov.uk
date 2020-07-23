@@ -11,10 +11,10 @@ const envVars = {
     process.env.NUNJUCKS_LOADER_WATCH = false;
     process.env.NUNJUCKS_LOADER_NO_CACHE = true;
     process.env.CDN_HOST = 'http://localhost:3009';
-    process.env.PSC_DISCREPANCY_REPORT_SERVICE_BASE_URL = 'http://api.localhost:3008';
-    process.env.PSC_DISCREPANCY_REPORT_SERVICE_API_KEY = 'abc123';
-    process.env.PSC_DISCREPANCY_REPORT_SERVICE_USERNAME = '';
-    process.env.PSC_DISCREPANCY_REPORT_SERVICE_PASSWORD = '';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_BASE_URL = 'http://api.localhost:3008';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY = 'abc123';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME = '';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD = '';
   }
 };
 

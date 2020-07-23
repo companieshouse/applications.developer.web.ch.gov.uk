@@ -7,7 +7,7 @@ module.exports.responseMock = {
 
 module.exports.requestMockWithSessionCookie = {
   cookies: {
-    PSC_SID: 'abc123'
+    AD_SID: 'abc123'
   }
 };
 
