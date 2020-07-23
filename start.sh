@@ -6,7 +6,6 @@
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
-
     source ~/.chs_env/private_env
     source ~/.chs_env/global_env
     source ~/.chs_env/applications.developer.ch.gov.uk/env
@@ -30,6 +29,6 @@ else
 
     cd ${APP_DIR}
     source "server/config/.env"
-    export NODE_PORT=${PORT}
+    export NODE_PORT=${PORT}s
     node server.js
 fi
