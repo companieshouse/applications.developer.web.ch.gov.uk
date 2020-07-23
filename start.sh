@@ -29,6 +29,6 @@ else
 
     cd ${APP_DIR}
     source "server/config/.env"
-    export NODE_PORT=${PORT}s
+    export NODE_PORT=${PORT}
     node server.js
 fi
