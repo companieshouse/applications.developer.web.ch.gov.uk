@@ -1,27 +1,46 @@
-.PHONY: build
-build: clean build-app build-static
-	npm run build
+artifact_name       := applications.developer.ch.gov.uk
 
-.PHONY: build-app
-build-app:
-	npm run build
+.PHONY: all
+all: build
 
 .PHONY: clean
 clean:
-	rm -rf dist/app dist/static
+	rm -f ./$(artifact_name)-*.zip
+	rm -rf ./build-*
+	rm -f ./build.log
 
-.PHONY: build-static
-build-static:
-	gulp static
-
-.PHONY: npm-install
-npm-install:
+.PHONY: build
+build:
 	npm i
+	npm run build
 
-.PHONY: gulp-install
-gulp-install:
-	npm install gulp-cli -g
+.PHONY: lint
+lint:
+	npm run lint
 
-.PHONY: init
-init: npm-install gulp-install build-static
+.PHONY: sonar
+sonar:
+	npm run sonarqube
 
+.PHONY: test
+test:
+	npm run coverage
+
+.PHONY: test-unit
+test-unit:
+	npm run test
+
+.PHONY: package
+package: build
+ifndef version
+	$(error No version given. Aborting)
+endif
+	$(info Packaging version: $(version))
+	$(eval tmpdir := $(shell mktemp -d build-XXXXXXXXXX))
+	cp -r `ls -A | grep -v $(tmpdir)` $(tmpdir)
+	cd $(tmpdir) && npm i --production
+	cd $(tmpdir) && zip -r ../$(artifact_name)-$(version).zip .
+	rm -rf $(tmpdir)
+
+.PHONY: dist
+dist: lint test-unit clean package
