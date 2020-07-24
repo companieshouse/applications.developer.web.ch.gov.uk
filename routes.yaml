@@ -1,0 +1,5 @@
+app_name: applications.developer.identity.ch.gov.uk
+group: dev
+weight: 854
+routes:
+  1: /.*
