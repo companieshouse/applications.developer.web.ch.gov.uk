@@ -1,5 +1,5 @@
 {
-  "name": "applications.developer.ch.gov.uk",
+  "name": "applications.developer.web.ch.gov.uk",
   "version": "1.0.0",
   "description": "The Web Service (User Interface) for managing applications on the developer hub",
   "main": "server.js",

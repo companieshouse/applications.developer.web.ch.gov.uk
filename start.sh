@@ -1,14 +1,14 @@
 #!/bin/bash
 #
 
-# Start script for applications.developer.ch.gov.uk
+# Start script for applications.developer.web.ch.gov.uk
 
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/private_env
     source ~/.chs_env/global_env
-    source ~/.chs_env/applications.developer.ch.gov.uk/env
+    source ~/.chs_env/applications.developer.web.ch.gov.uk/env
 
     exec npm run watch
 else

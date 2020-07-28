@@ -1,4 +1,4 @@
-artifact_name       := applications.developer.ch.gov.uk
+artifact_name       := applications.developer.web.ch.gov.uk
 
 .PHONY: all
 all: build
@@ -11,6 +11,7 @@ clean:
 
 .PHONY: build
 build:
+	npm rebuild node-sass
 	npm i
 	npm run build
 
