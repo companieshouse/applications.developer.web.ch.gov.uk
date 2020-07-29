@@ -26,7 +26,7 @@ describe('routes/report', () => {
     done();
   });
 
-  it.skip('should serve up the index page with no mount path', () => {
+  it.skip('should serve up the applications page with no mount path', () => {
     const slug = '/';
     return request(app)
       .get(slug)
