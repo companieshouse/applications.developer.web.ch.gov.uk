@@ -14,7 +14,8 @@ const dstDirAssets = './app/public';
 
 // Purge all before building
 gulp.task('clean', () => {
-  return gulp.src([dstDirJs, dstDirCss], {read: false, allowEmpty: true})
+  //return gulp.src([dstDirJs, dstDirCss], {read: false, allowEmpty: true})
+  return gulp.src([dstDirJs], {read: false, allowEmpty: true})
     .pipe(clean());
 });
 
@@ -54,11 +55,12 @@ gulp.task('govuk-assets', () => {
 });
 
 // Binding all tasks together...
-gulp.task('build', gulp.series(['clean', 'sass', 'js', 'govuk-assets']));
+//gulp.task('build', gulp.series(['clean', 'sass', 'js', 'govuk-assets']));
+gulp.task('build', gulp.series(['clean', 'js', 'govuk-assets']));
 
 // Let's do some watching
 gulp.task('watch', gulp.series(() => {
-  gulp.watch([`${srcDirCss}/*.scss`], gulp.series('sass'));
+  //gulp.watch([`${srcDirCss}/*.scss`], gulp.series('sass'));
   gulp.watch([`${srcDirJs}/*.js`, `${srcDirJs}/lib/*.js`], gulp.series('js'));
 }));
 

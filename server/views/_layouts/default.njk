@@ -6,7 +6,9 @@
     <meta charset="utf-8" />
     <title>{{ title }}</title>
     <link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{cdnHost}}/images/favicon.ico" rel="icon" type="image/x-icon" />
+    <!--[if lte IE 8]><link href="{{cdnUrlCss}}/application-ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if gt IE 8]><!--><link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    {# <link href="{{cdnHost}}/images/favicon.ico" rel="icon" type="image/x-icon" /> #}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {# <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> #}
 
@@ -17,10 +19,11 @@
     {# <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script> #}
   </head>
 
-  <body class="govuk-template__body js-enabled">
+  <body class="govuk-template__body">
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-
+    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+    
     {% include "_partials/__header.njk" %}
 
     <div class="govuk-width-container ">
