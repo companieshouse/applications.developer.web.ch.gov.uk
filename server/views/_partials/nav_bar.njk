@@ -2,13 +2,13 @@
 
           <h4 class="app-subnav__theme">Manage applications</h4>
           <ul class="app-subnav__section">
-            <li class="app-subnav__section-item app-subnav__section-item--current">
+            <li class="app-subnav__section-item{{ ' app-subnav__section-item--current' if this_data.active_page === 'application-overview' }}">
               <a class="app-subnav__link govuk-link " href="/">
                 View all applications
               </a>
             </li>
-            <li class="app-subnav__section-item">
-              <a class="app-subnav__link govuk-link " href="../register">
+            <li class="app-subnav__section-item{{ ' app-subnav__section-item--current' if this_data.active_page === 'add-application' }}">
+              <a class="app-subnav__link govuk-link " href="/manage-applications/add">
                 Add an application
               </a>
             </li>
