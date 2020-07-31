@@ -1,0 +1,82 @@
+{% extends "_layouts/default.njk" %}
+
+{% block main_content %}
+
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+  <a href="/" class="govuk-back-link">Back to all applications</a>
+
+  <h1 class="govuk-heading-xl">New application</h1>
+
+<form action="" method="post" enctype="application/json">
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="event-name">Application name</label>
+
+    <input class="govuk-input" id="event-name" name="event-name" type="text">
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="more-detail">Description of application</label>
+
+    <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"></textarea>
+  </div>
+
+  <div class="govuk-form-group">
+
+    <fieldset class="govuk-fieldset">
+
+      <legend class="govuk-fieldset__legend">Choose an environment for your application</legend>
+
+      <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="environment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false">
+          <label class="govuk-label govuk-radios__label" for="environment">Test</label>
+        </div>
+
+        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-environment">
+
+          <div class="govuk-form-group">
+
+            <fieldset class="govuk-fieldset">
+
+              <legend class="govuk-fieldset__legend">In development for upcoming Companies House changes</legend>
+
+              <div class="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="yes">
+                  <label class="govuk-label govuk-checkboxes__label" for="waste">Yes</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="environment-2" name="environment" type="radio" value="live">
+          <label class="govuk-label govuk-radios__label" for="environment-2">Live</label>
+        </div>
+      </div>
+    </fieldset>
+
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="event-name">Terms &amp; Conditions URL (optional)</label>
+
+    <input class="govuk-input" id="event-name" name="event-name" type="text">
+  </div>
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="event-name">Privacy Policy URL (optional)</label>
+
+    <input class="govuk-input" id="event-name" name="event-name" type="text">
+  </div>
+
+  <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Create</button>
+
+  <a href="/" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    Cancel
+  </a>
+</form>
+
+{% endblock %}
