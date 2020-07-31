@@ -3,7 +3,7 @@ const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).validat
 const Validator = require(`${serverRoot}/lib/validation`);
 const validator = new Validator();
 
-describe('server/lib/validation/index', () => {
+describe('server/lib/validation/applications', () => {
   let stubLogger;
 
   beforeEach(done => {

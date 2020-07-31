@@ -1,0 +1,51 @@
+{% extends "_layouts/default.njk" %}
+
+{% block main_content %}
+
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+  <h1 class="govuk-heading-xl">
+    Application overview
+  </h1>
+  <a href="register" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+    Add an application
+  </a>
+  <h2 class="govuk-heading-l">Test applications</h2>
+  <p class="govuk-body">In development</p>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Application name</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">
+          <a href="view-application?id=0">My test application</a>
+        </th>
+      </tr>
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">
+          <a href="view-application?id=3">In development service</a>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <h2 class="govuk-heading-l">Live applications</h2>
+  <p class="govuk-body">Released and in use publicly</p>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Application name</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      <tr class="govuk-table__row">
+        <th scope="row" class="govuk-table__header">
+          <a href="view-application?id=1">Live service</a>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+@media (min-width: 48.0625em) {
+  .govuk-header__logo {
+    width: 34.33%;
+    padding-right: 15px;
+    float: left;
+    vertical-align: top;
+  }
+}
+
+@media (min-width: 48.0625em) {
+  .govuk-header__content {
+    width: 65.66%;
+    padding-left: 15px;
+    float: left;
+  }
+}
+
+
+.govuk-footer__copyright-logo {
+    background-image: url(/images/govuk-crest-2x.png);
+}

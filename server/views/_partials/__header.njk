@@ -1,7 +1,39 @@
-<header class="govuk-header">
-  <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+<header class="govuk-header" role="banner" data-module="header">
   <div class="govuk-header__container govuk-width-container">
     {% include "_partials/banner.njk" %}
   </div>
 </header>
-{% include "_partials/phase_banner.njk" %}
+<div class="govuk-width-container">
+    <div class="govuk-phase-banner">
+      <p class="govuk-phase-banner__content">
+        <strong class="govuk-tag govuk-phase-banner__content__tag">
+          beta
+        </strong>
+        <span class="govuk-phase-banner__text">
+          This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.
+        </span>
+      </p>
+    </div>
+
+    <div class="js-toggle-nav" id="global-nav">
+      <div id="user_bar">
+        <nav role="navigation" class="content">
+          <ul id="navigation">
+
+
+              <li class="signed-in-user user">
+                demo@ch.gov.uk
+              </li>
+              <li>
+                <a id="user-signout" href="/">Sign out</a>
+              </li>
+
+            <li class="signed-in-user user">
+              <a href="https://forum.aws.chdev.org">Developer hub forum</a>
+            </li>
+          </ul>
+
+        </nav>
+      </div>
+    </div>
+</div>

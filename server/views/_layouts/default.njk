@@ -6,7 +6,10 @@
     <meta charset="utf-8" />
     <title>{{ title }}</title>
     <link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{cdnHost}}/images/favicon.ico" rel="icon" type="image/x-icon" />
+    <!--[if lte IE 8]><link href="{{cdnUrlCss}}/application-ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    <!--[if gt IE 8]><!--><link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    <link href="{{cdnUrlCss}}/app.css" media="all" rel="stylesheet" type="text/css" />
+    {# <link href="{{cdnHost}}/images/favicon.ico" rel="icon" type="image/x-icon" /> #}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {# <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> #}
 
@@ -19,11 +22,26 @@
 
   <body class="govuk-template__body">
 
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+
     {% include "_partials/__header.njk" %}
 
-    <div class="govuk-width-container">
-      {% block main_content %}
-      {% endblock %}
+    <div class="govuk-width-container ">
+
+      <main class="govuk-main-wrapper " id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-one-third">
+            {% include "_partials/nav_bar.njk" %}
+          </div>
+          <div class="govuk-grid-column-two-thirds">
+            {% block main_content %}
+            {% endblock %}
+          </div>
+        </div>
+
+      </main>
     </div>
 
     {% include "_partials/__footer.njk" %}
