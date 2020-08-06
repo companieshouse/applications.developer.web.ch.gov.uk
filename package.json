@@ -6,7 +6,7 @@
   "nyc": {
     "statements": 50,
     "branches": 50,
-    "functions": 50,
+    "functions": 36.35,
     "lines": 50,
     "all": true,
     "include": [
