@@ -7,25 +7,25 @@ const validator = new Validator();
 const routeUtils = require(`${serverRoot}/routes/utils`);
 const routeViews = 'applications';
 
-router.get('/', (req, res, next) => {
+router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  let viewData = {
+  const viewData = {
     this_data: {
       active_page: 'application-overview'
     },
     this_errors: {}
-  }
+  };
   res.render(`${routeViews}/index.njk`, viewData);
 });
 
 router.get('/manage-applications/add', (req, res, next) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
-  let viewData = {
+  const viewData = {
     this_data: {
       active_page: 'add-application'
     },
     this_errors: {}
-  }
+  };
   res.render(`${routeViews}/add.njk`, viewData);
 });
 
