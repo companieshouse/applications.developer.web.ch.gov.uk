@@ -35,8 +35,14 @@ router.post('/manage-applications/add', (req, res, next) => {
 });
 
 router.get('/manage-applications/:appId/view', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
-  res.render(`${routeViews}/index.njk`);
+  logger.info(`GET request to view a single application: ${req.path}`);
+  let viewData = {
+    this_data: {
+      active_page: 'view-application'
+    },
+    this_errors: {}
+  }
+  res.render(`${routeViews}/view.njk`, viewData);
 });
 
 router.get('/manage-applications/:appId/update', (req, res, next) => {
@@ -58,5 +64,12 @@ router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
   res.render(`${routeViews}/index.njk`);
 });
+
+router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
+  logger.info(`POST request to update a key: ${req.path}`);
+  res.render(`${routeViews}/index.njk`);
+});
+
+
 
 module.exports = router;
