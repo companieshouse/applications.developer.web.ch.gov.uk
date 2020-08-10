@@ -31,7 +31,7 @@ router.get('/manage-applications/add', (req, res, next) => {
 
 router.post('/manage-applications/add', (req, res, next) => {
   logger.info(`POST request to process add application page: ${req.path}`);
-  res.redirect(302, '/');
+  res.redirect(302, '/manage-applications');
 });
 
 router.get('/manage-applications/:appId/view', (req, res, next) => {
