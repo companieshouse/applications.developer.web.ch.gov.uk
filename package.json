@@ -4,10 +4,10 @@
   "description": "The Web Service (User Interface) for managing applications on the developer hub",
   "main": "server.js",
   "nyc": {
-    "statements": 50,
-    "branches": 50,
-    "functions": 36.35,
-    "lines": 50,
+    "statements": 30,
+    "branches": 30,
+    "functions": 30,
+    "lines": 30,
     "all": true,
     "include": [
       "server/**/*.js"
