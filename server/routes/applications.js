@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const logger = require(`${serverRoot}/config/winston`);
 
+const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
+const applicationsDeveloperService = new ApplicationsDeveloperService();
+
 const Validator = require(`${serverRoot}/lib/validation`);
 const validator = new Validator();
 
@@ -9,22 +12,30 @@ const routeViews = 'applications';
 
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  const viewData = {
-    this_data: {
+  Promise.all(
+    [
+      applicationsDeveloperService.getList()
+    ]
+  ).then(([list]) => {
+    console.log("Marker");
+    console.log(list);
+    const viewData = {
+      this_data: list,
+      this_errors: {},
       active_page: 'application-overview'
-    },
-    this_errors: {}
-  };
-  res.render(`${routeViews}/index.njk`, viewData);
+    };
+    res.render(`${routeViews}/index.njk`, viewData);
+  }).catch(err => {
+
+  });
 });
 
 router.get('/manage-applications/add', (req, res, next) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = {
-    this_data: {
-      active_page: 'add-application'
-    },
-    this_errors: {}
+    this_data: null,
+    this_errors: {},
+    active_page: 'add-application'
   };
   res.render(`${routeViews}/add.njk`, viewData);
 });
@@ -37,10 +48,9 @@ router.post('/manage-applications/add', (req, res, next) => {
 router.get('/manage-applications/:appId/view', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   let viewData = {
-    this_data: {
-      active_page: 'view-application'
-    },
-    this_errors: {}
+    this_data: null,
+    this_errors: {},
+    active_page: 'view-application'
   }
   res.render(`${routeViews}/view.njk`, viewData);
 });

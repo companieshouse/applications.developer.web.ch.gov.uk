@@ -19,16 +19,12 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">
-          <a href="manage-applications/1/view">My test application</a>
-        </th>
-      </tr>
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">
-          <a href="#">In development service</a>
-        </th>
-      </tr>
+      {% for app in this_data.items %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">
+            <a href="manage-applications/{{ app.id }}/view">{{ app.name }}</a>
+          </th>
+        </tr>
     </tbody>
   </table>
   <h2 class="govuk-heading-l">Live applications</h2>
