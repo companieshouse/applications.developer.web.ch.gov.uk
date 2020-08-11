@@ -66,7 +66,6 @@ njk.addGlobal('cdnHost', process.env.CDN_HOST);
       });
   });
 **/
-
 // channel all requests through the router
 require('./router')(app);
 
