@@ -12,21 +12,22 @@ const routeViews = 'applications';
 
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'application-overview'
+  };
   Promise.all(
     [
       applicationsDeveloperService.getList()
     ]
   ).then(([list]) => {
-    console.log("Marker");
-    console.log(list);
-    const viewData = {
-      this_data: list,
-      this_errors: {},
-      active_page: 'application-overview'
-    };
+    viewData.this_data = list.data;
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
-
+    viewData.this_errors = routeUtils.processException(err);
+    console.log(viewData.this_errors.genericError.summary);
+    res.render(`${routeViews}/index.njk`, viewData);
   });
 });
 

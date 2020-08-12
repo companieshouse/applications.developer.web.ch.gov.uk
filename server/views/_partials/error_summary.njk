@@ -1,0 +1,19 @@
+{% if this_errors is not null %}
+<div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+  <h2 class="govuk-error-summary__title" id="error-summary-title">
+    There is a problem
+  </h2>
+  <div class="govuk-error-summary__body">
+    <ul class="govuk-list govuk-error-summary__list">
+      {% if this_errors.generic_error is not undefined %}
+      <li>
+        <a href="#passport-issued-error">{{ this_errors.genericError.summary }}</a>
+      </li>
+      {#<li>
+        <a href="#postcode-error">Enter a postcode, like AA1 1AA</a>
+      </li>#}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endif %}

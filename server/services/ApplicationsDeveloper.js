@@ -27,7 +27,7 @@ class ApplicationsDeveloper {
   getList () {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      uri: `${this.server.baseUrl}/applications/?items_per_page=5&start_index=0`
+      url: `${this.server.baseUrl}/applications/?items_per_page=5&start_index=0`
     });
     return this.request(options);
   }
@@ -35,7 +35,7 @@ class ApplicationsDeveloper {
   getReport (selfLink) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      uri: `${this.server.baseUrl}${selfLink}`
+      url: `${this.server.baseUrl}${selfLink}`
     });
     logger.info('Service request to fetch report, with payload: ', options);
     return this.request(options);
