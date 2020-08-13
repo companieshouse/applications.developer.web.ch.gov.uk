@@ -25,14 +25,13 @@
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
-
     {% include "_partials/__header.njk" %}
-
     <div class="govuk-width-container ">
 
       <main class="govuk-main-wrapper " id="main-content" role="main">
 
         <div class="govuk-grid-row">
+          {% include "_partials/error_summary.njk" %}
           <div class="govuk-grid-column-one-third">
             {% include "_partials/nav_bar.njk" %}
           </div>

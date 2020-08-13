@@ -44,4 +44,4 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test-unit clean package
+dist: lint test-unit sonar clean package
