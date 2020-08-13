@@ -10,15 +10,15 @@
 
 <form action="" method="post" enctype="application/json">
   <div class="govuk-form-group">
-    <label class="govuk-label" for="event-name">Application name</label>
+    <label class="govuk-label" for="applicationName">Application name</label>
 
-    <input class="govuk-input" id="event-name" name="event-name" type="text">
+    <input class="govuk-input" id="applicationName" name="applicationName" type="text">
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="more-detail">Description of application</label>
+    <label class="govuk-label" for="description">Description of application</label>
 
-    <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"></textarea>
+    <textarea class="govuk-textarea" id="description" name="description" rows="5"></textarea>
   </div>
 
   <div class="govuk-form-group">
@@ -29,8 +29,8 @@
 
       <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="environment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false">
-          <label class="govuk-label govuk-radios__label" for="environment">Test</label>
+          <input class="govuk-radios__input" id="testEnvironment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false">
+          <label class="govuk-label govuk-radios__label" for="testEnvironment">Test</label>
         </div>
 
         <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-environment">
@@ -43,8 +43,8 @@
 
               <div class="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="yes">
-                  <label class="govuk-label govuk-checkboxes__label" for="waste">Yes</label>
+                  <input class="govuk-checkboxes__input" id="inDevelopment" name="inDevelopment" type="checkbox" value="yes" />
+                  <label class="govuk-label govuk-checkboxes__label" for="inDevelopment">Yes</label>
                 </div>
               </div>
             </fieldset>
@@ -52,8 +52,8 @@
         </div>
 
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="environment-2" name="environment" type="radio" value="live">
-          <label class="govuk-label govuk-radios__label" for="environment-2">Live</label>
+          <input class="govuk-radios__input" id="liveEnvironment" name="environment" type="radio" value="live">
+          <label class="govuk-label govuk-radios__label" for="liveEnvironment">Live</label>
         </div>
       </div>
     </fieldset>
@@ -61,18 +61,19 @@
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="event-name">Terms &amp; Conditions URL (optional)</label>
+    <label class="govuk-label" for="terms">Terms &amp; Conditions URL (optional)</label>
 
-    <input class="govuk-input" id="event-name" name="event-name" type="text">
+    <input class="govuk-input" id="terms" name="terms" type="text">
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="event-name">Privacy Policy URL (optional)</label>
+    <label class="govuk-label" for="privacyPolicy">Privacy Policy URL (optional)</label>
 
-    <input class="govuk-input" id="event-name" name="event-name" type="text">
+    <input class="govuk-input" id="privacyPolicy" name="privacyPolicy" type="text">
   </div>
 
-  <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Create</button>
+  <input class="govuk-button" id="submitApp" name="submitApp" type="submit" value="create" />
+  {#<button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Create</button>#}
 
   <a href="/" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
     Cancel

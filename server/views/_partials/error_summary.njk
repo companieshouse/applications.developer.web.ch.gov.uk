@@ -9,6 +9,12 @@
         <li>
           {{ this_errors.genericError.summary }}
         </li>
+      {% else %}
+        {% for key,err in this_errors %}
+          <li>
+            <a href="#">{{ err.summary }}</a>
+          </li>
+        {% endfor %}
       {% endif %}
     </ul>
   </div>

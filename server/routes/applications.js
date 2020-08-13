@@ -4,11 +4,12 @@ const logger = require(`${serverRoot}/config/winston`);
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationsDeveloperService = new ApplicationsDeveloperService();
 
-const Validator = require(`${serverRoot}/lib/validation`);
+const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
 const validator = new Validator();
 
 const routeUtils = require(`${serverRoot}/routes/utils`);
 const routeViews = 'applications';
+
 
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
@@ -42,7 +43,20 @@ router.get('/manage-applications/add', (req, res, next) => {
 
 router.post('/manage-applications/add', (req, res, next) => {
   logger.info(`POST request to process add application page: ${req.path}`);
-  res.redirect(302, '/manage-applications');
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'add-application'
+  };
+  validator.addApplication(req.body)
+    .then(_ => {
+      return applicationsDeveloperService.save(req.body);
+    }).then(_ => {
+      return res.redirect(302, '/manage-applications');
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/index.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/view', (req, res, next) => {

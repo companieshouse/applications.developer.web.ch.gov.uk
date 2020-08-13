@@ -9,37 +9,45 @@ let ErrorManifest = {
       summary: "Your request contains validation errors",
       inline: "Your request contains validation errors"
     },
-    fullName: {
-      empty: {
-        summary: "Enter your full name",
-        inline: "Enter your full name"
-      },
-      incorrect: {
-        summary: "Full name must only include letters a-z, A-Z, hyphens, spaces and apostrophes",
-        inline: "Full name must only include letters a-z, A-Z, hyphens, spaces and apostrophes"
-      }
-    },
-    email: {
+    name: {
       blank: {
-        summary: "Enter your email address",
-        inline: "Enter your email address"
+        summary: "Enter a name",
+        inline: "Enter a name"
       },
-      incorrect: {
-        summary: "Email not valid",
-        inline: "Enter an email address in the correct format, like name@example.com"
+      invalid: {
+        summary: "Name must only include letters a-z, A-Z, hyphens, spaces, apostrophes and full stops",
+        inline: "Name must only include letters a-z, A-Z, hyphens, spaces, apostrophes and full stops"
       }
     },
-    number: {
-      empty: {
-        summary: "Enter the company number",
-        inline: "Enter the company number"
+    description: {
+      blank: {
+        summary: "Enter a description",
+        inline: "Enter a description"
       },
-      incorrect: {
-        summary: "Company number must be 8 characters",
-        inline: "Company number must be 8 characters"
+      invalid: {
+        summary: "Description must only include letters a-z, A-Z, hyphens, spaces and apostrophes",
+        inline: "Description must only include letters a-z, A-Z, hyphens, spaces and apostrophes"
+      }
+    },
+    environment: {
+      blank: {
+        summary: "Choose an environment",
+        inline: "Choose an environment"
+      }
+    },
+    terms: {
+      invalid: {
+        summary: "Enter a valid terms and conditions url",
+        inline: "Enter a valid terms and conditions url"
+      }
+    },
+    privacyPolicy: {
+      invalid: {
+        summary: "Enter a valid privacy policy url",
+        inline: "Enter a valid privacy policy url"
       }
     }
   }
-}
+};
 
 module.exports = ErrorManifest;
