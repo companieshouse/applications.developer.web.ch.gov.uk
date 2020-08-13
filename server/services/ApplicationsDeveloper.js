@@ -32,15 +32,6 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  getReport (selfLink) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'GET',
-      url: `${this.server.baseUrl}${selfLink}`
-    });
-    logger.info('Service request to fetch report, with payload: ', options);
-    return this.request(options);
-  }
-
   saveContactName (contactName) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',

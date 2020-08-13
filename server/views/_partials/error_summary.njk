@@ -5,13 +5,10 @@
   </h2>
   <div class="govuk-error-summary__body">
     <ul class="govuk-list govuk-error-summary__list">
-      {% if this_errors.generic_error is not undefined %}
-      <li>
-        <a href="#passport-issued-error">{{ this_errors.genericError.summary }}</a>
-      </li>
-      {#<li>
-        <a href="#postcode-error">Enter a postcode, like AA1 1AA</a>
-      </li>#}
+      {% if this_errors.genericError is not undefined %}
+        <li>
+          {{ this_errors.genericError.summary }}
+        </li>
       {% endif %}
     </ul>
   </div>
