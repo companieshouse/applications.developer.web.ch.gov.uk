@@ -5,7 +5,11 @@ class ApplicationsDeveloper {
   constructor () {
     this.server = {
       apiKey: process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY,
-      baseUrl: process.env.APPLICATIONS_DEVELOPER_SERVICE_BASE_URL,
+      baseUrl: {
+        live: process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL,
+        test: process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL,
+        future: process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL
+      },
       auth: {
         username: process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME,
         password: process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD
@@ -29,23 +33,23 @@ class ApplicationsDeveloper {
     if(typeof data.environment !== 'undefined') {
       if(data.environment === 'test') {
         if(typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
-          baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL;
+          baseUrl = this.server.baseUrl.future;
         } else {
-          baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL;
+          baseUrl = this.server.baseUrl.test;
         }
       } else if(data.environment === 'live') {
-        baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL;
+        baseUrl = this.server.baseUrl.live;
       }
     }
     return baseUrl;
   }
 
-  getList () {
+  getList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      url: `${this.server.baseUrl}/applications/?items_per_page=5&start_index=0`
+      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=5&start_index=0`
     });
-    logger.info('Service request to retrieve applications list, with payload: ', options);
+    logger.info(`Service request to retrieve ${environment} applications list, with payload: `, options);
     return this.request(options);
   }
 
@@ -62,68 +66,6 @@ class ApplicationsDeveloper {
       url: `${baseUrl}/applications`
     });
     logger.info('Service request to save data, with payload: ', options);
-    return this.request(options);
-  }
-
-  saveEmail (data) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'PUT',
-      uri: `${this.server.baseUrl}${data.selfLink}`,
-      body: {
-        obliged_entity_contact_name: data.obliged_entity_contact_name,
-        obliged_entity_email: data.obliged_entity_email,
-        obliged_entity_telephone_number: data.obliged_entity_telephone_number,
-        status: 'INCOMPLETE',
-        etag: data.etag
-      }
-    });
-    logger.info('Service request to save email, with payload: ', options);
-    return this.request(options);
-  }
-
-  saveCompanyNumber (data) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'PUT',
-      uri: `${this.server.baseUrl}${data.selfLink}`,
-      body: {
-        obliged_entity_contact_name: data.obliged_entity_contact_name,
-        obliged_entity_email: data.obliged_entity_email,
-        obliged_entity_telephone_number: data.obliged_entity_telephone_number,
-        company_number: data.company_number,
-        status: 'INCOMPLETE',
-        etag: data.etag
-      }
-    });
-    logger.info('Service request to save company number, with payload: ', options);
-    return this.request(options);
-  }
-
-  saveStatus (data) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'PUT',
-      uri: `${this.server.baseUrl}${data.selfLink}`,
-      body: {
-        obliged_entity_contact_name: data.obliged_entity_contact_name,
-        obliged_entity_email: data.obliged_entity_email,
-        obliged_entity_telephone_number: data.obliged_entity_telephone_number,
-        company_number: data.company_number,
-        status: 'COMPLETE',
-        etag: data.etag
-      }
-    });
-    logger.info('Service request to save email, with payload: ', options);
-    return this.request(options);
-  }
-
-  saveDiscrepancyDetails (data) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'POST',
-      uri: `${this.server.baseUrl}${data.selfLink}/discrepancies`,
-      body: {
-        details: data.details
-      }
-    });
-    logger.info('Service request to save discrepancy details, with payload: ', options);
     return this.request(options);
   }
 }

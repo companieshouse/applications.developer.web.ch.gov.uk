@@ -19,10 +19,16 @@ router.get('(/manage-applications)?', (req, res, next) => {
   };
   Promise.all(
     [
-      applicationsDeveloperService.getList()
+      applicationsDeveloperService.getList('live'),
+      applicationsDeveloperService.getList('test'),
+      applicationsDeveloperService.getList('future')
     ]
-  ).then(([list]) => {
-    viewData.this_data = list.data;
+  ).then(([listLive, listTest, listFuture]) => {
+    viewData.this_data = {
+      live: listLive.data,
+      test: listTest.data,
+      future: listFuture.data
+    };
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     console.log(err);
