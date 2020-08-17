@@ -12,13 +12,23 @@
   <div class="govuk-form-group">
     <label class="govuk-label" for="applicationName">Application name</label>
 
-    <input class="govuk-input" id="applicationName" name="applicationName" type="text">
+    <input class="govuk-input {{' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{this_data.applicationName}}" type="text">
+    {% if this_errors.name is not undefined %}
+      <span id="err-id-name" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <div class="govuk-form-group">
     <label class="govuk-label" for="description">Description of application</label>
 
-    <textarea class="govuk-textarea" id="description" name="description" rows="5"></textarea>
+    <textarea class="govuk-textarea {{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" value="{{this_data.description}}" rows="5"></textarea>
+    {% if this_errors.description is not undefined %}
+      <span id="err-id-description" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <div class="govuk-form-group">
@@ -26,21 +36,24 @@
     <fieldset class="govuk-fieldset">
 
       <legend class="govuk-fieldset__legend">Choose an environment for your application</legend>
-
+      {% if this_errors.environment is not undefined %}
+        <span id="err-id-terms" class="govuk-error-message">
+          <span class="">Error:</span> {{ this_errors.environment.inline }}
+        </span>
+      {% endif %}
       <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
         <div class="govuk-radios__item">
           <input class="govuk-radios__input" id="testEnvironment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false">
           <label class="govuk-label govuk-radios__label" for="testEnvironment">Test</label>
         </div>
 
-        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-environment">
-
+        <div class="govuk-radios__conditional" id="conditional-environment">
+{# govuk-radios__conditional--hidden #}
           <div class="govuk-form-group">
 
             <fieldset class="govuk-fieldset">
 
               <legend class="govuk-fieldset__legend">In development for upcoming Companies House changes</legend>
-
               <div class="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
                   <input class="govuk-checkboxes__input" id="inDevelopment" name="inDevelopment" type="checkbox" value="yes" />
@@ -63,13 +76,23 @@
   <div class="govuk-form-group">
     <label class="govuk-label" for="terms">Terms &amp; Conditions URL (optional)</label>
 
-    <input class="govuk-input" id="terms" name="terms" type="text">
+    <input class="govuk-input {{' govuk-input--error' if this_errors.terms is not undefined }}" id="terms" name="terms" value="{{this_data.terms}}" type="text">
+    {% if this_errors.terms is not undefined %}
+      <span id="err-id-terms" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.terms.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <div class="govuk-form-group">
     <label class="govuk-label" for="privacyPolicy">Privacy Policy URL (optional)</label>
 
-    <input class="govuk-input" id="privacyPolicy" name="privacyPolicy" type="text">
+    <input class="govuk-input {{' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{this_data.privacyPolicy}}" type="text">
+    {% if this_errors.privacyPolicy is not undefined %}
+      <span id="err-id-privacyPolicy" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.privacyPolicy.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <input class="govuk-button" id="submitApp" name="submitApp" type="submit" value="create" />

@@ -17,6 +17,6 @@ const routeUtils = {
     }
     return e;
   }
-}
+};
 
 module.exports = routeUtils;

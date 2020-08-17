@@ -32,6 +32,20 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
+  save (data) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.applicationName,
+        description: data.description,
+        privacy_policy_url: data.privacy_policy_url,
+        terms_and_conditions_url: data.terms_and_conditions_url
+      },
+      url: `${this.server.baseUrl}/applications/This is a bad URL`
+    });
+    return this.request(options);
+  }
+
   saveContactName (contactName) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
