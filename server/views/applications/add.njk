@@ -8,7 +8,7 @@
 
   <h1 class="govuk-heading-xl">New application</h1>
 
-<form action="" method="post" enctype="application/json">
+<form action="" method="post" enctype="application/json" id="frm-add-application">
   <div class="govuk-form-group">
     <label class="govuk-label" for="applicationName">Application name</label>
 
@@ -23,7 +23,7 @@
   <div class="govuk-form-group">
     <label class="govuk-label" for="description">Description of application</label>
 
-    <textarea class="govuk-textarea {{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" value="{{this_data.description}}" rows="5"></textarea>
+    <textarea class="govuk-textarea {{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
     {% if this_errors.description is not undefined %}
       <span id="err-id-description" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
@@ -38,12 +38,12 @@
       <legend class="govuk-fieldset__legend">Choose an environment for your application</legend>
       {% if this_errors.environment is not undefined %}
         <span id="err-id-terms" class="govuk-error-message">
-          <span class="">Error:</span> {{ this_errors.environment.inline }}
+          <span class="govuk-visually-hidden">Error:</span> {{ this_errors.environment.inline }}
         </span>
       {% endif %}
       <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="testEnvironment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false">
+          <input class="govuk-radios__input" id="testEnvironment" name="environment" type="radio" value="test" aria-controls="conditional-environment" aria-expanded="false"{{ ' checked="checked"' if this_data.environment === 'test' }} />
           <label class="govuk-label govuk-radios__label" for="testEnvironment">Test</label>
         </div>
 
@@ -56,7 +56,7 @@
               <legend class="govuk-fieldset__legend">In development for upcoming Companies House changes</legend>
               <div class="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="inDevelopment" name="inDevelopment" type="checkbox" value="yes" />
+                  <input class="govuk-checkboxes__input" id="inDevelopment" name="inDevelopment" type="checkbox" value="yes"{{ ' checked="checked"' if this_data.environment === 'test' and this_data.inDevelopment === 'yes' }} />
                   <label class="govuk-label govuk-checkboxes__label" for="inDevelopment">Yes</label>
                 </div>
               </div>
@@ -65,7 +65,7 @@
         </div>
 
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="liveEnvironment" name="environment" type="radio" value="live">
+          <input class="govuk-radios__input" id="liveEnvironment" name="environment" type="radio" value="live"{{ ' checked="checked"' if this_data.environment === 'live' }} />
           <label class="govuk-label govuk-radios__label" for="liveEnvironment">Live</label>
         </div>
       </div>

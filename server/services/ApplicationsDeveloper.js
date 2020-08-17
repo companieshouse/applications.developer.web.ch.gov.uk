@@ -24,15 +24,33 @@ class ApplicationsDeveloper {
     };
   }
 
+  _getBaseUrl (data) {
+    let baseUrl = '';
+    if(typeof data.environment !== 'undefined') {
+      if(data.environment === 'test') {
+        if(typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
+          baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL;
+        } else {
+          baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL;
+        }
+      } else if(data.environment === 'live') {
+        baseUrl = process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL;
+      }
+    }
+    return baseUrl;
+  }
+
   getList () {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
       url: `${this.server.baseUrl}/applications/?items_per_page=5&start_index=0`
     });
+    logger.info('Service request to retrieve applications list, with payload: ', options);
     return this.request(options);
   }
 
   save (data) {
+    const baseUrl = this._getBaseUrl(data);
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -41,20 +59,9 @@ class ApplicationsDeveloper {
         privacy_policy_url: data.privacy_policy_url,
         terms_and_conditions_url: data.terms_and_conditions_url
       },
-      url: `${this.server.baseUrl}/applications/This is a bad URL`
+      url: `${baseUrl}/applications`
     });
-    return this.request(options);
-  }
-
-  saveContactName (contactName) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'POST',
-      body: {
-        obliged_entity_contact_name: contactName,
-        status: 'INCOMPLETE'
-      }
-    });
-    logger.info('Service request to save contact name, with payload: ', options);
+    logger.info('Service request to save data, with payload: ', options);
     return this.request(options);
   }
 

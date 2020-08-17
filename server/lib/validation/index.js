@@ -17,7 +17,7 @@ class Validator {
   }
 
   isValidAppName (name) {
-    if (/^[a-z\s-\d.'"]{1,72}$/i.test(name)) {
+    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(name)) {
       return true;
     } else {
       return false;
@@ -25,7 +25,7 @@ class Validator {
   }
 
   isValidUrl (url) {
-    if (/^[-a-z0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
+    if (/^(https?:\/\/)?[-a-z0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
       return true;
     } else {
       return false;
@@ -49,7 +49,7 @@ class Validator {
   }
 
   isValidDescription (description) {
-    if (/^[a-z\s-\d.'"]{1,72}$/i.test(description)) {
+    if (/^[a-z\s-\d\.\'\"]{1,256}$/i.test(description)) {
       return true;
     } else {
       return false;
