@@ -24,7 +24,7 @@
   <body class="govuk-template__body">
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
-    <a href="#main-content" class="govuk-skip-link">Skip to main content</a>
+    <a href="#main-page-content" class="govuk-skip-link">Skip to main content</a>
     {% include "_partials/__header.njk" %}
     <div class="govuk-width-container ">
 
@@ -35,7 +35,7 @@
           <div class="govuk-grid-column-one-third">
             {% include "_partials/nav_bar.njk" %}
           </div>
-          <div class="govuk-grid-column-two-thirds">
+          <div class="govuk-grid-column-two-thirds" id="main-page-content">
             {% block main_content %}
             {% endblock %}
           </div>

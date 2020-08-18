@@ -6,3 +6,29 @@
     margin-bottom: 1px;
   }
 }
+
+#global-nav #user_bar nav {
+  padding: 0;
+  overflow: hidden;
+}
+
+#global-nav #user_bar nav ul {
+  float: right;
+}
+
+#global-nav #user_bar nav ul li {
+  float: left;
+  padding: 10px 0;
+}
+
+#global-nav #user_bar nav ul li#user-bar-email {
+  margin-right: 20px;
+}
+
+#global-nav #user_bar nav ul li#user-bar-sign-out {
+  margin-right: 5px;
+}
+
+#global-nav #user_bar nav ul li#user-bar-forum {
+  /* padding: 10px 0; */
+}
