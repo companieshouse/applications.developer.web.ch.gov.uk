@@ -1,4 +1,8 @@
 /*#frm-add-application #description {
   margin-bottom: 1px
 }*/
-
+@media (min-width: 40.0625em) {
+  .govuk-textarea {
+    margin-bottom: 1px;
+  }
+}
