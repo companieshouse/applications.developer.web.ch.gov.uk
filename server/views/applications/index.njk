@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      {% for app in this_data.items %}
+      {% for app in this_data.test.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
             <a href="manage-applications/{{ app.id }}/view">{{ app.name }}</a>
@@ -37,11 +37,13 @@
       </tr>
     </thead>
     <tbody class="govuk-table__body">
-      <tr class="govuk-table__row">
-        <th scope="row" class="govuk-table__header">
-          <a href="#">Live service</a>
-        </th>
-      </tr>
+      {% for app in this_data.live.items %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">
+            <a href="#">{{ app.name }}</a>
+          </th>
+        </tr>
+      {% endfor %}
     </tbody>
   </table>
 

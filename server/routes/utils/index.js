@@ -10,13 +10,13 @@ const routeUtils = {
   processException: err => {
     Utility.logException(err);
     let e = {};
-    if (typeof err.code !== 'undefined' && err.code === 'VALIDATION_ERRORS') {
+    if (typeof err.name !== 'undefined' && err.name === 'ValidationError') {
       e = err.stack;
     } else {
       e.genericError = errorManifest.serverError;
     }
     return e;
   }
-}
+};
 
 module.exports = routeUtils;

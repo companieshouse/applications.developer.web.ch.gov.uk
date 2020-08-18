@@ -2,70 +2,58 @@ const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).validat
 const logger = require(`${serverRoot}/config/winston`);
 
 class Validator {
-
-  constructor() {
+  constructor () {
     this.errors = {};
     this.payload = {};
   }
 
-  _getErrorSignature () {
+  getErrorSignature () {
     return {
       status: 400,
-      code: 'VALIDATION_ERRORS',
+      name: 'ValidationError',
       message: errorManifest.default.summary,
       stack: {}
+    };
+  }
+
+  isValidAppName (name) {
+    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(name)) {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  isValidEmail(email) {
-    logger.info(`Request to validate email: ${email}`);
-    let errors = this._getErrorSignature();
-    return new Promise((resolve, reject) => {
-      let validEmailRegex = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]+$/);
-      if(typeof email === 'undefined' || email === null || email.length === 0){
-        errors.stack.email = errorManifest.email.blank;
-        reject(errors);
-      } else if(!validEmailRegex.test(email)) {
-        errors.stack.email = errorManifest.email.incorrect;
-        reject(errors);
-      } else {
-        resolve(true);
-      }
-    });
+  isValidUrl (url) {
+    if (/^(https?:\/\/)?[-a-z0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  isValidCompanyNumber(number) {
-    logger.info(`Request to validate company number: ${number}`);
-    let errors = this._getErrorSignature();
-    return new Promise((resolve, reject) => {
-      if(typeof number === "undefined" || number === null || number.length === 0) {
-        errors.stack.number = errorManifest.number.empty;
-        reject(errors);
-      } else if (number.length !== 8) {
-        errors.stack.number = errorManifest.number.incorrect;
-        reject(errors);
-      } else {
-        resolve(true);
-      }
-    });
+  isValidIp (ip) {
+    if (/^b(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])/.test(ip)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  isValidContactName(contactName) {
-    logger.info(`Request to validate contact name: ${contactName}`);
-    let errors = this._getErrorSignature();
-    return new Promise((resolve, reject) => {
-      let validNameRegex = new RegExp(/^[AÀÁÂÃÄÅĀĂĄǺaàáâãäåāăąǻÆǼæǽBbCcçćĉċčDÞĎĐdþďđEÈÉÊËĒĔĖĘĚeèéêëēĕėęěFfGĜĞĠĢgĝğġģHĤĦhĥħIÌÍÎÏĨĪĬĮİiìíîïĩīĭįJĴjĵKĶkķLĹĻĽĿŁlĺļľŀłMmNÑŃŅŇŊnñńņňŋOÒÓÔÕÖØŌŎŐǾoòóôõöøōŏőǿŒœPpQqRŔŖŘrŕŗřSŚŜŞŠsśŝşšTŢŤŦtţťŧUÙÚÛÜŨŪŬŮŰŲuùúûüũūŭůűųVvWŴẀẂẄwŵẁẃẅXxYỲÝŶŸyỳýŷÿZŹŻŽzźżž&@£$€¥*=#%+‘ʼ'()\/\[\]{}<>!«»?“ˮ\"0123456789.,:;\–\-  \\r\\n]*$/);
-      if(typeof contactName === 'undefined' || contactName === null || contactName.length === 0) {
-        errors.stack.fullName = errorManifest.fullName.empty;
-        reject(errors);
-      } else if(!validNameRegex.test(contactName)) {
-        errors.stack.fullName = errorManifest.fullName.incorrect;
-        reject(errors);
-      } else {
-        resolve(true);
-      }
-    });
+  isValidDomain (domain) {
+    if (/^[a-z]$/.test(domain)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isValidDescription (description) {
+    if (/^[a-z\s-\d\.\'\"]{1,256}$/i.test(description)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
-
 module.exports = Validator;
