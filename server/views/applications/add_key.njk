@@ -1,0 +1,101 @@
+{% extends "_layouts/default.njk" %}
+
+{% block main_content %}
+
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl">
+      New API client key
+    </h1>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="key-name">
+        Key name
+      </label>
+
+      <input class="govuk-input" id="key-name" name="key-name" type="text">
+    </div>
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="more-detail">
+        Key description
+      </label>
+
+      <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"></textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend">
+          Select the type of API client key you want to add:
+        </legend>
+
+        <div class="govuk-radios">
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="key-type" name="key-type" type="radio" value="rest">
+            <label class="govuk-label govuk-radios__label" for="key-type">
+              REST
+            </label>
+          </div>
+
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="key-type-2" name="key-type" type="radio" value="stream">
+            <label class="govuk-label govuk-radios__label" for="key-type-2">
+              Streaming
+            </label>
+          </div>
+
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="key-type-3" name="key-type" type="radio" value="web">
+            <label class="govuk-label govuk-radios__label" for="key-type-3">
+              Web
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="more-detail">
+        Restricted IPs
+      </label>
+
+      <span id="more-detail-hint" class="govuk-hint">
+    Separate each IP with a comma.
+  </span>
+
+      <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="more-detail">
+        JavaScript domains
+      </label>
+
+      <span id="more-detail-hint" class="govuk-hint">
+    Separate each domain with a comma.
+  </span>
+      <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="more-detail">
+        Redirect URIs
+      </label>
+
+      <span id="more-detail-hint" class="govuk-hint">
+    Separate each URI with a comma.
+  </span>
+      <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+    </div>
+
+    <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
+      Add key
+    </button>
+
+    <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+      Cancel
+    </a>
+  </div>
+
+{% endblock %}
