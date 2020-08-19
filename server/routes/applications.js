@@ -78,7 +78,7 @@ router.get('/manage-applications/:appId/view', (req, res, next) => {
 
 router.get('/manage-applications/:appId/update', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  res.render(`${routeViews}/index.njk`);
+  res.render(`${routeViews}/edit.njk`);
 });
 
 router.get('/manage-applications/:appId/delete', (req, res, next) => {
