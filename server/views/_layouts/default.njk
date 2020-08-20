@@ -17,7 +17,7 @@
     <script src="{{cdnUrlJs}}/../../vendor/jquery-3.3.1.min.js"></script>
 
     {# Set the page object to hold values exported from server to JS files #}
-    <script type="text/javascript">
+    <script>
       var page = page || {};
     </script>
     {# <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script> #}
@@ -30,7 +30,7 @@
     {% include "_partials/__header.njk" %}
     <div class="govuk-width-container ">
 
-      <main class="govuk-main-wrapper " id="main-content" role="main">
+      <main class="govuk-main-wrapper " id="main-content">
 
         <div class="govuk-grid-row">
           {% include "_partials/error_summary.njk" %}
