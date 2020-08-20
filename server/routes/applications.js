@@ -54,7 +54,8 @@ router.post('/manage-applications/add', (req, res, next) => {
   const viewData = {
     this_data: req.body,
     this_errors: null,
-    active_page: 'add-application'
+    active_page: 'add-application',
+    title: 'Add an application'
   };
   validator.addApplication(req.body)
     .then(_ => {
