@@ -69,7 +69,9 @@ router.post('/manage-applications/add', (req, res, next) => {
 router.get('/manage-applications/:appId/view', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   const viewData = {
-    this_data: null,
+    this_data: {
+      appId: req.params.appId
+    },
     this_errors: null,
     active_page: 'view-application'
   };
@@ -96,9 +98,24 @@ router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
   res.render(`${routeViews}/index.njk`);
 });
 
+router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {
+  logger.info(`GET request to update a key: ${req.path}`);
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'application-overview'
+  };
+  res.render(`${routeViews}/update_key.njk`, viewData);
+});
+
 router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
   logger.info(`POST request to update a key: ${req.path}`);
-  res.render(`${routeViews}/index.njk`);
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'application-overview'
+  };
+  res.render(`${routeViews}/index.njk`, viewData);
 });
 
 module.exports = router;
