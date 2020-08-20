@@ -17,6 +17,7 @@ class AppSession {
    * Remember to switch to the __SID cookie once the service is behind Login
    */
   _setUp () {
+    logger.info('setting up session');
     try {
       if (typeof this.req.cookies.AD_SID !== 'undefined') {
         this.id = this.req.cookies.AD_SID;
