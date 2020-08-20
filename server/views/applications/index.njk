@@ -7,7 +7,7 @@
   <h1 class="govuk-heading-xl">
     Application overview
   </h1>
-  <a href="register" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+  <a href="/manage-applications/add" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
     Add an application
   </a>
   <h2 class="govuk-heading-l">Test applications</h2>
@@ -22,7 +22,14 @@
       {% for app in this_data.test.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
-            <a href="manage-applications/{{ app.id }}/view">{{ app.name }}</a>
+            <a href="/manage-applications/{{ app.id }}/view">{{ app.name }}</a>
+          </th>
+        </tr>
+      {% endfor %}
+      {% for app in this_data.future.items %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">
+            <a href="/manage-applications/{{ app.id }}/view">{{ app.name }}</a>
           </th>
         </tr>
       {% endfor %}
@@ -40,7 +47,7 @@
       {% for app in this_data.live.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
-            <a href="#">{{ app.name }}</a>
+            <a href="/manage-applications/{{ app.id }}/view">{{ app.name }}</a>
           </th>
         </tr>
       {% endfor %}

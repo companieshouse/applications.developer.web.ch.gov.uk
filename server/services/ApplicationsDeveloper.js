@@ -44,6 +44,7 @@ class ApplicationsDeveloper {
     return baseUrl;
   }
 
+  // Remeber to remove the temporary query string once API is refcatored not to require it when doing a "fetch all"
   getList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',

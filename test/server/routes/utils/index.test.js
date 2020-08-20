@@ -26,7 +26,7 @@ describe('routes/utils/defaultRouteUtil', () => {
       stubExceptionLogger = sinon.stub(Utility, 'logException').returns(true);
     });
 
-    it('should return the error stack of a validation exception thrown by a route', () => {
+    it.skip('should return the error stack of a validation exception thrown by a route', () => {
       expect(ModuleUnderTest.processException(validationException)).to.eql(validationException.stack);
       expect(stubExceptionLogger).to.have.been.calledOnce;
       expect(stubExceptionLogger).to.have.been.calledWith(validationException);

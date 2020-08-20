@@ -15,7 +15,8 @@ router.get('(/manage-applications)?', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Application overview'
   };
   Promise.all(
     [
@@ -42,7 +43,8 @@ router.get('/manage-applications/add', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'add-application'
+    active_page: 'add-application',
+    title: 'Add an application'
   };
   res.render(`${routeViews}/add.njk`, viewData);
 });
@@ -52,7 +54,8 @@ router.post('/manage-applications/add', (req, res, next) => {
   const viewData = {
     this_data: req.body,
     this_errors: null,
-    active_page: 'add-application'
+    active_page: 'add-application',
+    title: 'Add an application'
   };
   validator.addApplication(req.body)
     .then(_ => {
@@ -71,7 +74,8 @@ router.get('/manage-applications/:appId/view', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'view-application'
+    active_page: 'view-application',
+    title: 'View application'
   };
   res.render(`${routeViews}/view.njk`, viewData);
 });
