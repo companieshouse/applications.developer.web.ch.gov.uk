@@ -16,6 +16,7 @@ class ManageApplication extends Validator {
   }
 
   addApplication (payload) {
+    this.errors = {};
     this._formatIncomingPayload(payload);
     return new Promise((resolve, reject) => {
       if (!this.isValidAppName(payload.applicationName)) {

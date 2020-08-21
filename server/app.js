@@ -49,6 +49,8 @@ app.use((err, req, res, next) => {
 njk.addGlobal('cdnUrlCss', process.env.CDN_URL_CSS);
 njk.addGlobal('cdnUrlJs', process.env.CDN_URL_JS);
 njk.addGlobal('cdnHost', process.env.CDN_HOST);
+njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
+njk.addGlobal('chsUrl', process.env.CHS_URL);
 
 /**
   * COMMENTING OUT SESSION HANDLING FOR TIME BEING
