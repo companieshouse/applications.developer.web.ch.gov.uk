@@ -48,7 +48,7 @@ class ApplicationsDeveloper {
   getList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=500&start_index=0`
+      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=20&start_index=0`
     });
     logger.info(`Service request to retrieve ${environment} applications list, with payload: `, options);
     return this.request(options);
