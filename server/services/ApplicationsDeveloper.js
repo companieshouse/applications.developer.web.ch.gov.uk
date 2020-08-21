@@ -48,7 +48,7 @@ class ApplicationsDeveloper {
   getList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=5&start_index=0`
+      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=500&start_index=0`
     });
     logger.info(`Service request to retrieve ${environment} applications list, with payload: `, options);
     return this.request(options);
@@ -61,8 +61,8 @@ class ApplicationsDeveloper {
       data: {
         name: data.applicationName,
         description: data.description,
-        privacy_policy_url: data.privacy_policy_url,
-        terms_and_conditions_url: data.terms_and_conditions_url
+        privacy_policy_url: data.privacyPolicy,
+        terms_and_conditions_url: data.terms
       },
       url: `${baseUrl}/applications`
     });
