@@ -1,5 +1,6 @@
 const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).validation;
 const Validator = require(`${serverRoot}/lib/validation`);
+const logger = require(`${serverRoot}/config/winston`);
 
 class ManageApplication extends Validator {
   constructor () {
@@ -7,6 +8,7 @@ class ManageApplication extends Validator {
   }
 
   _formatIncomingPayload (payload) {
+    logger.info('Formatting the incoming payload: ', payload);
     const keys = Object.keys(payload);
     for (const key of keys) {
       if (payload.hasOwnProperty(key)) {
@@ -16,6 +18,7 @@ class ManageApplication extends Validator {
   }
 
   addApplication (payload) {
+    logger.info('Validating application payload data');
     this.errors = {};
     this._formatIncomingPayload(payload);
     return new Promise((resolve, reject) => {
