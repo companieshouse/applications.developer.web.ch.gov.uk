@@ -9,10 +9,8 @@ class ManageApplication extends Validator {
   _formatIncomingPayload (payload) {
     const keys = Object.keys(payload);
     for (const key of keys) {
-      console.log('triming : ', key);
       if (payload.hasOwnProperty(key)) {
         payload[key] = payload[key].trim();
-        console.log(key, ' has value : ', payload[key]);
       }
     }
   }
