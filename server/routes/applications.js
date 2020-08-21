@@ -32,7 +32,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
     };
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
-    console.log(err);
     viewData.this_errors = routeUtils.processException(err);
     res.render(`${routeViews}/index.njk`, viewData);
   });
@@ -64,7 +63,6 @@ router.post('/manage-applications/add', (req, res, next) => {
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
-      console.log(viewData.this_errors);
       res.render(`${routeViews}/add.njk`, viewData);
     });
 });
