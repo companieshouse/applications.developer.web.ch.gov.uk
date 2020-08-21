@@ -93,7 +93,12 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
 
 router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  res.render(`${routeViews}/index.njk`);
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'view-application'
+  };
+  res.render(`${routeViews}/delete_key.njk`, viewData);
 });
 
 router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {

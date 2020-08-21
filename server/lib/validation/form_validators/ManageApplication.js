@@ -12,6 +12,7 @@ class ManageApplication extends Validator {
       console.log('triming : ', key);
       if (payload.hasOwnProperty(key)) {
         payload[key] = payload[key].trim();
+        console.log(key, ' has value : ', payload[key]);
       }
     }
   }
