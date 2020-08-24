@@ -55,7 +55,9 @@ class ApplicationsDeveloper {
   }
 
   save (data) {
+    console.log("Data in save service: ", data);
     const baseUrl = this._getBaseUrl(data);
+    console.log('SAVE BASEURL: ', baseUrl);
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -70,17 +72,19 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  update (data) {
+  update (data, appId) {
+    console.log('Data in service: ', appId);
     const baseUrl = this._getBaseUrl(data);
+    console.log('BASE URL: ', baseUrl);
     const options = Object.assign(this._getBaseOptions(), {
       method: 'PUT',
       data: {
         name: data.applicationName,
-        description: data.description,
+        // description: data.description,
         privacy_policy_url: data.privacyPolicy,
         terms_and_conditions_url: data.terms
       },
-      url: `${baseUrl}/applications/${data._id}`
+      url: `${baseUrl}/applications/${appId}`
     });
     logger.info('Service request to edit data, with payload: ', options);
     return this.request(options);

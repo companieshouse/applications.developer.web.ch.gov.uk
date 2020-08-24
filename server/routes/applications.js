@@ -30,6 +30,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
       test: listTest.data,
       future: listFuture.data
     };
+    console.log('GET LIST ALL: ', viewData.this_data.test);
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     console.log(err);
@@ -95,7 +96,7 @@ router.get('/manage-applications/:appId/update', (req, res, next) => {
   res.render(`${routeViews}/edit.njk`, viewData);
 });
 
-router.put('/manage-applications/:appId/update', (req, res, next) => {
+router.post('/manage-applications/:appId/update', (req, res, next) => {
   logger.info(`PUT request to update the application: ${req.path}`);
   const viewData = {
     this_data: req.data,
@@ -103,8 +104,16 @@ router.put('/manage-applications/:appId/update', (req, res, next) => {
     active_page: 'application-overview',
     title: 'Update an application'
   };
-  applicationsDeveloperService.update(req.body);
-  // res.render(`${routeViews}/edit.njk`, viewData);
+  validator.updateApplication(req.body)
+    .then(_ => {
+      return applicationsDeveloperService.update(req.body, req.params.appId);
+    }).then(_ => {
+      return res.redirect(302, '/edit');
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      console.log(viewData.this_errors);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/delete', (req, res, next) => {
