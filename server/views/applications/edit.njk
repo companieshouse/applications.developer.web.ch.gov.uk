@@ -10,6 +10,7 @@
   <h2 class="govuk-heading-l">
     Update application
   </h2>
+<form action="/manage-applications/{{ this_data.appId }}/update" method="post" enctype="application/json" id="frm-update-application">
   <div class="govuk-form-group">
     <label class="govuk-label" for="event-name">
       Application name
@@ -31,13 +32,15 @@
     <input class="govuk-input" id="event-name" name="event-name" type="text">
   </div>
 
-  <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
-    Update application
-  </button>
+  {# <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
+    Update Application
+  </button> #}
+  <input class="govuk-button govuk-!-margin-right-1" id="updateApp" name="updateApp" type="submit" value="Update application" />
 
   <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
     Cancel
   </a>
+  </form>
 
   <h2 class="govuk-heading-l">
     Delete application

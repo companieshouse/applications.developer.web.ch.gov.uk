@@ -89,8 +89,10 @@ router.get('/manage-applications/:appId/update', (req, res, next) => {
       appId: req.params.appId
     },
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update an application'
   };
+  res.render(`${routeViews}/edit.njk`, viewData);
 });
 
 router.put('/manage-applications/:appId/update', (req, res, next) => {
@@ -98,9 +100,11 @@ router.put('/manage-applications/:appId/update', (req, res, next) => {
   const viewData = {
     this_data: req.data,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update an application'
   };
-  res.render(`${routeViews}/edit.njk`, viewData);
+  applicationsDeveloperService.update(req.body);
+  // res.render(`${routeViews}/edit.njk`, viewData);
 });
 
 router.get('/manage-applications/:appId/delete', (req, res, next) => {
