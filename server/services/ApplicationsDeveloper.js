@@ -30,14 +30,14 @@ class ApplicationsDeveloper {
 
   _getBaseUrl (data) {
     let baseUrl = '';
-    if(typeof data.environment !== 'undefined') {
-      if(data.environment === 'test') {
-        if(typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
+    if (typeof data.environment !== 'undefined') {
+      if (data.environment === 'test') {
+        if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
           baseUrl = this.server.baseUrl.future;
         } else {
           baseUrl = this.server.baseUrl.test;
         }
-      } else if(data.environment === 'live') {
+      } else if (data.environment === 'live') {
         baseUrl = this.server.baseUrl.live;
       }
     }
@@ -67,6 +67,22 @@ class ApplicationsDeveloper {
       url: `${baseUrl}/applications`
     });
     logger.info('Service request to save data, with payload: ', options);
+    return this.request(options);
+  }
+
+  update (data) {
+    const baseUrl = this._getBaseUrl(data);
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'PUT',
+      data: {
+        name: data.applicationName,
+        description: data.description,
+        privacy_policy_url: data.privacyPolicy,
+        terms_and_conditions_url: data.terms
+      },
+      url: `${baseUrl}/applications/${data._id}`
+    });
+    logger.info('Service request to edit data, with payload: ', options);
     return this.request(options);
   }
 }

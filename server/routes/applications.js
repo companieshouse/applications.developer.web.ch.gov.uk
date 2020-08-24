@@ -83,9 +83,20 @@ router.get('/manage-applications/:appId/view', (req, res, next) => {
 });
 
 router.get('/manage-applications/:appId/update', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
+  logger.info(`GET request to serve manage application page: ${req.path}`);
   const viewData = {
-    this_data: null,
+    this_data: {
+      appId: req.params.appId
+    },
+    this_errors: null,
+    active_page: 'application-overview'
+  };
+});
+
+router.put('/manage-applications/:appId/update', (req, res, next) => {
+  logger.info(`PUT request to update the application: ${req.path}`);
+  const viewData = {
+    this_data: req.data,
     this_errors: null,
     active_page: 'application-overview'
   };
