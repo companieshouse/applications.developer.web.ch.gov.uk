@@ -28,7 +28,6 @@
     <legend class="govuk-fieldset__legend">
       Select the type of API client key you want to add:
     </legend>
-
     <div class="govuk-radios">
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="key-type" name="key-type" type="radio" value="rest">
@@ -36,14 +35,12 @@
           REST
         </label>
       </div>
-
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="key-type-2" name="key-type" type="radio" value="stream">
         <label class="govuk-label govuk-radios__label" for="key-type-2">
           Streaming
         </label>
       </div>
-
       <div class="govuk-radios__item">
         <input class="govuk-radios__input" id="key-type-3" name="key-type" type="radio" value="web">
         <label class="govuk-label govuk-radios__label" for="key-type-3">
@@ -63,7 +60,7 @@
 Separate each IP with a comma.
 </span>
 
-  <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-ip" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -74,7 +71,7 @@ Separate each IP with a comma.
   <span id="more-detail-hint" class="govuk-hint">
 Separate each domain with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-domain" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -85,7 +82,7 @@ Separate each domain with a comma.
   <span id="more-detail-hint" class="govuk-hint">
 Separate each URI with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-uri" name="more-detail" rows="5" aria-describedby="more-detail-hint"></textarea>
 </div>
 
 <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
