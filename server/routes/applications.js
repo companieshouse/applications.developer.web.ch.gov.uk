@@ -87,7 +87,8 @@ router.get('/manage-applications/:appId/update', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Manage Application'
   };
   res.render(`${routeViews}/edit.njk`, viewData);
 });
@@ -102,7 +103,8 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Add Key'
   };
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
@@ -112,7 +114,8 @@ router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'view-application'
+    active_page: 'view-application',
+    title: 'Delete Key'
   };
   res.render(`${routeViews}/delete_key.njk`, viewData);
 });
@@ -122,7 +125,8 @@ router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update Key'
   };
   res.render(`${routeViews}/update_key.njk`, viewData);
 });
@@ -132,7 +136,8 @@ router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update Key'
   };
   res.render(`${routeViews}/index.njk`, viewData);
 });
