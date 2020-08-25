@@ -3,6 +3,8 @@ const logger = require(`${serverRoot}/config/winston`);
 
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationsDeveloperService = new ApplicationsDeveloperService();
+const ApiKeyDeveloperService = require(`${serverRoot}/services/ApiKeyDeveloper`);
+const apiKeyDeveloperService = new ApiKeyDeveloperService();
 
 const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
 const validator = new Validator();
@@ -135,6 +137,35 @@ router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
     active_page: 'application-overview'
   };
   res.render(`${routeViews}/index.njk`, viewData);
+});
+
+router.get('/view-applications', (req, res, next) => {
+  console.log(req.query);
+  const id = req.query.id;
+  const env = req.query.env;
+  Promise.all(
+    [
+      applicationsDeveloperService.getApplication(id, env),
+      apiKeyDeveloperService.getKeysForApplication(id, env)
+    ])
+    .then(([appData, keyData]) => {
+      const viewData = {
+        this_data: {
+          appId: req.params.appId,
+          app: appData.data,
+          keys: keyData.data,
+          env: env
+        },
+        this_errors: null,
+        active_page: 'view-application',
+        title: 'View application'
+      };
+      console.log('data returned ', viewData.this_data.keys);
+      res.render(`${routeViews}/view.njk`, viewData);
+    }).catch(err => {
+      console.log(err);
+      res.render(`${routeViews}/index.njk`);
+    });
 });
 
 module.exports = router;

@@ -4,3 +4,5 @@ weight: 854
 routes:
   1: /manage-applications
   2: /manage-applications/*
+  3: /view-applications
+  4: /view-applications/*

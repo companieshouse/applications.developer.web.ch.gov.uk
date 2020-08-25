@@ -1,18 +1,20 @@
 const axios = require('axios');
 const logger = require(`${serverRoot}/config/winston`);
+const UrlService = require(`${serverRoot}/services/UrlService`);
+const urlService = new UrlService();
 
 class ApplicationsDeveloper {
   constructor () {
     this.server = {
       apiKey: process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY,
-      baseUrl: {
-        live: process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL,
-        test: process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL,
-        future: process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL
-      },
       auth: {
         username: process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME,
         password: process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD
+      },
+      baseURL: {
+        live: process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL,
+        test: process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL,
+        future: process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL
       }
     };
     this.request = axios;
@@ -30,14 +32,14 @@ class ApplicationsDeveloper {
 
   _getBaseUrl (data) {
     let baseUrl = '';
-    if(typeof data.environment !== 'undefined') {
-      if(data.environment === 'test') {
-        if(typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
-          baseUrl = this.server.baseUrl.future;
+    if (typeof data.environment !== 'undefined') {
+      if (data.environment === 'test') {
+        if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
+          baseUrl = this.server.baseURL.future;
         } else {
           baseUrl = this.server.baseUrl.test;
         }
-      } else if(data.environment === 'live') {
+      } else if (data.environment === 'live') {
         baseUrl = this.server.baseUrl.live;
       }
     }
@@ -48,9 +50,19 @@ class ApplicationsDeveloper {
   getList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
-      url: `${this.server.baseUrl[environment]}/applications/?items_per_page=20&start_index=0`
+      url: `${urlService.getUrlForEnv(environment)}/applications/?items_per_page=20&start_index=0`
     });
+    console.log(options);
     logger.info(`Service request to retrieve ${environment} applications list, with payload: `, options);
+    return this.request(options);
+  }
+
+  getApplication (id, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${urlService.getUrlForEnv(environment)}/applications/${id}`
+    });
+    console.log(options);
     return this.request(options);
   }
 
