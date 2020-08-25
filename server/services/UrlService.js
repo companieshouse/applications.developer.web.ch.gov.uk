@@ -8,18 +8,13 @@ class UrlService {
   };
 
   getUrlForEnv (env) {
-    if (env === 'live') {
-      return this.baseURL.live;
-    } else if (env === 'test') {
-      return this.baseURL.test;
-    } else if (env === 'future') {
-      return this.baseURL.future;
-    } else {
-      const err = Object.create(Error.prototype);
-      err.name = 'Unknown Environment Requested';
-      throw err;
+    const ret = this.baseURL[env];
+    if (ret === undefined) {
+      throw new EnvironmentError('Invalid Environment Requested');
     }
+    return ret;
   }
 }
+class EnvironmentError extends Error {}
 
 module.exports = UrlService;
