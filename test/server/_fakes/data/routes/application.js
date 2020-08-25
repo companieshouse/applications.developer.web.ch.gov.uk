@@ -2,8 +2,8 @@ const routeData = {
   addApplication: {
     "name" : "app demo",
     "description" : "description",
-    "enviroment" : "live"
+    "enviroment": 'live'
   }
-}
+};
 
 module.exports = routeData;
