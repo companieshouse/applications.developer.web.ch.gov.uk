@@ -7,20 +7,20 @@
 <h1 class="govuk-heading-xl">
   New API client key
 </h1>
-
+<form action="/manage-applications/{{ this_data.appId }}/api-key/add" method="post" enctype="application/json" id="frm-add-new-key">
 <div class="govuk-form-group">
-  <label class="govuk-label" for="key-name">
+  <label class="govuk-label" for="keyName">
     Key name
   </label>
 
-  <input class="govuk-input" id="key-name" name="key-name" type="text">
+  <input class="govuk-input" id="keyName" name="keyName" type="text">
 </div>
 <div class="govuk-form-group">
-  <label class="govuk-label" for="more-detail">
+  <label class="govuk-label" for="keyDescription">
     Key description
   </label>
 
-  <textarea class="govuk-textarea" id="more-detail" name="more-detail" rows="5"></textarea>
+  <textarea class="govuk-textarea" id="keyDescription" name="keyDescription" rows="5"></textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -30,20 +30,20 @@
     </legend>
     <div class="govuk-radios">
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="key-type" name="key-type" type="radio" value="rest">
-        <label class="govuk-label govuk-radios__label" for="key-type">
+        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest">
+        <label class="govuk-label govuk-radios__label" for="rest">
           REST
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="key-type-2" name="key-type" type="radio" value="stream">
-        <label class="govuk-label govuk-radios__label" for="key-type-2">
+        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream">
+        <label class="govuk-label govuk-radios__label" for="stream">
           Streaming
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="key-type-3" name="key-type" type="radio" value="web">
-        <label class="govuk-label govuk-radios__label" for="key-type-3">
+        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web">
+        <label class="govuk-label govuk-radios__label" for="web">
           Web
         </label>
       </div>
@@ -92,5 +92,5 @@ Separate each URI with a comma.
 <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
   Cancel
 </a>
-
+</form>
 {% endblock %}
