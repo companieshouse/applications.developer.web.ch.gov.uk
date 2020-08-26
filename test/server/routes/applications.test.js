@@ -20,7 +20,7 @@ let stubLogger,
 
 const cookieStr = 'AD_SID=abc123';
 
-describe('routes/report', () => {
+describe('routes/applications.js', () => {
   beforeEach(done => {
     sinon.reset();
     sinon.restore();
