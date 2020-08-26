@@ -1,5 +1,3 @@
-const logger = require(`${serverRoot}/config/winston`);
-
 const UrlService = require(`${serverRoot}/services/UrlService`);
 const urlService = new UrlService();
 

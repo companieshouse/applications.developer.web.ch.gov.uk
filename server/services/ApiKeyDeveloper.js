@@ -12,7 +12,6 @@ class ApiKeyDeveloper {
   _getBaseOptions () {
     return {
       headers: {
-        // authorization: this.server.apiKey
         content_type: 'application/json'
       },
       responseType: 'json'
@@ -24,7 +23,7 @@ class ApiKeyDeveloper {
       method: 'GET',
       url: `${urlService.getUrlForEnv(environment)}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
     });
-    console.log(options);
+    logger.info(`Service request to retrieve ${environment} api key list for applicatio ${appId}, with payload: `, options);
     return this.request(options);
   }
 }
