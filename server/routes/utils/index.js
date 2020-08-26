@@ -15,8 +15,6 @@ const routeUtils = {
     } else {
       e.genericError = errorManifest.serverError;
     }
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    console.log(e);
     return e;
   }
 };

@@ -1,8 +1,8 @@
 const routeData = {
   addApplication: {
-    "name" : "app demo",
-    "description" : "description",
-    "enviroment": 'live'
+    name : "app demo",
+    description : "description",
+    enviroment: "live"
   }
 };
 
