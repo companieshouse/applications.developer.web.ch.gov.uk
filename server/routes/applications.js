@@ -161,33 +161,4 @@ router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
   res.render(`${routeViews}/index.njk`, viewData);
 });
 
-router.get('/view-applications', (req, res, next) => {
-  console.log(req.query);
-  const id = req.query.id;
-  const env = req.query.env;
-  Promise.all(
-    [
-      applicationsDeveloperService.getApplication(id, env),
-      apiKeyDeveloperService.getKeysForApplication(id, env)
-    ])
-    .then(([appData, keyData]) => {
-      const viewData = {
-        this_data: {
-          appId: req.params.appId,
-          app: appData.data,
-          keys: keyData.data,
-          env: env
-        },
-        this_errors: null,
-        active_page: 'view-application',
-        title: 'View application'
-      };
-      console.log('data returned ', viewData.this_data.keys);
-      res.render(`${routeViews}/view.njk`, viewData);
-    }).catch(err => {
-      console.log(err);
-      res.render(`${routeViews}/index.njk`);
-    });
-});
-
 module.exports = router;
