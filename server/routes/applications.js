@@ -71,21 +71,38 @@ router.post('/manage-applications/add', (req, res, next) => {
     });
 });
 
-router.get('/manage-applications/:appId/view', (req, res, next) => {
+router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
+  const id = req.params.appId;
+  const env = req.params.env;
   const viewData = {
-    this_data: {
-      appId: req.params.appId
-    },
+    this_data: null,
     this_errors: null,
     active_page: 'view-application',
     title: 'View application'
   };
-  res.render(`${routeViews}/view.njk`, viewData);
+  Promise.all(
+    [
+      applicationsDeveloperService.getApplication(id, env),
+      apiKeyDeveloperService.getKeysForApplication(id, env)
+    ]).then(([appData, keyData]) => {
+    viewData.this_data = {
+      appId: req.params.appId,
+      app: appData.data,
+      keys: keyData.data,
+      env: env
+    };
+    viewData.title = `${viewData.title}: ${appData.data.name}`;
+    res.render(`${routeViews}/view.njk`, viewData);
+  }).catch(err => {
+    viewData.this_errors = routeUtils.processException(err);
+    console.log(err);
+    res.render(`${routeViews}/index.njk`, viewData);
+  });
 });
 
-router.get('/manage-applications/:appId/update', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
+router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
+  logger.info(`GET request to update application : ${req.path}`);
   const viewData = {
     this_data: null,
     this_errors: null,

@@ -9,12 +9,8 @@ class UrlService {
 
   getUrlForEnv (env) {
     const ret = this.baseURL[env];
-    if (ret === undefined) {
-      throw new EnvironmentError('Invalid Environment Requested');
-    }
     return ret;
   }
 }
-class EnvironmentError extends Error {}
 
 module.exports = UrlService;

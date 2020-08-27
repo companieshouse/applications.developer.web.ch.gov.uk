@@ -58,12 +58,16 @@ class ApplicationsDeveloper {
   }
 
   getApplication (id, environment) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'GET',
-      url: `${urlService.getUrlForEnv(environment)}/applications/${id}`
-    });
-    console.log(options);
-    return this.request(options);
+    try {
+      const options = Object.assign(this._getBaseOptions(), {
+        method: 'GET',
+        url: `${urlService.getUrlForEnv(environment)}/applications/${id}`
+      });
+      console.log(options);
+      return this.request(options);
+    } catch (e) {
+      return Promise.reject(e);
+    }
   }
 
   save (data) {

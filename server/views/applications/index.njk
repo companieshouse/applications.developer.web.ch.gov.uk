@@ -22,14 +22,14 @@
       {% for app in this_data.test.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
-            <a href="/view-applications?id={{ app.id }}&env=test">{{ app.name }}</a>
+            <a href="/manage-applications/{{ app.id }}/view/test">{{ app.name }}</a>
           </th>
         </tr>
       {% endfor %}
       {% for app in this_data.future.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
-            <a href="/view-applications?id={{ app.id }}&env=future">{{ app.name }}</a>
+            <a href="/manage-applications/{{ app.id }}/view/future">{{ app.name }}</a>
           </th>
         </tr>
       {% endfor %}
@@ -47,7 +47,7 @@
       {% for app in this_data.live.items %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">
-            <a href="/view-applications?id={{ app.id }}&env=live">{{ app.name }}</a>
+            <a href="/manage-applications/{{ app.id }}/view/live">{{ app.name }}</a>
           </th>
         </tr>
       {% endfor %}

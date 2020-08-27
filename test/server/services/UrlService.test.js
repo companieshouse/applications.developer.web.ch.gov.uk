@@ -26,9 +26,4 @@ describe('services/UrlService', () => {
     expect(urlService.getUrlForEnv('future'))
       .to.equal(process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL);
   });
-  it('should error when an unknown environment is requested', () => {
-    const fun = function () { urlService.getUrlForEnv('love'); }; // Requires to be passed in as a function so that it can try catch it.
-    // I think
-    expect(fun).to.throw(UrlService.EnvironmentError);
-  });
 });

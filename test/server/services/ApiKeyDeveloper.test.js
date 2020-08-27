@@ -8,6 +8,8 @@ const request = require('axios');
 const apiKeyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
 
 describe('services/UrlService', () => {
+  let stubLogger;
+
   beforeEach(done => {
     sinon.reset();
     sinon.restore();

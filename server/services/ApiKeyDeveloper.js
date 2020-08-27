@@ -18,14 +18,14 @@ class ApiKeyDeveloper {
     };
   }
 
-  getKeysForApplication (appId, environment) {
+  async getKeysForApplication (appId, environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
       url: `${urlService.getUrlForEnv(environment)}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
     });
     logger.info(`Service request to retrieve ${environment} api key list for applicatio ${appId}, with payload: `, options);
     return this.request(options);
-  }
+  };
 }
 
 module.exports = ApiKeyDeveloper;
