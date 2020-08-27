@@ -24,7 +24,6 @@ describe('routes/applications.js', () => {
   beforeEach(done => {
     sinon.reset();
     sinon.restore();
-    sinon.stub(Utility, 'logException').returns(undefined);
     stubLogger = sinon.stub(logger, 'info').returns(true);
     done();
   });
@@ -92,12 +91,36 @@ describe('routes/applications.js', () => {
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledTwice;
-        expect(stubAddApplicationValidator).to.have.been.called;
+        expect(stubAddApplicationValidator).to.have.been.calledOnce;
         expect(stubAddApplicationValidator).to.have.been.calledWith(routeData.addApplication);
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications/);
         expect(stubGetList).to.have.been.calledThrice;
         expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve add application with an error on validation', () => {
+    const slug = '/manage-applications/add';
+    const validationException = exceptions.validationException;
+    const stubValidatorReject = sinon.stub(Validator.prototype, 'addApplication').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'save').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getList')
+      .returns(Promise.resolve(serviceData.getList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.addApplication)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledWith(routeData.addApplication);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+        expect(stubSave).to.not.have.been.called;
+        expect(stubGetList).to.not.have.been.called;
       });
   });
 

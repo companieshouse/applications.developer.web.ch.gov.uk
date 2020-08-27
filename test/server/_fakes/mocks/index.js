@@ -22,7 +22,7 @@ module.exports.serviceException = {
 
 module.exports.genericServerException = {
   status: 500,
-  message: 'Generic erver error message',
+  message: 'Generic server error message',
   stack: genericServerError
 };
 
