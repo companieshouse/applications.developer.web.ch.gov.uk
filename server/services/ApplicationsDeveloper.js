@@ -52,22 +52,17 @@ class ApplicationsDeveloper {
       method: 'GET',
       url: `${urlService.getUrlForEnv(environment)}/applications/?items_per_page=20&start_index=0`
     });
-    console.log(options);
     logger.info(`Service request to retrieve ${environment} applications list, with payload: `, options);
     return this.request(options);
   }
 
   getApplication (id, environment) {
-    try {
-      const options = Object.assign(this._getBaseOptions(), {
-        method: 'GET',
-        url: `${urlService.getUrlForEnv(environment)}/applications/${id}`
-      });
-      console.log(options);
-      return this.request(options);
-    } catch (e) {
-      return Promise.reject(e);
-    }
+    logger.info('trying to retrieve application with id: ', id, ' with enviroment: ', environment);
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${urlService.getUrlForEnv(environment)}/applications/${id}`
+    });
+    return this.request(options);
   }
 
   save (data) {
