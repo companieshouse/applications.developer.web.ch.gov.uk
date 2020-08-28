@@ -9,12 +9,18 @@ const validator = new Validator();
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationsDeveloperService = new ApplicationsDeveloperService();
 
+const ApiKeyDeveloper = require(`${serverRoot}/services/ApiKeyDeveloper`);
+const apiKeyDeveloper = new ApiKeyDeveloper();
+
 const serviceData = require(`${testRoot}/server/_fakes/data/services/manage_applications`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application`);
 const exceptions = require(`${testRoot}/server/_fakes/mocks`);
 
 const routeUtils = require(`${serverRoot}/routes/utils`);
 const app = require(`${serverRoot}/app`);
+
+const keyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
+const singleAppData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
 
 let stubLogger;
 
@@ -37,7 +43,7 @@ describe('routes/applications.js', () => {
   it('should serve up the applications index page on the /manage-applications mount path', () => {
     const slug = '/manage-applications';
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getList')
-       .returns(Promise.resolve(serviceData.getList));
+      .returns(Promise.resolve(serviceData.getList));
     return request(app)
       .get(slug)
       .set('Cookie', cookieStr)
@@ -52,9 +58,9 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications';
     const genericServerException = exceptions.genericServerException;
     const stubGetListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getList')
-       .rejects(new Error('Test error'));
+      .rejects(new Error('Test error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException')
-         .returns(genericServerException);
+      .returns(genericServerException);
     return request(app)
       .get(slug)
       .set('Cookie', cookieStr)
@@ -84,7 +90,7 @@ describe('routes/applications.js', () => {
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'save').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getList')
-       .returns(Promise.resolve(serviceData.getList));
+      .returns(Promise.resolve(serviceData.getList));
     return request(app)
       .post(slug)
       .set('Cookie', cookieStr)
@@ -125,16 +131,38 @@ describe('routes/applications.js', () => {
   });
 
   it('should serve up details of a single application', () => {
-    const slug = '/manage-applications/appId123/view';
+    const slug = '/manage-applications/appId123/view/test';
+    const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
+    const stubKeyList = sinon.stub(ApiKeyDeveloper.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
     return request(app)
       .get(slug)
       .set('Cookie', cookieStr)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleApplication).to.have.been.calledOnce;
+        expect(stubKeyList).to.have.been.calledOnce;
         expect(response.text).to.include('Application details');
         expect(response.text).to.include('Keys for this application');
         expect(response).to.have.status(200);
       });
   });
-
+  it('should serve up the application overview page with an error on the /manage-applications/appId/view/env path', () => {
+    const slug = '/manage-applications/appId123/view/test';
+    const genericServerException = exceptions.genericServerException;
+    const stubSingleApplicationReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').rejects(new Error('Test error'));
+    const stubKeyListReject = sinon.stub(ApiKeyDeveloper.prototype, 'getKeysForApplication').rejects(new Error('Test error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(genericServerException);
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleApplicationReject).to.have.been.calledOnce;
+        expect(stubKeyListReject).to.have.been.calledOnce;
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
+      });
+  });
 });
