@@ -7,7 +7,7 @@
       <h1 class="govuk-heading-xl">
         Update key
       </h1>
-      <form action="" method="post">
+      <form action="#" method="post">
         <div class="govuk-form-group">
           <label class="govuk-label" for="update-key-name">
             Key name
@@ -43,12 +43,8 @@
           </div>
           <textarea class="govuk-textarea" id="javascriptDomain-detail" name="javascriptDomain-detail" rows="5" aria-describedby="javascriptDomain-detail-hint"></textarea>
         </div>
-        <div class="govuk-!-margin-right-1">
-          <a href="/manage-applications" class="govuk-button" role="button" draggable="false">Update key</a>
-        </div>
-        <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Cancel
-        </a>
+        <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Update key</button>
+        <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">Cancel</a>
       </form>
 
 {% endblock %}
