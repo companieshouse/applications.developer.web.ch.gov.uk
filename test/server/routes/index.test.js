@@ -36,5 +36,4 @@ describe('routes/report', () => {
         expect(stubLogger).to.have.been.calledOnce;
       });
   });
-
 });

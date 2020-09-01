@@ -28,16 +28,16 @@ class ApplicationsDeveloper {
     };
   }
 
-  _getBaseUrl (data) {
+  _getBaseUrlForPostFormData (data) {
     let baseUrl = '';
-    if(typeof data.environment !== 'undefined') {
-      if(data.environment === 'test') {
-        if(typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
+    if (typeof data.environment !== 'undefined') {
+      if (data.environment === 'test') {
+        if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
           baseUrl = this.server.baseUrl.future;
         } else {
           baseUrl = this.server.baseUrl.test;
         }
-      } else if(data.environment === 'live') {
+      } else if (data.environment === 'live') {
         baseUrl = this.server.baseUrl.live;
       }
     }
@@ -45,7 +45,7 @@ class ApplicationsDeveloper {
   }
 
   // Remeber to remove the temporary query string once API is refcatored not to require it when doing a "fetch all"
-  getList (environment) {
+  getApplicationList (environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/?items_per_page=20&start_index=0`
@@ -54,8 +54,17 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  save (data) {
-    const baseUrl = this._getBaseUrl(data);
+  getApplication (id, environment) {
+    logger.info('trying to retrieve application with id: ', id, ' with enviroment: ', environment);
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${this.server.baseUrl[environment]}/applications/${id}`
+    });
+    return this.request(options);
+  }
+
+  saveApplication (data) {
+    const baseUrl = this._getBaseUrlForPostFormData(data);
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -69,5 +78,14 @@ class ApplicationsDeveloper {
     logger.info('Service request to save data, with payload: ', options);
     return this.request(options);
   }
+
+  getKeysForApplication (appId, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
+    });
+    logger.info(`Service request to retrieve ${environment} api key list for applicatio ${appId}, with payload: `, options);
+    return this.request(options);
+  };
 }
 module.exports = ApplicationsDeveloper;

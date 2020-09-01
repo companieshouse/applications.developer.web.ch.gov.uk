@@ -1,3 +1,6 @@
+const genericServerError = {
+  summary: "Internal server error. Please try again"
+};
 module.exports.validationException = {
   status: 400,
   code: 'VALIDATION_ERRORS',
@@ -9,20 +12,17 @@ module.exports.validationException = {
     }
   }
 };
-
 module.exports.serviceException = {
   statusCode: 405,
   message: 'Service error message',
-  stack: {}
+  stack: genericServerError
 };
-
 module.exports.genericServerException = {
   status: 500,
-  message: 'Generic erver error message',
-  stack: {}
+  message: 'Generic server error message',
+  stack: genericServerError
 };
-
 module.exports.exceptionWithNoStatus = {
   message: 'Error message with no status',
-  stack: {}
+  stack: genericServerError
 };
