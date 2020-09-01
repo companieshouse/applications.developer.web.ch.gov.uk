@@ -25,3 +25,6 @@
 #global-nav #user_bar nav ul li#user-bar-sign-out {
   margin-right: 5px;
 }
+.app-description {
+  white-space: pre-wrap;
+}
