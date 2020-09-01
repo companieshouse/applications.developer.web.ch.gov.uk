@@ -7,14 +7,14 @@ class ApplicationsDeveloper {
   constructor () {
     this.server = {
       apiKey: process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY,
-      auth: {
-        username: process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME,
-        password: process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD
-      },
-      baseURL: {
+      baseUrl: {
         live: process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL,
         test: process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL,
         future: process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL
+      },
+      auth: {
+        username: process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME,
+        password: process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD
       }
     };
     this.request = axios;
@@ -35,7 +35,7 @@ class ApplicationsDeveloper {
     if (typeof data.environment !== 'undefined') {
       if (data.environment === 'test') {
         if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
-          baseUrl = this.server.baseURL.future;
+          baseUrl = this.server.baseUrl.future;
         } else {
           baseUrl = this.server.baseUrl.test;
         }

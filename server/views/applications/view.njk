@@ -8,6 +8,7 @@
     <h1 class="govuk-heading-xl">
       {{ this_data.app.name }}
     </h1>
+    <p class="govuk-body">{{ this_data.app.description }}</p>
     <h2 class="govuk-heading-l">Application details</h2>
     <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
       <div class="govuk-summary-list__row">
@@ -37,7 +38,7 @@
     <a href="/manage-applications/{{ this_data.app.id }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" role="button" draggable="false">Manage application</a>
     <h2 class="govuk-heading-l">Keys for this application</h2>
       {% for key in this_data.keys.items %}
-        {% include "_partials/key_detail.njk" %}
+        {% include "applications/_key_detail.njk" %}
       {% endfor %}
     <div class="govuk-!-margin-top-6">
       <a href="/manage-applications/:appId/api-key/add" class="govuk-button" role="button" draggable="false">Add new key</a>

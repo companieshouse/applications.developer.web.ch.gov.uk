@@ -96,8 +96,7 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
     res.render(`${routeViews}/view.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
-    console.log(err);
-    res.render(`${routeViews}/index.njk`, viewData);
+    res.render(`${routeViews}/view.njk`, viewData);
   });
 });
 
