@@ -3,6 +3,8 @@ const applicationDeveloper = new ApplicationDeveloper();
 const logger = require(`${serverRoot}/config/winston`);
 
 const request = require('axios');
+const chai = require('chai');
+const assert = chai.assert;
 
 const apiKeyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
 const appData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
@@ -145,5 +147,42 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubAxios).to.have.been.calledWithExactly(finalVars);
     expect(stubOpts).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
+  });
+
+  it('getBaseUrlForPostFormData should return environment live when live is requested', () => {
+    const env = 'live';
+    const data = {
+      name: 'app demo',
+      description: 'description',
+      environment: 'live'
+    };
+    applicationDeveloper.server.baseUrl.live = env;
+    const baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal(env, baseUrl);
+  });
+
+  it('getBaseUrlForPostFormData should return environment test when test is requested', () => {
+    const env = 'test';
+    const data = {
+      name: 'app demo',
+      description: 'description',
+      environment: 'test'
+    };
+    applicationDeveloper.server.baseUrl.test = env;
+    const baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal(env, baseUrl);
+  });
+
+  it('getBaseUrlForPostFormData should return environment future when future is requested', () => {
+    const env = 'future';
+    const data = {
+      name: 'app demo',
+      description: 'description',
+      environment: 'test',
+      inDevelopment: 'yes'
+    };
+    applicationDeveloper.server.baseUrl.future = env;
+    const baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal(env, baseUrl);
   });
 });
