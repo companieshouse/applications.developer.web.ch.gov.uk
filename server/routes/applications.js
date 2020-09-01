@@ -3,8 +3,6 @@ const logger = require(`${serverRoot}/config/winston`);
 
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationsDeveloperService = new ApplicationsDeveloperService();
-const ApiKeyDeveloperService = require(`${serverRoot}/services/ApiKeyDeveloper`);
-const apiKeyDeveloperService = new ApiKeyDeveloperService();
 
 const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
 const validator = new Validator();
@@ -22,9 +20,9 @@ router.get('(/manage-applications)?', (req, res, next) => {
   };
   Promise.all(
     [
-      applicationsDeveloperService.getList('live'),
-      applicationsDeveloperService.getList('test'),
-      applicationsDeveloperService.getList('future')
+      applicationsDeveloperService.getApplicationList('live'),
+      applicationsDeveloperService.getApplicationList('test'),
+      applicationsDeveloperService.getApplicationList('future')
     ]
   ).then(([listLive, listTest, listFuture]) => {
     viewData.this_data = {
@@ -34,7 +32,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
     };
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
-    console.log(err);
     viewData.this_errors = routeUtils.processException(err);
     res.render(`${routeViews}/index.njk`, viewData);
   });
@@ -61,12 +58,11 @@ router.post('/manage-applications/add', (req, res, next) => {
   };
   validator.addApplication(req.body)
     .then(_ => {
-      return applicationsDeveloperService.save(req.body);
+      return applicationsDeveloperService.saveApplication(req.body);
     }).then(_ => {
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
-      console.log(viewData.this_errors);
       res.render(`${routeViews}/add.njk`, viewData);
     });
 });
@@ -84,7 +80,7 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, env),
-      apiKeyDeveloperService.getKeysForApplication(id, env)
+      applicationsDeveloperService.getKeysForApplication(id, env)
     ]).then(([appData, keyData]) => {
     viewData.this_data = {
       appId: req.params.appId,
