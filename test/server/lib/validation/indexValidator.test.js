@@ -68,13 +68,14 @@ describe('server/lib/validation/applications', () => {
     expect(stubLogger).to.have.been.calledTwice;
   });
 
-  it.skip('should validate a correctly formatted Ip', () => {
+  it('should validate a correctly formatted Ip', () => {
     expect(validator.isValidIp('204.120.0.15')).to.equal(true);
+    expect(validator.isValidIp('127.0.0.1')).to.equal(true);
     expect(stubLogger).to.have.been.calledTwice;
   });
-  it.skip('should validate and return an error for an invalid Ip', () => {
+  it('should validate and return an error for an invalid Ip', () => {
     expect(validator.isValidIp('')).to.equal(false);
-    expect(validator.isValidIp('1.1.1.1.1.1.1.1')).to.equal(false);
+    expect(validator.isValidIp('25555.2335.11344.2344')).to.equal(false);
     expect(validator.isValidIp(null)).to.equal(false);
     expect(stubLogger).to.have.been.calledThrice;
   });
