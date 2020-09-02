@@ -38,7 +38,7 @@ describe('routes/applications.js', () => {
   it('should serve up the applications index page on the /manage-applications mount path', () => {
     const slug = '/manage-applications';
     const stubGetApplicationList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
-      .returns(Promise.resolve(serviceData.getApplicationList));
+      .returns(Promise.resolve(serviceData.getList));
     return request(app)
       .get(slug)
       .set('Cookie', cookieStr)
