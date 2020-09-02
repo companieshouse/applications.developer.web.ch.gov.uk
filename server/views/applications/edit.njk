@@ -10,36 +10,37 @@
   <h2 class="govuk-heading-l">
     Update application
   </h2>
+
 <form action="/manage-applications/{{ this_data.appId }}/update" method="post" enctype="application/json" id="frm-update-application">
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="applicationName">
-        Application name
-      </label>
-      <input class="govuk-input" id="applicationName" name="applicationName" type="text">
-    </div>
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="update-name">
+      Application name
+    </label>
+    <input class="govuk-input" id="update-name" name="event-name" type="text">
+  </div>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="privacyPolicy">
-        Privacy policy URL (optional)
-      </label>
-      <input class="govuk-input" id="privacyPolicy" name="privacyPolicy" type="text">
-    </div>
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="update-privacy">
+      Privacy policy URL (optional)
+    </label>
+    <input class="govuk-input" id="update-privacy" name="event-name" type="text">
+  </div>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="terms">
-        Terms and conditions URL (optional)
-      </label>
-      <input class="govuk-input" id="terms" name="terms" type="text">
-    </div>
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="update-terms">
+      Terms and conditions URL (optional)
+    </label>
+    <input class="govuk-input" id="update-terms" name="event-name" type="text">
+  </div>
 
-    {# <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
-      Update Application
-    </button> #}
-    <input class="govuk-button govuk-!-margin-right-1" id="updateApp" name="updateApp" type="submit" value="Update application" />
+  {#<button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
+    Update application
+  </button> #}
+  <input class="govuk-button govuk-!-margin-right-1" id="updateApp" name="updateApp" type="submit" value="Update application" />
 
-    <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-      Cancel
-    </a>
+  <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    Cancel
+  </a>
 </form>
 
   <h2 class="govuk-heading-l">

@@ -3,27 +3,30 @@
 {% block main_content %}
 
 {% from "govuk/components/details/macro.njk" import govukDetails %}
-<h1 class="govuk-heading-xl">
-   Delete API client key
-</h1>
-<dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
-   <div class="govuk-summary-list__row">
+  <h1 class="govuk-heading-xl">
+    Delete API client key
+  </h1>
+  <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
+    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
-         Key name
+        Key name
       </dt>
       <dd class="govuk-summary-list__value"></dd>
       <dd class="govuk-summary-list__actions"></dd>
-   </div>
-   <div class="govuk-summary-list__row">
+    </div>
+    <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
-         Key type
+        Key type
       </dt>
       <dd class="govuk-summary-list__value">
       </dd>
       <dd class="govuk-summary-list__actions"></dd>
-   </div>
-</dl>
-<button class="govuk-button govuk-button--warning" data-module="govuk-button">
-Delete key
-</button>
+    </div>
+  </dl>
+  <a href="#" role="button" draggable="false" class="govuk-button govuk-button--warning" data-module="govuk-button">
+    Yes, delete key
+  </a>
+  <a href="#" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    Cancel
+  </a>
 {% endblock %}

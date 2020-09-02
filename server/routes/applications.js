@@ -20,9 +20,9 @@ router.get('(/manage-applications)?', (req, res, next) => {
   };
   Promise.all(
     [
-      applicationsDeveloperService.getList('live'),
-      applicationsDeveloperService.getList('test'),
-      applicationsDeveloperService.getList('future')
+      applicationsDeveloperService.getApplicationList('live'),
+      applicationsDeveloperService.getApplicationList('test'),
+      applicationsDeveloperService.getApplicationList('future')
     ]
   ).then(([listLive, listTest, listFuture]) => {
     viewData.this_data = {
@@ -33,7 +33,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
     console.log('GET LIST ALL: ', viewData.this_data.test);
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
-    console.log(err);
     viewData.this_errors = routeUtils.processException(err);
     res.render(`${routeViews}/index.njk`, viewData);
   });
@@ -60,30 +59,45 @@ router.post('/manage-applications/add', (req, res, next) => {
   };
   validator.addApplication(req.body)
     .then(_ => {
-      return applicationsDeveloperService.save(req.body);
+      return applicationsDeveloperService.saveApplication(req.body);
     }).then(_ => {
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
-      console.log(viewData.this_errors);
       res.render(`${routeViews}/add.njk`, viewData);
     });
 });
 
-router.get('/manage-applications/:appId/view', (req, res, next) => {
+router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
+  const id = req.params.appId;
+  const env = req.params.env;
   const viewData = {
-    this_data: {
-      appId: req.params.appId
-    },
+    this_data: null,
     this_errors: null,
     active_page: 'view-application',
     title: 'View application'
   };
-  res.render(`${routeViews}/view.njk`, viewData);
+  Promise.all(
+    [
+      applicationsDeveloperService.getApplication(id, env),
+      applicationsDeveloperService.getKeysForApplication(id, env)
+    ]).then(([appData, keyData]) => {
+    viewData.this_data = {
+      appId: req.params.appId,
+      app: appData.data,
+      keys: keyData.data,
+      env: env
+    };
+    viewData.title = `${viewData.title}: ${appData.data.name}`;
+    res.render(`${routeViews}/view.njk`, viewData);
+  }).catch(err => {
+    viewData.this_errors = routeUtils.processException(err);
+    res.render(`${routeViews}/view.njk`, viewData);
+  });
 });
 
-router.get('/manage-applications/:appId/update', (req, res, next) => {
+router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
   logger.info(`GET request to serve manage application page: ${req.path}`);
   const viewData = {
     this_data: {
@@ -126,7 +140,8 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Add Key'
   };
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
@@ -136,7 +151,8 @@ router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'view-application'
+    active_page: 'view-application',
+    title: 'Delete Key'
   };
   res.render(`${routeViews}/delete_key.njk`, viewData);
 });
@@ -146,7 +162,8 @@ router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update Key'
   };
   res.render(`${routeViews}/update_key.njk`, viewData);
 });
@@ -156,7 +173,8 @@ router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
   const viewData = {
     this_data: null,
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Update Key'
   };
   res.render(`${routeViews}/index.njk`, viewData);
 });
