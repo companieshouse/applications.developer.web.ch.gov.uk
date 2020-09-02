@@ -50,7 +50,7 @@
                     <a href="/manage-applications/{{ this_data.appId }}/api-key/update">Update key</a>
                   </p>
                   <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                    <a href="/manage-applications/{{ this_data.appId }}/api-key/delete">Delete key</a>
+                    <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/delete/{{ this_data.env }}">Delete key</a>
                   </p>
                 </dd>
               </div>
