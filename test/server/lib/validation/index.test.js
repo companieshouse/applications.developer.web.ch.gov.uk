@@ -19,36 +19,44 @@ describe('server/lib/validation/applications', () => {
   });
 
   it('should validate a correctly formatted app  name', () => {
-    expect(validator.isValidAppName('app name')).to.equal(true);
-    expect(validator.isValidAppName('valid hyphenated-name')).to.equal(true);
-    expect(validator.isValidAppName('valid quoted\'name')).to.equal(true);
+    expect(validator.isValidAppName('app name')).to.be.true;
+    expect(validator.isValidAppName('valid hyphenated-name')).to.be.true;
+    expect(validator.isValidAppName('valid quoted\'name')).to.be.true;
     expect(stubLogger).to.have.been.calledThrice;
   });
   it('should validate and return an error for blank app name', () => {
-    expect(validator.isValidAppName('')).to.equal(false);
+    expect(validator.isValidAppName('')).to.be.false;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+  it('should validate and return an error for an invalid app name', () => {
+    expect(validator.isValidAppName(')))*//__@')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
   it('should validate a correctly formatted app description', () => {
-    expect(validator.isValidDescription('Lorem ipsum dolor sit amet consectetur adipiscing elit.')).to.equal(true);
-    expect(validator.isValidDescription('Lorem-ipsum HYPHEN allowed.')).to.equal(true);
-    expect(validator.isValidDescription('Lorem ipsum\'s QUOTE allowed.')).to.equal(true);
+    expect(validator.isValidDescription('Lorem ipsum dolor sit amet consectetur adipiscing elit.')).to.be.true;
+    expect(validator.isValidDescription('Lorem-ipsum HYPHEN allowed.')).to.be.true;
+    expect(validator.isValidDescription('Lorem ipsum\'s QUOTE allowed.')).to.be.true;
     expect(stubLogger).to.have.been.calledThrice;
   });
+  it('should validate and return an error for an blank description', () => {
+    expect(validator.isValidDescription('')).to.be.false;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
   it('should validate and return an error for an invalid description', () => {
-    expect(validator.isValidDescription('')).to.equal(false);
+    expect(validator.isValidDescription('///))*@@£$;;;;;')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
   it('should validate a correctly formatted Url', () => {
-    expect(validator.isValidUrl('https://example.com')).to.equal(true);
-    expect(validator.isValidUrl('example.com')).to.equal(true);
+    expect(validator.isValidUrl('https://example.com')).to.be.true;
+    expect(validator.isValidUrl('example.com')).to.be.true;
     expect(stubLogger).to.have.been.calledTwice;
   });
-  it('should validate and return an error for an invalid Url', () => {
-    expect(validator.isValidUrl('')).to.equal(false);
-    expect(validator.isValidUrl('/example')).to.equal(false);
-    expect(validator.isValidUrl(null)).to.equal(false);
+  it('should validate and return an error for an blank or invalid Url', () => {
+    expect(validator.isValidUrl('')).to.be.false;
+    expect(validator.isValidUrl('/example')).to.be.false;
+    expect(validator.isValidUrl(null)).to.be.false;
     expect(stubLogger).to.have.been.calledThrice;
   });
 
@@ -58,21 +66,21 @@ describe('server/lib/validation/applications', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
-  it.skip('should validate and return an error for an invalid domain', () => {
-    expect(validator.isValidDomain('')).to.equal(false);
-    expect(validator.isValidDomain(null)).to.equal(false);
+  it.skip('should validate and return an error for an blank domain', () => {
+    expect(validator.isValidDomain('')).to.be.false;
+    expect(validator.isValidDomain(null)).to.be.false;
     expect(stubLogger).to.have.been.calledTwice;
   });
 
   it('should validate a correctly formatted Ip', () => {
-    expect(validator.isValidIp('204.120.0.15')).to.equal(true);
-    expect(validator.isValidIp('127.0.0.1')).to.equal(true);
+    expect(validator.isValidIp('204.120.0.15')).to.be.true;
+    expect(validator.isValidIp('127.0.0.1')).to.be.true;
     expect(stubLogger).to.have.been.calledTwice;
   });
-  it('should validate and return an error for an invalid Ip', () => {
-    expect(validator.isValidIp('')).to.equal(false);
-    expect(validator.isValidIp('25555.2335.11344.2344')).to.equal(false);
-    expect(validator.isValidIp(null)).to.equal(false);
+  it('should validate and return an error for an blank or invalid Ip', () => {
+    expect(validator.isValidIp('')).to.be.false;
+    expect(validator.isValidIp('25555.2335.11344.2344')).to.be.false;
+    expect(validator.isValidIp(null)).to.be.false;
     expect(stubLogger).to.have.been.calledThrice;
   });
 });

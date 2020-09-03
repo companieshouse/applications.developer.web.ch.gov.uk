@@ -1,6 +1,3 @@
-// const Utility = require(`${serverRoot}/lib/Utility`);
-// const Session = require(`${serverRoot}/lib/Session`);
-// const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`);
 const logger = require(`${serverRoot}/config/winston`);
 
 const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
