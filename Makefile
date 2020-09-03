@@ -25,7 +25,15 @@ sonar:
 
 .PHONY: sonar-pr-analysis
 sonar-pr-analysis:
-    mvn sonar:sonar -P sonar-pr-analysis
+    mvn sonar:sonar -artifact_name sonar-pr-analysis
+
+.PHONY: test
+test:
+	npm run coverage
+
+.PHONY: test-unit
+test-unit:
+	npm run test
 
 .PHONY: package
 package: build
@@ -40,4 +48,4 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint sonar clean package
+dist: lint test-unit sonar clean package
