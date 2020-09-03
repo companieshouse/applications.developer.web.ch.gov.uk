@@ -9,7 +9,7 @@ const exceptions = require(`${testRoot}/server/_fakes/mocks`);
 const routeUtils = require(`${serverRoot}/routes/utils`);
 const app = require(`${serverRoot}/app`);
 
-const serviceData = require(`${testRoot}/server/_fakes/data/services/manage_applications`);
+const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application`);
 const keyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
 const singleAppData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);

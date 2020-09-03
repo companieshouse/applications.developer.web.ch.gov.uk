@@ -8,7 +8,7 @@ const assert = chai.assert;
 
 const apiKeyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
 const appData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
-const serviceData = require(`${testRoot}/server/_fakes/data/services/manage_applications`);
+const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application.js`);
 
 describe('services/ApplicationDeveloper', () => {

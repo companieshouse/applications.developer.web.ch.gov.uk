@@ -2,7 +2,7 @@ const logger = require(`${serverRoot}/config/winston`);
 const Validator = require(`${serverRoot}/lib/validation`);
 const validator = new Validator();
 
-describe('server/lib/validation/applications', () => {
+describe('server/lib/validation/ManageApplications', () => {
   let stubLogger;
 
   beforeEach(done => {
@@ -18,6 +18,12 @@ describe('server/lib/validation/applications', () => {
     done();
   });
 
+  it('getErrorSignature should return the correct values when called', () => {
+    expect(validator.getErrorSignature().name).to.equal('ValidationError');
+    expect(validator.getErrorSignature().status).to.equal(400);
+    expect(validator.getErrorSignature().message).to.equal('Your request contains validation errors');
+    expect(stubLogger).to.have.been.calledThrice;
+  });
   it('should validate a correctly formatted app  name', () => {
     expect(validator.isValidAppName('app name')).to.be.true;
     expect(validator.isValidAppName('valid hyphenated-name')).to.be.true;

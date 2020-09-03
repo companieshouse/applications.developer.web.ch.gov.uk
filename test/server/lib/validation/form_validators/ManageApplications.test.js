@@ -18,6 +18,22 @@ describe('server/lib/validation/applications', () => {
     done();
   });
 
+  it('_formatIncomingPayload should return the payload that has been formatted to trim ', () => {
+    const manageApplication = new ManageApplication();
+    const payload = {
+      applicationName: '    hi',
+      terms: 'https://eg.com    ',
+      privacyPolicy: '  https://eg.com',
+      environment: 'test   '
+    };
+    manageApplication._formatIncomingPayload(payload);
+    expect(payload.applicationName).to.equal('hi');
+    expect(payload.terms).to.equal('https://eg.com');
+    expect(payload.privacyPolicy).to.equal('https://eg.com');
+    expect(payload.environment).to.equal('test');
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
   it('should validate the addApplication sucessfully and return true', () => {
     const payload = {
       applicationName: 'hi',

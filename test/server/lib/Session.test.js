@@ -2,7 +2,7 @@ const { SessionStore } = require('ch-node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
 const ModuleUnderTest = require(`${serverRoot}/lib/Session`);
 
-describe.skip('lib/Session', () => {
+describe('lib/Session', () => {
   const {
     responseMock, requestMockWithSessionCookie, requestMockWithoutSessionCookie,
     sessionStoreLoadResolves, sessionStoreLoadResolvesRead, sessionStoreLoadRejects,
@@ -12,7 +12,7 @@ describe.skip('lib/Session', () => {
   beforeEach(done => {
     sinon.reset();
     sinon.restore();
-    sinon.stub(Utility, 'logException').returns(undefined);
+    sinon.stub(Utility, 'logException').returns(true);
     done();
   });
 
