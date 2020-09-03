@@ -1,8 +1,9 @@
 const { SessionStore } = require('ch-node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
 const ModuleUnderTest = require(`${serverRoot}/lib/Session`);
-
-describe.skip('lib/Session', () => {
+const logger = require(`${serverRoot}/config/winston`);
+let stubLogger;
+describe('lib/Session', () => {
   const {
     responseMock, requestMockWithSessionCookie, requestMockWithoutSessionCookie,
     sessionStoreLoadResolves, sessionStoreLoadResolvesRead, sessionStoreLoadRejects,
@@ -13,6 +14,7 @@ describe.skip('lib/Session', () => {
     sinon.reset();
     sinon.restore();
     sinon.stub(Utility, 'logException').returns(undefined);
+    stubLogger = sinon.stub(logger, 'info').returns(true);
     done();
   });
 

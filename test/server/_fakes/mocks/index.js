@@ -1,5 +1,5 @@
 const genericServerError = {
-  summary: "Internal server error. Please try again"
+  summary: 'Internal server error. Please try again'
 };
 module.exports.validationException = {
   status: 400,

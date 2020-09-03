@@ -1,9 +1,8 @@
 const logger = require(`${serverRoot}/config/winston`);
-const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).validation;
 const Validator = require(`${serverRoot}/lib/validation`);
 const validator = new Validator();
 
-describe.skip('server/lib/validation/applications', () => {
+describe('server/lib/validation/index', () => {
   let stubLogger;
 
   beforeEach(done => {
@@ -19,71 +18,75 @@ describe.skip('server/lib/validation/applications', () => {
     done();
   });
 
-  it('should validate a correctly formatted contact name', () => {
-    expect(validator.isValidContactName('valid name')).to.eventually.equal(true);
-    expect(validator.isValidContactName('valid hyphenated-name')).to.eventually.equal(true);
-    expect(validator.isValidContactName('valid quoted\'name')).to.eventually.equal(true);
+  it('getErrorSignature should return the correct values when called', () => {
+    expect(validator.getErrorSignature().name).to.equal('ValidationError');
+    expect(validator.getErrorSignature().status).to.equal(400);
+    expect(validator.getErrorSignature().message).to.equal('Your request contains validation errors');
     expect(stubLogger).to.have.been.calledThrice;
   });
-
-  it('should validate and return an error if contact name is not correctly formatted', () => {
-    const errors = {};
-    errors.fullName = errorManifest.fullName.incorrect;
-    expect(validator.isValidContactName('-日女子أَبْجَدِيّ')).to.be.rejectedWith(errors);
+  it('should validate a correctly formatted app  name', () => {
+    expect(validator.isValidAppName('app name')).to.be.true;
+    expect(validator.isValidAppName('valid hyphenated-name')).to.be.true;
+    expect(validator.isValidAppName('valid quoted\'name')).to.be.true;
+    expect(stubLogger).to.have.been.calledThrice;
+  });
+  it('should validate and return an error for blank app name', () => {
+    expect(validator.isValidAppName('')).to.be.false;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+  it('should validate and return an error for an invalid app name', () => {
+    expect(validator.isValidAppName(')))*//__@')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
-  it('should validate and return an error for blank contact name', () => {
-    const errors = {};
-    errors.fullName = errorManifest.fullName.blank;
-    expect(validator.isValidContactName('')).to.be.rejectedWith(errors);
-    expect(validator.isValidContactName(undefined)).to.be.rejectedWith(errors);
-    expect(validator.isValidContactName(null)).to.be.rejectedWith(errors);
+  it('should validate a correctly formatted app description', () => {
+    expect(validator.isValidDescription('Lorem ipsum dolor sit amet consectetur adipiscing elit.')).to.be.true;
+    expect(validator.isValidDescription('Lorem-ipsum HYPHEN allowed.')).to.be.true;
+    expect(validator.isValidDescription('Lorem ipsum\'s QUOTE allowed.')).to.be.true;
     expect(stubLogger).to.have.been.calledThrice;
   });
-
-  it('should validate a correctly formatted email', () => {
-    expect(validator.isValidEmail('matt@matt.com')).to.eventually.equal(true);
-    expect(validator.isValidEmail('matt-matt@matt.com')).to.eventually.equal(true);
-    expect(stubLogger).to.have.been.calledTwice;
+  it('should validate and return an error for an blank description', () => {
+    expect(validator.isValidDescription('')).to.be.false;
+    expect(stubLogger).to.have.been.calledOnce;
   });
-
-  it('should validate and return an error if email address is not correctly formatted', () => {
-    const errors = {};
-    errors.email = errorManifest.email.incorrect;
-    expect(validator.isValidEmail('matt.com')).to.be.rejectedWith(errors);
+  it('should validate and return an error for an invalid description', () => {
+    expect(validator.isValidDescription('///))*@@£$;;;;;')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
-  it('should validate and return an error for blank email addresses', () => {
-    const errors = {};
-    errors.email = errorManifest.email.blank;
-    expect(validator.isValidEmail('')).to.be.rejectedWith(errors);
-    expect(validator.isValidEmail(undefined)).to.be.rejectedWith(errors);
-    expect(validator.isValidEmail(null)).to.be.rejectedWith(errors);
+  it('should validate a correctly formatted Url', () => {
+    expect(validator.isValidUrl('https://example.com')).to.be.true;
+    expect(validator.isValidUrl('example.com')).to.be.true;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate and return an error for an blank or invalid Url', () => {
+    expect(validator.isValidUrl('')).to.be.false;
+    expect(validator.isValidUrl('/example')).to.be.false;
+    expect(validator.isValidUrl(null)).to.be.false;
     expect(stubLogger).to.have.been.calledThrice;
   });
 
-  it('should validate that the company number entered is 8 characters long', () => {
-    expect(validator.isValidCompanyNumber('12345678')).to.eventually.equal(true);
-    expect(validator.isValidCompanyNumber('AB123456')).to.eventually.equal(true);
+  it.skip('should validate a correctly formatted domain', () => {
+    // regex not completed
+    expect(validator.isValidDomain('d')).to.equal(true);
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
+  it.skip('should validate and return an error for an blank domain', () => {
+    expect(validator.isValidDomain('')).to.be.false;
+    expect(validator.isValidDomain(null)).to.be.false;
     expect(stubLogger).to.have.been.calledTwice;
   });
 
-  it('should validate company number has no text or is undefined or null', () => {
-    const errors = {};
-    errors.number = errorManifest.number.empty;
-    expect(validator.isValidCompanyNumber('')).to.be.rejectedWith(errors);
-    expect(validator.isValidCompanyNumber(undefined)).to.be.rejectedWith(errors);
-    expect(validator.isValidCompanyNumber(null)).to.be.rejectedWith(errors);
+  it('should validate a correctly formatted Ip', () => {
+    expect(validator.isValidIp('204.120.0.15')).to.be.true;
+    expect(validator.isValidIp('127.0.0.1')).to.be.true;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate and return an error for an blank or invalid Ip', () => {
+    expect(validator.isValidIp('')).to.be.false;
+    expect(validator.isValidIp('25555.2335.11344.2344')).to.be.false;
+    expect(validator.isValidIp(null)).to.be.false;
     expect(stubLogger).to.have.been.calledThrice;
-  });
-
-  it('should validate company number is 8 characters long', () => {
-    const errors = {};
-    errors.number = errorManifest.number.incorrect;
-    expect(validator.isValidCompanyNumber('1234567')).to.be.rejectedWith(errors);
-    expect(validator.isValidCompanyNumber('123456789')).to.be.rejectedWith(errors);
-    expect(stubLogger).to.have.been.calledTwice;
   });
 });
