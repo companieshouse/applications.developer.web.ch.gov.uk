@@ -2,7 +2,7 @@ const logger = require(`${serverRoot}/config/winston`);
 const Validator = require(`${serverRoot}/lib/validation`);
 const validator = new Validator();
 
-describe('server/lib/validation/ManageApplications', () => {
+describe('server/lib/validation/index', () => {
   let stubLogger;
 
   beforeEach(done => {

@@ -4,7 +4,7 @@ const logger = require(`${serverRoot}/config/winston`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application`);
 const exceptions = require(`${testRoot}/server/_fakes/mocks`);
 let stubLogger;
-describe('server/lib/validation/applications', () => {
+describe('server/lib/validation/form_validators/ManageApplication', () => {
   beforeEach(done => {
     sinon.reset();
     sinon.restore();
