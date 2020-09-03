@@ -7,5 +7,44 @@
       <h1 class="govuk-heading-xl">
         Update key
       </h1>
+      <form action="#" method="post">
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="update-key-name">
+            Key name
+          </label>
+          <input class="govuk-input" id="update-key-name" name="update-key-name" type="text">
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="update-key-description-detail">
+            Key description
+          </label>
+          <textarea class="govuk-textarea" id="update-key-description-detail" name="update-key-description-detail" rows="5"></textarea>
+        </div>
+        <p class="govuk-body">Rest API key</p>
+        <p class="govuk-body" style="color: #016061">ff78ff7b-542c-4a2c-85ba-c8ebe26ad23f</p>
+        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
+          Regenerate key
+        </button>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="restrictedIP-detail">
+            Restricted IPs
+          </label>
+          <div id="restrictedIP-detail-hint" class="govuk-hint">
+            Separate each IP with a comma.
+          </div>
+          <textarea class="govuk-textarea" id="restrictedIP-detail" name="restrictedIP-detail" rows="5" aria-describedby="restrictedIP-detail-hint"></textarea>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="javascriptDomain-detail">
+            JavaScript domains
+          </label>
+          <div id="javascriptDomain-detail-hint" class="govuk-hint">
+            Separate each domain with a comma.
+          </div>
+          <textarea class="govuk-textarea" id="javascriptDomain-detail" name="javascriptDomain-detail" rows="5" aria-describedby="javascriptDomain-detail-hint"></textarea>
+        </div>
+        <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Update key</button>
+        <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">Cancel</a>
+      </form>
 
 {% endblock %}
