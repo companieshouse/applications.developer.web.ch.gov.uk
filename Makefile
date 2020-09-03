@@ -23,18 +23,9 @@ lint:
 sonar:
 	npm run sonarqube
 
-
 .PHONY: sonar-pr-analysis
 sonar-pr-analysis:
     mvn sonar:sonar -P sonar-pr-analysis
-
-.PHONY: test
-test:
-	npm run coverage
-
-.PHONY: test-unit
-test-unit:
-	npm run test
 
 .PHONY: package
 package: build
@@ -49,4 +40,4 @@ endif
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: lint test-unit sonar clean package
+dist: lint sonar clean package
