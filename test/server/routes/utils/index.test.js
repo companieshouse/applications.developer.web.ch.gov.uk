@@ -1,4 +1,4 @@
-describe('routes/utils/defaultRouteUtil', () => {
+describe('routes/utils/index', () => {
   const Utility = require(`${serverRoot}/lib/Utility`);
   const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).generic;
 
