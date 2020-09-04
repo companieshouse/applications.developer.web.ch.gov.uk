@@ -21,6 +21,28 @@ const serviceData = {
     js_domains: null,
     rate_limit: null,
     internal_app_privileges: false
+  },
+  getRestApiKey: {
+    links: {
+      application: {
+        href: 'http://chs-dev:5004/applications/5f3ba10d00bb5b6c15ed3e10'
+      },
+      self: {
+        href: 'http://chs-dev:5004/applications/5f3ba10d00bb5b6c15ed3e10/api-clients/key/5f451725909c606c1a3e04a2'
+      }
+    },
+    type: 'key',
+    kind: 'api-client#key',
+    etag: 'Etag Not Implemented',
+    id: '5f451725909c606c1a3e04a2',
+    name: 'Rest Key #2',
+    description: null,
+    application_id: '5f3ba10d00bb5b6c15ed3e10',
+    created_on: '2020-08-25T13:50:28.643+0000',
+    restricted_ips: null,
+    js_domains: null,
+    rate_limit: null,
+    internal_app_privileges: false
   }
 };
 
