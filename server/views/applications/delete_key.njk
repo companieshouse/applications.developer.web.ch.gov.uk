@@ -23,7 +23,7 @@
       <dd class="govuk-summary-list__actions"></dd>
     </div>
   </dl>
-  <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-key">
+  <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-key" class="inline-form">
     <input class="govuk-button govuk-button--warning" id="submitApp" name="submitApp" type="submit" value="Yes, delete key" />
   </form>
   <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
