@@ -72,7 +72,10 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   const id = req.params.appId;
   const env = req.params.env;
   const viewData = {
-    this_data: null,
+    this_data: {
+      appId: req.params.appId,
+      env: env
+    },
     this_errors: null,
     active_page: 'view-application',
     title: 'View application'
@@ -82,14 +85,10 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
       applicationsDeveloperService.getApplication(id, env),
       applicationsDeveloperService.getKeysForApplication(id, env)
     ]).then(([appData, keyData]) => {
-    viewData.this_data = {
-      appId: req.params.appId,
-      app: appData.data,
-      keys: keyData.data,
-      env: env
-    };
-    viewData.title = `${viewData.title}: ${appData.data.name}`;
-    res.render(`${routeViews}/view.njk`, viewData);
+      viewData.this_data.app = appData.data;
+      viewData.this_data.keys = keyData.data;
+      viewData.title = `${viewData.title}: ${appData.data.name}`;
+      res.render(`${routeViews}/view.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
     res.render(`${routeViews}/view.njk`, viewData);
@@ -127,7 +126,7 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
 router.post('/manage-applications/:appId/api-key/add', (req, res, next) => {
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
   const viewData = {
-    this_data: null,
+    this_data: req.body,
     this_errors: null,
     active_page: 'application-overview'
   };

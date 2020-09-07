@@ -80,7 +80,7 @@ class ApplicationsDeveloper {
   }
 
   addNewKey (data, appId) {
-    const baseUrl = this._getBaseUrl(data);
+    const baseUrl = this._getBaseUrlForPostFormData(data);
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
