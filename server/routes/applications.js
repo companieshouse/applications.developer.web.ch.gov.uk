@@ -30,7 +30,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
       test: listTest.data,
       future: listFuture.data
     };
-    console.log('GET LIST ALL: ', viewData.this_data.test);
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
@@ -117,7 +116,6 @@ router.get('/manage-applications/:appId/update/:env', (req, res) => {
       viewData.this_data.description = appData.data.description;
       viewData.this_data.privacyPolicy = appData.data.privacy_policy_url;
       viewData.this_data.terms = appData.data.terms_and_conditions_url;
-      console.log('APP DATA: ', appData);
       res.render(`${routeViews}/edit.njk`, viewData);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -143,7 +141,6 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
-      console.log(viewData.this_errors);
       res.render(`${routeViews}/edit.njk`, viewData);
     });
 });
