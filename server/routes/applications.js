@@ -57,7 +57,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     active_page: 'add-application',
     title: 'Add an application'
   };
-  validator.addApplication(req.body)
+  validator.validateApplication(req.body, false)
     .then(_ => {
       return applicationsDeveloperService.saveApplication(req.body);
     }).then(_ => {
@@ -97,32 +97,50 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
-  logger.info(`GET request to serve manage application page: ${req.path}`);
+router.get('/manage-applications/:appId/update/:env', (req, res) => {
+  logger.info(`GET request to serve update application page: ${req.path}`);
+  const id = req.params.appId;
+  const env = req.params.env;
   const viewData = {
     this_data: {
-      appId: req.params.appId
+      appId: id,
+      env: env
     },
     this_errors: null,
     active_page: 'application-overview',
-    title: 'Update an application'
+    title: 'Edit application'
   };
-  res.render(`${routeViews}/edit.njk`, viewData);
+
+  applicationsDeveloperService.getApplication(id, env)
+    .then(appData => {
+      viewData.this_data.applicationName = appData.data.name;
+      viewData.this_data.description = appData.data.description;
+      viewData.this_data.privacyPolicy = appData.data.privacy_policy_url;
+      viewData.this_data.terms = appData.data.terms_and_conditions_url;
+      console.log('APP DATA: ', appData);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
 });
 
-router.post('/manage-applications/:appId/update', (req, res, next) => {
+router.post('/manage-applications/:appId/update/:env', (req, res) => {
   logger.info(`PUT request to update the application: ${req.path}`);
+  const payload = req.body;
+  payload.env = req.params.env;
+  payload.appId = req.params.appId;
   const viewData = {
-    this_data: req.data,
+    this_data: payload,
     this_errors: null,
     active_page: 'application-overview',
     title: 'Update an application'
   };
-  validator.updateApplication(req.body)
+  validator.validateApplication(payload, true)
     .then(_ => {
-      return applicationsDeveloperService.update(req.body, req.params.appId);
+      return applicationsDeveloperService.updateApplication(payload);
     }).then(_ => {
-      return res.redirect(302, '/edit');
+      return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       console.log(viewData.this_errors);

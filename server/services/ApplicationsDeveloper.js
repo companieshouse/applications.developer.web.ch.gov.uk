@@ -79,21 +79,19 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  update (data, appId) {
-    console.log('Data in service: ', appId);
-    const baseUrl = this._getBaseUrl(data);
-    console.log('BASE URL: ', baseUrl);
+  updateApplication (data) {
+    const baseUrl = this.server.baseUrl[data.env];
     const options = Object.assign(this._getBaseOptions(), {
       method: 'PUT',
       data: {
         name: data.applicationName,
-        // description: data.description,
-        privacy_policy_url: data.privacyPolicy,
-        terms_and_conditions_url: data.terms
+        description: data.description,
+        terms_and_conditions_url: data.terms,
+        privacy_policy_url: data.privacyPolicy
       },
-      url: `${baseUrl}/applications/${appId}`
+      url: `${baseUrl}/applications/${data.appId}`
     });
-    logger.info('Service request to edit data, with payload: ', options);
+    logger.info('Service request to update data, with payload: ', options);
     return this.request(options);
   }
 
