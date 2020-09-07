@@ -79,7 +79,7 @@ describe('routes/applications.js', () => {
 
   it('should save an application and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/add';
-    const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'validateApplication').returns(Promise.resolve(true));
+    const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .returns(Promise.resolve(serviceData.getApplicationList));
@@ -101,7 +101,7 @@ describe('routes/applications.js', () => {
   it('should serve add application with an error on validation', () => {
     const slug = '/manage-applications/add';
     const validationException = exceptions.validationException;
-    const stubValidatorReject = sinon.stub(Validator.prototype, 'validateApplication').rejects(new Error('Validation error'));
+    const stubValidatorReject = sinon.stub(Validator.prototype, 'addApplication').rejects(new Error('Validation error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
@@ -193,7 +193,7 @@ describe('routes/applications.js', () => {
 
   it('should update an application on the test environment and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/app123/update/test';
-    const stubValidateApplicationValidator = sinon.stub(Validator.prototype, 'validateApplication').returns(Promise.resolve(true));
+    const stubValidateApplicationValidator = sinon.stub(Validator.prototype, 'updateApplication').returns(Promise.resolve(true));
     const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
 
     return request(app)
@@ -212,7 +212,7 @@ describe('routes/applications.js', () => {
 
   it('should serve the update application page on the /manage-applications/:appId/update/:env with errors', () => {
     const slug = '/manage-applications/app123/update/test';
-    const stubValidatorError = sinon.stub(Validator.prototype, 'validateApplication').rejects(new Error('Validation error'));
+    const stubValidatorError = sinon.stub(Validator.prototype, 'updateApplication').rejects(new Error('Validation error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException').returns(exceptions.validationException.stack);
     const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
 

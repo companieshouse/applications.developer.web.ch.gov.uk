@@ -56,7 +56,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     active_page: 'add-application',
     title: 'Add an application'
   };
-  validator.validateApplication(req.body, false)
+  validator.addApplication(req.body)
     .then(_ => {
       return applicationsDeveloperService.saveApplication(req.body);
     }).then(_ => {
@@ -134,7 +134,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     active_page: 'application-overview',
     title: 'Update an application'
   };
-  validator.validateApplication(payload, true)
+  validator.updateApplication(payload)
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload);
     }).then(_ => {

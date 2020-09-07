@@ -45,7 +45,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.eventually.equal(true);
+    expect(ManageApplication.prototype.addApplication(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -63,7 +63,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -81,7 +81,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(false);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -98,7 +98,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(false);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -117,7 +117,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -135,7 +135,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
@@ -155,7 +155,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(false);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, false)).to.be.rejectedWith(validationException);
+    expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidUrl).to.have.been.calledTwice;
     expect(stubValidDesc).to.have.been.calledOnce;
@@ -174,7 +174,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
-    expect(ManageApplication.prototype.validateApplication(payload, true)).to.eventually.equal(true);
+    expect(ManageApplication.prototype.updateApplication(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
