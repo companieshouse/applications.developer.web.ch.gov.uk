@@ -69,6 +69,60 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
+  it('should fetch specific Api Keys from the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'testApp';
+    const mockKeyId = 'testKey';
+    const mockKeyType = 'mock';
+    const finalVars = Object.assign({}, baseOptions);
+    finalVars.method = 'GET';
+    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+
+    // Call method
+    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, mockKeyType, mockEnv))
+    // Assertions
+      .to.eventually.eql(apiKeyData.getApiKeyList);
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithMatch(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
+  it('should delete a specific key from applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'testApp';
+    const mockKeyId = 'testKey';
+    const mockKeyType = 'mock';
+    const finalVars = Object.assign({}, baseOptions);
+    finalVars.method = 'DELETE';
+    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+
+    // Call method
+    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, mockKeyType, mockEnv))
+    // Assertions
+      .to.eventually.eql(apiKeyData.getApiKeyList);
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithMatch(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
   it('should fetch single Applications from the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
@@ -215,4 +269,33 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
+  it('getBaseUrlForPostFormData should return empty string when empty or undefined environment is requested', () => {
+    const env = 'future';
+    const data = {
+      name: 'app demo',
+      description: 'description'
+    };
+    applicationDeveloper.server.baseUrl.future = env;
+    applicationDeveloper.server.baseUrl.test = env;
+    applicationDeveloper.server.baseUrl.live = env;
+    let baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal('', baseUrl);
+    data.environment = '';
+    baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal('', baseUrl);
+  });
+
+  it('getBaseUrlForPostFormData should return empty string when unknown environment is requested', () => {
+    const env = 'future';
+    const data = {
+      name: 'app demo',
+      description: 'description',
+      environment: 'Does Not Exist'
+    };
+    applicationDeveloper.server.baseUrl.future = env;
+    applicationDeveloper.server.baseUrl.test = env;
+    applicationDeveloper.server.baseUrl.live = env;
+    const baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
+    assert.equal('', baseUrl);
+  });
 });

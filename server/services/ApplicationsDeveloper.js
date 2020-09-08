@@ -100,8 +100,26 @@ class ApplicationsDeveloper {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
     });
-    logger.info(`Service request to retrieve ${environment} api key list for applicatio ${appId}, with payload: `, options);
+    logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
     return this.request(options);
   };
+
+  getSpecificKey (appId, keyId, keyType, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
+    });
+    logger.info(`Service request to retrieve ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
+    return this.request(options);
+  }
+
+  deleteApiKey (appId, keyId, keyType, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'DELETE',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
+    });
+    logger.info(`Service request to delete ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
+    return this.request(options);
+  }
 }
 module.exports = ApplicationsDeveloper;

@@ -161,15 +161,58 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
 
-router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
+router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+  logger.info(`GET request to serve delete a key page: ${req.path}`);
+  const appId = req.params.appId;
+  const keyId = req.params.keyId;
+  const keyType = req.params.keyType;
+  const env = req.params.env;
   const viewData = {
     this_data: null,
     this_errors: null,
     active_page: 'view-application',
     title: 'Delete Key'
   };
-  res.render(`${routeViews}/delete_key.njk`, viewData);
+  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
+    .then(
+      apiKey => {
+        viewData.this_data = {
+          appId: appId,
+          keyId: keyId,
+          keyType: keyType,
+          env: env,
+          keyName: apiKey.data.name
+        };
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    ).catch(
+      err => {
+        viewData.this_errors = routeUtils.processException(err);
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    );
+});
+
+router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+  const appId = req.params.appId;
+  const keyId = req.params.keyId;
+  const keyType = req.params.keyType;
+  const env = req.params.env;
+  logger.info(`POST request to delete a key: ${req.path}`);
+  applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, env)
+    .then(response => {
+      res.redirect(302, '/manage-applications');
+    }).catch(
+      err => {
+        const viewData = {
+          this_data: null,
+          this_errors: routeUtils.processException(err),
+          active_page: 'view-application',
+          title: 'Delete Key'
+        };
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    );
 });
 
 router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {

@@ -28,3 +28,6 @@
 .app-description {
   white-space: pre-wrap;
 }
+.inline-form {
+  display:inline-block;
+}

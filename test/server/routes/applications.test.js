@@ -173,6 +173,21 @@ describe('routes/applications.js', () => {
       });
   });
 
+  it('should serve up the delete application page on a Get', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(response.text).to.include('Delete API client key');
+        expect(response).to.have.status(200);
+      });
+  });
+
   it('should serve the update application page with an errpr on the /manage-applications/:appId/update/:env mount path', () => {
     const slug = '/manage-applications/app123/update/test';
     const stubSingleApplicationError = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').rejects(new Error('Test error'));
@@ -186,6 +201,28 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplicationError).to.have.been.calledOnce;
         expect(stubProcessException).to.have.been.calledOnce;
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve up the delete key page on the delete path when got with an error', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
+    const genericServerException = exceptions.genericServerException;
+    const testErr = new Error('Test error');
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey')
+      .rejects(testErr);
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(genericServerException);
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(stubProcessException).to.have.been.calledWith(testErr);
         expect(response.text).to.include('Internal server error. Please try again');
         expect(response).to.have.status(200);
       });
@@ -228,6 +265,42 @@ describe('routes/applications.js', () => {
         expect(stubUpdate).to.not.have.been.called;
         expect(response).to.have.status(200);
         expect(response.text).to.include('Summary message for sample field');
+      });
+  });
+
+  it('should serve up the delete a key and then redirect to manage-applications on success', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
+    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey').returns(Promise.resolve(true));
+    const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList').returns(Promise.resolve(true));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledTwice;
+        expect(stubDeleteKey).to.have.been.calledOnce;
+        expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(response).to.redirectTo(/manage-applications/);
+      });
+  });
+  it('should serve up the delete key page on the delete path when got with an error', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
+    const genericServerException = exceptions.genericServerException;
+    const testErr = new Error('Test error');
+    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey')
+      .rejects(testErr);
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(genericServerException);
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubDeleteKey).to.have.been.calledOnce;
+        expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(stubProcessException).to.have.been.calledWith(testErr);
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
       });
   });
 });
