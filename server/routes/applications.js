@@ -11,18 +11,20 @@ const routeUtils = require(`${serverRoot}/routes/utils`);
 const routeViews = 'applications';
 
 function createViewData (title, activePage) {
+  console.log(process.env);
   return {
     this_data: null,
     this_errors: null,
     active_page: title,
     title: activePage,
-    future_flag: true
+    future_flag: process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG
   };
 }
 
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
   const viewData = createViewData('Application overview', 'application-overview');
+  console.log(viewData);
   Promise.all(
     [
       applicationsDeveloperService.getApplicationList('live'),
