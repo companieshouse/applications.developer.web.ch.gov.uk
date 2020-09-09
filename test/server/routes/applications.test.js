@@ -277,11 +277,11 @@ describe('routes/applications.js', () => {
       .set('Cookie', cookieStr)
       .send(routeData.updateApplication)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(4);
         expect(stubValidateApplicationValidator).to.have.been.calledOnce;
         expect(stubValidateApplicationValidator).to.have.been.calledWith(routeData.updateApplication);
         expect(stubUpdate).to.have.been.calledOnce;
-        expect(response).to.redirectTo(/manage-applications/);
+        expect(response).to.redirectTo(/manage-applications\/app123\/view\/test/);
         expect(response).to.have.status(200);
       });
   });
