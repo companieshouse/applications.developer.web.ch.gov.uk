@@ -268,10 +268,11 @@ describe('routes/applications.js', () => {
       });
   });
 
-  it('should serve up the delete a key and then redirect to manage-applications on success', () => {
+  it('should serve up the delete a key and then redirect to view application that owned the key on success', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey').returns(Promise.resolve(true));
-    const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList').returns(Promise.resolve(true));
+    const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(true));
+    const stubGetApplicationKeyss = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(true));
     return request(app)
       .post(slug)
       .set('Cookie', cookieStr)
@@ -279,7 +280,7 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledTwice;
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
-        expect(response).to.redirectTo(/manage-applications/);
+        expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
       });
   });
   it('should serve up the delete key page on the delete path when got with an error', () => {
