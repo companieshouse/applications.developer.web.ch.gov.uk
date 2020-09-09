@@ -34,6 +34,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications mount path', () => {
     const slug = '/manage-applications';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
     const stubGetApplicationList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .returns(Promise.resolve(serviceData.getList));
     return request(app)
@@ -48,6 +49,42 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications path with an error', () => {
     const slug = '/manage-applications';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    const genericServerException = exceptions.genericServerException;
+    const stubGetListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
+      .rejects(new Error('Test error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(genericServerException);
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubGetListReject).to.have.been.called;
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve up the applications index page on the /manage-applications mount path without future flag', () => {
+    const slug = '/manage-applications';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = '';
+    const stubGetApplicationList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
+      .returns(Promise.resolve(serviceData.getList));
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubGetApplicationList).to.have.been.calledTwice;
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve up the applications index page on the /manage-applications path with an error without future flag', () => {
+    const slug = '/manage-applications';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = '';
     const genericServerException = exceptions.genericServerException;
     const stubGetListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .rejects(new Error('Test error'));
@@ -79,6 +116,7 @@ describe('routes/applications.js', () => {
 
   it('should save an application and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/add';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
@@ -158,6 +196,21 @@ describe('routes/applications.js', () => {
       });
   });
 
+  it('should serve up the update application page on the /manage-applications/:appId/update/:env mount path', () => {
+    const slug = '/manage-applications/app123/update/test';
+    const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
+
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleApplication).to.have.been.calledOnce;
+        expect(response.text).to.include('Update application');
+        expect(response).to.have.status(200);
+      });
+  });
+
   it('should serve up the delete application page on a Get', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
@@ -172,6 +225,25 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
+
+  it('should serve the update application page with an errpr on the /manage-applications/:appId/update/:env mount path', () => {
+    const slug = '/manage-applications/app123/update/test';
+    const stubSingleApplicationError = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').rejects(new Error('Test error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(exceptions.genericServerException);
+
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleApplicationError).to.have.been.calledOnce;
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
+      });
+  });
+
   it('should serve up the delete key page on the delete path when got with an error', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const genericServerException = exceptions.genericServerException;
@@ -193,6 +265,48 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
+
+  it('should update an application on the test environment and redirect to the application overview page on the /manage-applications mount path', () => {
+    const slug = '/manage-applications/app123/update/test';
+    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    const stubValidateApplicationValidator = sinon.stub(Validator.prototype, 'updateApplication').returns(Promise.resolve(true));
+    const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
+
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.updateApplication)
+      .then(response => {
+        expect(stubLogger).to.have.callCount(5);
+        expect(stubValidateApplicationValidator).to.have.been.calledOnce;
+        expect(stubValidateApplicationValidator).to.have.been.calledWith(routeData.updateApplication);
+        expect(stubUpdate).to.have.been.calledOnce;
+        expect(response).to.redirectTo(/manage-applications/);
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve the update application page on the /manage-applications/:appId/update/:env with errors', () => {
+    const slug = '/manage-applications/app123/update/test';
+    const stubValidatorError = sinon.stub(Validator.prototype, 'updateApplication').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(exceptions.validationException.stack);
+    const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
+
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.updateApplication)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorError).to.have.been.calledOnce;
+        expect(stubValidatorError).to.have.been.calledWith(routeData.updateApplication);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(stubUpdate).to.not.have.been.called;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+      });
+  });
+
   it('should serve up the delete a key and then redirect to manage-applications on success', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey').returns(Promise.resolve(true));

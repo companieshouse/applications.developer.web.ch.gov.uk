@@ -162,4 +162,23 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
   });
+
+  it('should validate the updateApplication sucessfully, exclude the environment and return true', () => {
+    const payload = {
+      applicationName: 'hi',
+      description: 'Test description',
+      terms: 'https://eg.com',
+      privacyPolicy: 'https://priv.com'
+    };
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
+    expect(ManageApplication.prototype.updateApplication(payload)).to.eventually.equal(true);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubValidUrl).to.have.been.calledTwice;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
 });

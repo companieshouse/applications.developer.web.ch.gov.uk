@@ -3,48 +3,73 @@
 {% block main_content %}
 
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+
   <a href="/manage-applications" class="govuk-back-link">Back to all applications</a>
-  <h1 class="govuk-heading-xl">
-    My test application
-  </h1>
+
+  <h1 class="govuk-heading-xl">{{ this_data.applicationName }}</h1>
+
+<form action="/manage-applications/{{ this_data.appId }}/update/{{ this_data.env }}" method="post" enctype="application/json" id="frm-add-application">
   <h2 class="govuk-heading-l">
-    Update application
+      Update application
   </h2>
+
   <div class="govuk-form-group">
-    <label class="govuk-label" for="update-name">
-      Application name
-    </label>
-    <input class="govuk-input" id="update-name" name="event-name" type="text">
+    <label class="govuk-label" for="applicationName">Application name</label>
+
+    <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
+    {% if this_errors.name is not undefined %}
+      <span id="err-id-name" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="update-privacy">
-      Privacy policy URL (optional)
-    </label>
-    <input class="govuk-input" id="update-privacy" name="event-name" type="text">
+    <label class="govuk-label" for="description">Description of application</label>
+
+    <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
+    {% if this_errors.description is not undefined %}
+      <span id="err-id-description" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
+      </span>
+    {% endif %}
   </div>
 
   <div class="govuk-form-group">
-    <label class="govuk-label" for="update-terms">
-      Terms and conditions URL (optional)
-    </label>
-    <input class="govuk-input" id="update-terms" name="event-name" type="text">
+    <label class="govuk-label" for="terms">Terms &amp; Conditions URL (optional)</label>
+
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.terms is not undefined }}" id="terms" name="terms" value="{{ this_data.terms }}" type="text">
+    {% if this_errors.terms is not undefined %}
+      <span id="err-id-terms" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.terms.inline }}
+      </span>
+    {% endif %}
   </div>
 
-  <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
-    Update application
-  </button>
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="privacyPolicy">Privacy Policy URL (optional)</label>
 
-  <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+    <input class="govuk-input{{' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
+    {% if this_errors.privacyPolicy is not undefined %}
+      <span id="err-id-privacyPolicy" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.privacyPolicy.inline }}
+      </span>
+    {% endif %}
+  </div>
+
+  <input class="govuk-button govuk-!-margin-right-1" id="submitApp" name="submitApp" type="submit" value="Update application" />
+  <a href="/" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
     Cancel
   </a>
+</form>
 
   <h2 class="govuk-heading-l">
-    Delete application
+      Delete application
   </h2>
   <p class="govuk-body">After you delete this application all associated information and keys will also be removed.</p>
 
-  <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--warning" data-module="govuk-button">
-    Delete application
-  </a>
+  <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+      Delete application
+  </button>
+
 {% endblock %}

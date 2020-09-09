@@ -11,7 +11,6 @@ const routeUtils = require(`${serverRoot}/routes/utils`);
 const routeViews = 'applications';
 
 function createViewData (title, activePage) {
-  console.log(process.env);
   return {
     this_data: null,
     this_errors: null,
@@ -24,18 +23,25 @@ function createViewData (title, activePage) {
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
   const viewData = createViewData('Application overview', 'application-overview');
-  console.log(viewData);
-  Promise.all(
-    [
-      applicationsDeveloperService.getApplicationList('live'),
-      applicationsDeveloperService.getApplicationList('test'),
-      applicationsDeveloperService.getApplicationList('future')
-    ]
-  ).then(([listLive, listTest, listFuture]) => {
-    viewData.this_data = {
-      live: listLive.data,
-      test: listTest.data,
-      future: listFuture.data
+  const applicationQueries = [
+    applicationsDeveloperService.getApplicationList('live'),
+    applicationsDeveloperService.getApplicationList('test')
+  ];
+  if (viewData.future_flag === 'true') {
+    applicationQueries.push(applicationsDeveloperService.getApplicationList('future'));
+  };
+  Promise.all(applicationQueries).then(([listLive, listTest, listFuture]) => {
+    if (viewData.future_flag === 'true') {
+      viewData.this_data = {
+        live: listLive.data,
+        test: listTest.data,
+        future: listFuture.data
+      };
+    } else {
+      viewData.this_data = {
+        live: listLive.data,
+        test: listTest.data
+      };
     };
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
@@ -92,7 +98,42 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
 router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
   logger.info(`GET request to update application : ${req.path}`);
   const viewData = createViewData('Manage Application', 'application-overview');
-  res.render(`${routeViews}/edit.njk`, viewData);
+  const id = req.params.appId;
+  const env = req.params.env;
+  viewData.this_data = {
+    appId: id,
+    env: env
+  };
+
+  applicationsDeveloperService.getApplication(id, env)
+    .then(appData => {
+      viewData.this_data.applicationName = appData.data.name;
+      viewData.this_data.description = appData.data.description;
+      viewData.this_data.privacyPolicy = appData.data.privacy_policy_url;
+      viewData.this_data.terms = appData.data.terms_and_conditions_url;
+      res.render(`${routeViews}/edit.njk`, viewData);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
+});
+
+router.post('/manage-applications/:appId/update/:env', (req, res) => {
+  logger.info(`PUT request to update the application: ${req.path}`);
+  const payload = req.body;
+  payload.env = req.params.env;
+  payload.appId = req.params.appId;
+  const viewData = createViewData('Update an application', 'application-overview');
+  viewData.this_data = payload;
+  validator.updateApplication(payload)
+    .then(_ => {
+      return applicationsDeveloperService.updateApplication(payload);
+    }).then(_ => {
+      return res.redirect(302, '/manage-applications');
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/delete', (req, res, next) => {
