@@ -65,7 +65,6 @@ class ApplicationsDeveloper {
 
   saveApplication (data) {
     const baseUrl = this._getBaseUrlForPostFormData(data);
-    console.log("\n\n\n\n\n\n\n\n\nBase url: "+baseUrl+"\n\n\n\n\n\n\n");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -112,7 +111,7 @@ class ApplicationsDeveloper {
         description: data.keyDescription,
         restricted_uris: restrictedURIs
       },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key` //"key" needs to be changed to 'web' when the url exists
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/web`
     });
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
@@ -120,7 +119,6 @@ class ApplicationsDeveloper {
 
   addNewStreamKey(data, appId, env){
     let restrictedIps = [];
-    keyType = 'key'; //this needs to be changed to 'stream' when the url exists
     restrictedIps = data.restrictedIps.split(", ");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
@@ -129,7 +127,7 @@ class ApplicationsDeveloper {
         description: data.keyDescription,
         restricted_ips: restrictedIps
       },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/${keyType}`
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/stream`
     });
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);

@@ -26,6 +26,15 @@ class Validator {
     }
   }
 
+  isValidKeyName (name) {
+    logger.info('Validating app name: ', name);
+    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(name)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   isValidUrl (url) {
     logger.info('Validating Url: ', url);
     if (/^(https?:\/\/)?[-a-z0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {

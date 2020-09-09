@@ -18,7 +18,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
     active_page: 'application-overview',
     title: 'Application overview'
   };
-  console.log('\n\n\n\n\n\nVIEW DATA THIS DATA: ', viewData.this_data);
   Promise.all(
     [
       applicationsDeveloperService.getApplicationList('live'),
@@ -31,7 +30,6 @@ router.get('(/manage-applications)?', (req, res, next) => {
       test: listTest.data,
       future: listFuture.data
     };
-    console.log('\n\n\n\n\n\nVIEW DATA THIS DATA: ', viewData.this_data);
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
@@ -127,28 +125,32 @@ router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
 });
 
 router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
-  console.log('\n\n\nREQUEST BODY: ', req.body);
-  console.log('\n\n\nREQUEST PARAMS: ', req.params);
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
   const viewData = {
     this_data: {
+      body: req.body,
       appId: req.params.appId,
       env: req.params.env
     },
     this_errors: null,
     active_page: 'application-overview'
   };
-  console.log('ADD A KEY : ', req.body);
-  if(req.body.keyType==='rest'){
-    applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
-  }else if(req.body.keyType==='web'){
-    applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
-  }else if(req.body.keyType==='stream'){
-    applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
-  }
-  console.log("\n\n\n\n\n JUST ASKED SERVICE TO ADD NEW KEY\n\n\n\n\n");
-  res.render(`${routeViews}/add_key.njk`, viewData);
-  console.log("\n\n\n\n\n JUST RE-RENDERED ADD KEY PAGE\n\n\n\n\n");
+  validator.addNewKey(req.body)
+    .then(_ => {
+      if(req.body.keyType==='rest'){
+        applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
+      }else if(req.body.keyType==='web'){
+        applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
+      }else if(req.body.keyType==='stream'){
+        applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
+      }
+    }).then(_ => {
+      return res.redirect(302, "/manage-applications/"+req.params.appId+"/view/"+req.params.env);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      console.log('\n\n\n\n\n\n\nTHIS DATA: ',viewData.this_data);
+      res.render(`${routeViews}/add_key.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {

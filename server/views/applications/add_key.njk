@@ -13,14 +13,24 @@
     Key name
   </label>
 
-  <input class="govuk-input" id="keyName" name="keyName" type="text">
+  <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="keyName" name="keyName" type="text" value="{{ this_data.body.keyName }}">
+  {% if this_errors.name is not undefined %}
+    <span id="err-id-name" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
+    </span>
+  {% endif %}
 </div>
 <div class="govuk-form-group">
   <label class="govuk-label" for="keyDescription">
     Key description
   </label>
 
-  <textarea class="govuk-textarea" id="keyDescription" name="keyDescription" rows="5"></textarea>
+  <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="keyDescription" name="keyDescription" rows="5">{{ this_data.body.keyDescription }}</textarea>
+  {% if this_errors.description is not undefined %}
+    <span id="err-id-description" class="govuk-error-message">
+      <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
+    </span>
+  {% endif %}
 </div>
 
 <div class="govuk-form-group">
@@ -28,27 +38,34 @@
     <legend class="govuk-fieldset__legend">
       Select the type of API client key you want to add:
     </legend>
+    {% if this_errors.type is not undefined %}
+      <span id="err-id-terms" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{ this_errors.type.inline }}
+      </span>
+    {% endif %}
     <div class="govuk-radios">
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest"/>
+        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest" {{ ' checked="checked"' if this_data.body.keyType === 'rest' }}/>
         <label class="govuk-label govuk-radios__label" for="rest">
           REST
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream"/>
+        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream" {{ ' checked="checked"' if this_data.body.keyType === 'stream' }}/>
         <label class="govuk-label govuk-radios__label" for="stream">
           Streaming
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web"/>
+        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web" {{ ' checked="checked"' if this_data.body.keyType === 'web' }}/>
         <label class="govuk-label govuk-radios__label" for="web">
           Web
         </label>
       </div>
     </div>
   </fieldset>
+  <br>
+  <br>
 
 <div class="govuk-form-group">
   <label class="govuk-label" for="more-detail-ip">
@@ -59,7 +76,7 @@
 Separate each IP with a comma.
 </span>
 
-  <textarea class="govuk-textarea" id="more-detail-ip" name="restrictedIps" rows="5" aria-describedby="more-detail-hint-ip"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-ip" name="restrictedIps" rows="5" aria-describedby="more-detail-hint-ip">{{ this_data.body.restrictedIps }}</textarea>
 </div>
 
 
@@ -71,7 +88,7 @@ Separate each IP with a comma.
   <span id="more-detail-hint-domain" class="govuk-hint">
 Separate each domain with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain">{{ this_data.body.javaScriptDomains }}</textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -82,7 +99,7 @@ Separate each domain with a comma.
   <span id="more-detail-hint-uri" class="govuk-hint">
 Separate each URI with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
 </div>
 
 </div>

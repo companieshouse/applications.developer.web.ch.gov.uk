@@ -35,6 +35,12 @@ let ErrorManifest = {
         inline: "Choose an environment"
       }
     },
+    type: {
+      blank: {
+        summary: "Choose a type",
+        inline: "Choose a type"
+      }
+    },
     terms: {
       invalid: {
         summary: "Enter a valid terms and conditions url",
