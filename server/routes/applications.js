@@ -125,9 +125,11 @@ router.get('/manage-applications/:appId/update/:env', (req, res) => {
 
 router.post('/manage-applications/:appId/update/:env', (req, res) => {
   logger.info(`PUT request to update the application: ${req.path}`);
+  const appId = req.params.appId;
+  const env = req.params.env;
   const payload = req.body;
-  payload.env = req.params.env;
-  payload.appId = req.params.appId;
+  payload.env = env;
+  payload.appId = appId;
   const viewData = {
     this_data: payload,
     this_errors: null,
@@ -138,7 +140,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload);
     }).then(_ => {
-      return res.redirect(302, '/manage-applications');
+      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       res.render(`${routeViews}/edit.njk`, viewData);
