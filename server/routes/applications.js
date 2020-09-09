@@ -182,7 +182,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
   logger.info(`POST request to delete a key: ${req.path}`);
   applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, env)
     .then(response => {
-      res.redirect(302, '/manage-applications');
+      res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(
       err => {
         const viewData = createViewData('Delete Key', 'view-application');
