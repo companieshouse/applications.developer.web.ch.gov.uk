@@ -18,6 +18,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
     active_page: 'application-overview',
     title: 'Application overview'
   };
+  console.log('\n\n\n\n\n\nVIEW DATA THIS DATA: ', viewData.this_data);
   Promise.all(
     [
       applicationsDeveloperService.getApplicationList('live'),
@@ -30,6 +31,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
       test: listTest.data,
       future: listFuture.data
     };
+    console.log('\n\n\n\n\n\nVIEW DATA THIS DATA: ', viewData.this_data);
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
@@ -110,11 +112,12 @@ router.get('/manage-applications/:appId/delete', (req, res, next) => {
   res.render(`${routeViews}/index.njk`);
 });
 
-router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
+router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = {
     this_data: {
-      appId: req.params.appId
+      appId: req.params.appId,
+      env: req.params.env
     },
     this_errors: null,
     active_page: 'application-overview',
@@ -123,16 +126,29 @@ router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
 
-router.post('/manage-applications/:appId/api-key/add', (req, res, next) => {
+router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
+  console.log('\n\n\nREQUEST BODY: ', req.body);
+  console.log('\n\n\nREQUEST PARAMS: ', req.params);
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
   const viewData = {
-    this_data: req.body,
+    this_data: {
+      appId: req.params.appId,
+      env: req.params.env
+    },
     this_errors: null,
     active_page: 'application-overview'
   };
-  console.log('add a key : ', req.data);
-  applicationsDeveloperService.addNewKey(req.data, req.params.appId);
+  console.log('ADD A KEY : ', req.body);
+  if(req.body.keyType==='rest'){
+    applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
+  }else if(req.body.keyType==='web'){
+    applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
+  }else if(req.body.keyType==='stream'){
+    applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
+  }
+  console.log("\n\n\n\n\n JUST ASKED SERVICE TO ADD NEW KEY\n\n\n\n\n");
   res.render(`${routeViews}/add_key.njk`, viewData);
+  console.log("\n\n\n\n\n JUST RE-RENDERED ADD KEY PAGE\n\n\n\n\n");
 });
 
 router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {

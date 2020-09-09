@@ -65,6 +65,7 @@ class ApplicationsDeveloper {
 
   saveApplication (data) {
     const baseUrl = this._getBaseUrlForPostFormData(data);
+    console.log("\n\n\n\n\n\n\n\n\nBase url: "+baseUrl+"\n\n\n\n\n\n\n");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -79,17 +80,56 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  addNewKey (data, appId) {
-    const baseUrl = this._getBaseUrlForPostFormData(data);
+  addNewRestKey (data, appId, env) {
+    let keyType = '';
+    let restrictedIps = [];
+    let javaScriptDomains = [];
+    keyType = 'key';
+    restrictedIps = data.restrictedIps.split(", ");
+    javaScriptDomains = data.javaScriptDomains.split(", ");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
         name: data.keyName,
         description: data.keyDescription,
-        kind: data.keyType
-
+        restricted_ips: restrictedIps,
+        js_domains: javaScriptDomains
       },
-      url: `${baseUrl}/applications/${appId}/api-clients/key`
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key`
+    });
+    logger.info('Service request to save key data, with payload: ', options);
+    return this.request(options);
+
+  }
+
+  addNewWebKey(data, appId, env){
+    let restrictedURIs = [];
+    restrictedURIs = data.restrictedURIs.split(", ");
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restricted_uris: restrictedURIs
+      },
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key` //"key" needs to be changed to 'web' when the url exists
+    });
+    logger.info('Service request to save key data, with payload: ', options);
+    return this.request(options);
+  }
+
+  addNewStreamKey(data, appId, env){
+    let restrictedIps = [];
+    keyType = 'key'; //this needs to be changed to 'stream' when the url exists
+    restrictedIps = data.restrictedIps.split(", ");
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restricted_ips: restrictedIps
+      },
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/${keyType}`
     });
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);

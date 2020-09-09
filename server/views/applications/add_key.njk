@@ -7,20 +7,20 @@
 <h1 class="govuk-heading-xl">
   New API client key
 </h1>
-<form action="/manage-applications/{{ this_data.appId }}/api-key/add" method="post" enctype="application/json" id="frm-add-new-key">
+<form action="/manage-applications/{{ this_data.appId }}/api-key/add/{{ this_data.env }}" method="post" enctype="application/json" id="frm-add-new-key">
 <div class="govuk-form-group">
   <label class="govuk-label" for="keyName">
     Key name
   </label>
 
-  <input class="govuk-input" id="keyName" name="keyName" type="text" value="{{ this_data.keyName }}>
+  <input class="govuk-input" id="keyName" name="keyName" type="text">
 </div>
 <div class="govuk-form-group">
   <label class="govuk-label" for="keyDescription">
     Key description
   </label>
 
-  <textarea class="govuk-textarea" id="keyDescription" name="keyDescription" rows="5">{{ this_data.keyDescription }}</textarea>
+  <textarea class="govuk-textarea" id="keyDescription" name="keyDescription" rows="5"></textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -30,26 +30,25 @@
     </legend>
     <div class="govuk-radios">
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest">
+        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest"/>
         <label class="govuk-label govuk-radios__label" for="rest">
           REST
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream">
+        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream"/>
         <label class="govuk-label govuk-radios__label" for="stream">
           Streaming
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web">
+        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web"/>
         <label class="govuk-label govuk-radios__label" for="web">
           Web
         </label>
       </div>
     </div>
   </fieldset>
-</div>
 
 <div class="govuk-form-group">
   <label class="govuk-label" for="more-detail-ip">
@@ -60,8 +59,9 @@
 Separate each IP with a comma.
 </span>
 
-  <textarea class="govuk-textarea" id="more-detail-ip" name="more-detail" rows="5" aria-describedby="more-detail-hint-ip"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-ip" name="restrictedIps" rows="5" aria-describedby="more-detail-hint-ip"></textarea>
 </div>
+
 
 <div class="govuk-form-group">
   <label class="govuk-label" for="more-detail-domain">
@@ -71,7 +71,7 @@ Separate each IP with a comma.
   <span id="more-detail-hint-domain" class="govuk-hint">
 Separate each domain with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail-domain" name="more-detail" rows="5" aria-describedby="more-detail-hint-domain"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain"></textarea>
 </div>
 
 <div class="govuk-form-group">
@@ -82,9 +82,10 @@ Separate each domain with a comma.
   <span id="more-detail-hint-uri" class="govuk-hint">
 Separate each URI with a comma.
 </span>
-  <textarea class="govuk-textarea" id="more-detail-uri" name="more-detail" rows="5" aria-describedby="more-detail-hint-uri"></textarea>
+  <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri"></textarea>
 </div>
 
+</div>
 <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">
   Add key
 </button>
