@@ -239,6 +239,36 @@ describe('services/ApplicationDeveloper', () => {
     const baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
     assert.equal(env, baseUrl);
   });
+
+  it('should update an application using the applications.api service', () => {
+    // static test vars
+    const mockURL = 'https://mockurl.com';
+    const finalVars = Object.assign({}, baseOptions);
+    finalVars.method = 'PUT';
+    finalVars.url = mockURL + '/applications' + '/app123';
+    finalVars.data = {
+      name: 'test',
+      description: 'description',
+      privacy_policy_url: 'priv',
+      terms_and_conditions_url: 'terms'
+    };
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.updateApplication));
+
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.test = mockURL;
+    // Call method
+    expect(applicationDeveloper.updateApplication(routeData.updateApplication))
+      // Assertions
+      .to.eventually.eql(routeData.updateApplication);
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
   it('getBaseUrlForPostFormData should return empty string when empty or undefined environment is requested', () => {
     const env = 'future';
     const data = {
@@ -254,6 +284,7 @@ describe('services/ApplicationDeveloper', () => {
     baseUrl = applicationDeveloper._getBaseUrlForPostFormData(data);
     assert.equal('', baseUrl);
   });
+
   it('getBaseUrlForPostFormData should return empty string when unknown environment is requested', () => {
     const env = 'future';
     const data = {
