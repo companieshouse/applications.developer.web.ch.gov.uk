@@ -21,7 +21,7 @@
       <dd class="govuk-summary-list__value">
         {{ 'Rest API key' if this_data.keyKind === 'api-client#key' }}
         {{ 'Stream API Key' if key.kind === 'api-client#stream-key' }}
-        {{ 'Web API Key' if key.kind === 'api-client#web' }}
+        {{ 'Web API Key' if this_data.keyKind === 'api-client#web' }}
       </dd>
       <dd class="govuk-summary-list__actions"></dd>
     </div>
