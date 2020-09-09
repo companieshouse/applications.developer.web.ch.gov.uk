@@ -95,14 +95,55 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
-  logger.info(`GET request to update application : ${req.path}`);
+router.get('/manage-applications/:appId/update/:env', (req, res) => {
+  logger.info(`GET request to serve update application page: ${req.path}`);
+  const id = req.params.appId;
+  const env = req.params.env;
   const viewData = {
-    this_data: null,
+    this_data: {
+      appId: id,
+      env: env
+    },
     this_errors: null,
-    active_page: 'application-overview'
+    active_page: 'application-overview',
+    title: 'Edit application'
   };
-  res.render(`${routeViews}/edit.njk`, viewData);
+
+  applicationsDeveloperService.getApplication(id, env)
+    .then(appData => {
+      viewData.this_data.applicationName = appData.data.name;
+      viewData.this_data.description = appData.data.description;
+      viewData.this_data.privacyPolicy = appData.data.privacy_policy_url;
+      viewData.this_data.terms = appData.data.terms_and_conditions_url;
+      res.render(`${routeViews}/edit.njk`, viewData);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
+});
+
+router.post('/manage-applications/:appId/update/:env', (req, res) => {
+  logger.info(`PUT request to update the application: ${req.path}`);
+  const appId = req.params.appId;
+  const env = req.params.env;
+  const payload = req.body;
+  payload.env = env;
+  payload.appId = appId;
+  const viewData = {
+    this_data: payload,
+    this_errors: null,
+    active_page: 'application-overview',
+    title: 'Update an application'
+  };
+  validator.updateApplication(payload)
+    .then(_ => {
+      return applicationsDeveloperService.updateApplication(payload);
+    }).then(_ => {
+      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/delete', (req, res, next) => {
@@ -148,19 +189,61 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
       return res.redirect(302, "/manage-applications/"+req.params.appId+"/view/"+req.params.env);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
-      console.log('\n\n\n\n\n\n\nTHIS DATA: ',viewData.this_data);
       res.render(`${routeViews}/add_key.njk`, viewData);
     });
 });
 
-router.get('/manage-applications/:appId/api-key/delete', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
+router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+  logger.info(`GET request to serve delete a key page: ${req.path}`);
+  const appId = req.params.appId;
+  const keyId = req.params.keyId;
+  const keyType = req.params.keyType;
+  const env = req.params.env;
   const viewData = {
     this_data: null,
     this_errors: null,
     active_page: 'view-application'
   };
-  res.render(`${routeViews}/delete_key.njk`, viewData);
+  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
+    .then(
+      apiKey => {
+        viewData.this_data = {
+          appId: appId,
+          keyId: keyId,
+          keyType: keyType,
+          env: env,
+          keyName: apiKey.data.name
+        };
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    ).catch(
+      err => {
+        viewData.this_errors = routeUtils.processException(err);
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    );
+});
+
+router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+  const appId = req.params.appId;
+  const keyId = req.params.keyId;
+  const keyType = req.params.keyType;
+  const env = req.params.env;
+  logger.info(`POST request to delete a key: ${req.path}`);
+  applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, env)
+    .then(response => {
+      res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+    }).catch(
+      err => {
+        const viewData = {
+          this_data: null,
+          this_errors: routeUtils.processException(err),
+          active_page: 'view-application',
+          title: 'Delete Key'
+        };
+        res.render(`${routeViews}/delete_key.njk`, viewData);
+      }
+    );
 });
 
 router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {

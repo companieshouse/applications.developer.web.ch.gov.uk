@@ -80,10 +80,8 @@ class ApplicationsDeveloper {
   }
 
   addNewRestKey (data, appId, env) {
-    let keyType = '';
     let restrictedIps = [];
     let javaScriptDomains = [];
-    keyType = 'key';
     restrictedIps = data.restrictedIps.split(", ");
     javaScriptDomains = data.javaScriptDomains.split(", ");
     const options = Object.assign(this._getBaseOptions(), {
@@ -98,7 +96,6 @@ class ApplicationsDeveloper {
     });
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
-
   }
 
   addNewWebKey(data, appId, env){
@@ -133,13 +130,49 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
+
+  updateApplication (data) {
+    const baseUrl = this.server.baseUrl[data.env];
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'PUT',
+      data: {
+        name: data.applicationName,
+        description: data.description,
+        terms_and_conditions_url: data.terms,
+        privacy_policy_url: data.privacyPolicy
+      },
+      url: `${baseUrl}/applications/${data.appId}`
+    });
+    logger.info('Service request to update data, with payload: ', options);
+    return this.request(options);
+  }
+
+
   getKeysForApplication (appId, environment) {
       const options = Object.assign(this._getBaseOptions(), {
         method: 'GET',
         url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
       });
-      logger.info(`Service request to retrieve ${environment} api key list for applicatio ${appId}, with payload: `, options);
-      return this.request(options);
-    };
+    logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
+    return this.request(options);
   }
-  module.exports = ApplicationsDeveloper;
+
+  getSpecificKey (appId, keyId, keyType, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
+    });
+    logger.info(`Service request to retrieve ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
+    return this.request(options);
+  }
+
+  deleteApiKey (appId, keyId, keyType, environment) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'DELETE',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
+    });
+    logger.info(`Service request to delete ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
+    return this.request(options);
+  }
+}
+module.exports = ApplicationsDeveloper;

@@ -11,22 +11,22 @@
       <dt class="govuk-summary-list__key">
         Key name
       </dt>
-      <dd class="govuk-summary-list__value"></dd>
+      <dd class="govuk-summary-list__value"> {{ this_data.keyName }}</dd>
       <dd class="govuk-summary-list__actions"></dd>
     </div>
     <div class="govuk-summary-list__row">
       <dt class="govuk-summary-list__key">
         Key type
       </dt>
-      <dd class="govuk-summary-list__value">
+      <dd class="govuk-summary-list__value"> {{ this_data.keyType }}
       </dd>
       <dd class="govuk-summary-list__actions"></dd>
     </div>
   </dl>
-  <a href="#" role="button" draggable="false" class="govuk-button govuk-button--warning" data-module="govuk-button">
-    Yes, delete key
-  </a>
-  <a href="#" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+  <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-key" class="inline-form">
+    <input class="govuk-button govuk-button--warning" id="submitApp" name="submitApp" type="submit" value="Yes, delete key" />
+  </form>
+  <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
     Cancel
   </a>
 {% endblock %}

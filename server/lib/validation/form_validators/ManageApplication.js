@@ -18,36 +18,10 @@ class ManageApplication extends Validator {
   }
 
   addApplication (payload) {
-    logger.info('Validating application payload data');
-    this.errors = {};
-    this._formatIncomingPayload(payload);
     return new Promise((resolve, reject) => {
-      if (!this.isValidAppName(payload.applicationName)) {
-        if (payload.applicationName.length === 0) {
-          this.errors.name = errorManifest.name.blank;
-        } else {
-          this.errors.name = errorManifest.name.invalid;
-        }
-      }
-      if (!this.isValidDescription(payload.description)) {
-        if (payload.description.length === 0) {
-          this.errors.description = errorManifest.description.blank;
-        } else {
-          this.errors.description = errorManifest.description.invalid;
-        }
-      }
+      this.validateApplication(payload);
       if (typeof payload.environment === 'undefined' || payload.environment === '') {
         this.errors.environment = errorManifest.environment.blank;
-      }
-      if (payload.terms.length > 0) {
-        if (!this.isValidUrl(payload.terms)) {
-          this.errors.terms = errorManifest.terms.invalid;
-        }
-      }
-      if (payload.privacyPolicy.length > 0) {
-        if (!this.isValidUrl(payload.privacyPolicy)) {
-          this.errors.privacyPolicy = errorManifest.privacyPolicy.invalid;
-        }
       }
       if (Object.keys(this.errors).length === 0) {
         resolve(true);
@@ -59,6 +33,18 @@ class ManageApplication extends Validator {
     });
   }
 
+  updateApplication (payload) {
+    return new Promise((resolve, reject) => {
+      this.validateApplication(payload);
+      if (Object.keys(this.errors).length === 0) {
+        resolve(true);
+      } else {
+        const e = this.getErrorSignature();
+        e.stack = this.errors;
+        reject(e);
+      }
+    });
+  }
   addNewKey (payload) {
     logger.info('Validating key payload data');
     this.errors = {};
@@ -89,6 +75,36 @@ class ManageApplication extends Validator {
         reject(e);
       }
     });
+  }
+
+  validateApplication (payload) {
+    logger.info('Validating application payload data');
+    this.errors = {};
+    this._formatIncomingPayload(payload);
+    if (!this.isValidAppName(payload.applicationName)) {
+      if (payload.applicationName.length === 0) {
+        this.errors.name = errorManifest.name.blank;
+      } else {
+        this.errors.name = errorManifest.name.invalid;
+      }
+    }
+    if (!this.isValidDescription(payload.description)) {
+      if (payload.description.length === 0) {
+        this.errors.description = errorManifest.description.blank;
+      } else {
+        this.errors.description = errorManifest.description.invalid;
+      }
+    }
+    if (payload.terms.length > 0) {
+      if (!this.isValidUrl(payload.terms)) {
+        this.errors.terms = errorManifest.terms.invalid;
+      }
+    }
+    if (payload.privacyPolicy.length > 0) {
+      if (!this.isValidUrl(payload.privacyPolicy)) {
+        this.errors.privacyPolicy = errorManifest.privacyPolicy.invalid;
+      }
+    }
   }
 };
 
