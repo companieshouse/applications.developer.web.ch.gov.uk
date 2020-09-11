@@ -34,7 +34,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications mount path', () => {
     const slug = '/manage-applications';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    process.env.FUTURE_DISPLAY_FLAG = 'true';
     const stubGetApplicationList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .returns(Promise.resolve(serviceData.getList));
     return request(app)
@@ -49,7 +49,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications path with an error', () => {
     const slug = '/manage-applications';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    process.env.FUTURE_DISPLAY_FLAG = 'true';
     const genericServerException = exceptions.genericServerException;
     const stubGetListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .rejects(new Error('Test error'));
@@ -69,7 +69,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications mount path without future flag', () => {
     const slug = '/manage-applications';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = '';
+    process.env.FUTURE_DISPLAY_FLAG = '';
     const stubGetApplicationList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .returns(Promise.resolve(serviceData.getList));
     return request(app)
@@ -84,7 +84,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the applications index page on the /manage-applications path with an error without future flag', () => {
     const slug = '/manage-applications';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = '';
+    process.env.FUTURE_DISPLAY_FLAG = '';
     const genericServerException = exceptions.genericServerException;
     const stubGetListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
       .rejects(new Error('Test error'));
@@ -116,7 +116,7 @@ describe('routes/applications.js', () => {
 
   it('should save an application and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/add';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    process.env.FUTURE_DISPLAY_FLAG = 'true';
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
@@ -268,7 +268,7 @@ describe('routes/applications.js', () => {
 
   it('should update an application on the test environment and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/app123/update/test';
-    process.env.APPLICATIONS_DEVELOPER_SERVICE_DISPLAY_FUTURE_FLAG = 'true';
+    process.env.FUTURE_DISPLAY_FLAG = 'true';
     const stubValidateApplicationValidator = sinon.stub(Validator.prototype, 'updateApplication').returns(Promise.resolve(true));
     const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
 
