@@ -64,7 +64,6 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
-
   it('should serve up the add application page', () => {
     const slug = '/manage-applications/add';
     return request(app)
@@ -76,7 +75,6 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
-
   it('should save an application and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/add';
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
@@ -95,30 +93,6 @@ describe('routes/applications.js', () => {
         expect(response).to.redirectTo(/manage-applications/);
         expect(stubGetList).to.have.been.calledThrice;
         expect(response).to.have.status(200);
-      });
-  });
-
-  it('should serve add application with an error on validation', () => {
-    const slug = '/manage-applications/add';
-    const validationException = exceptions.validationException;
-    const stubValidatorReject = sinon.stub(Validator.prototype, 'addApplication').rejects(new Error('Validation error'));
-    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
-    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
-    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
-      .returns(Promise.resolve(serviceData.getApplicationList));
-    return request(app)
-      .post(slug)
-      .set('Cookie', cookieStr)
-      .send(routeData.addApplication)
-      .then(response => {
-        expect(stubLogger).to.have.been.calledOnce;
-        expect(stubValidatorReject).to.have.been.calledOnce;
-        expect(stubValidatorReject).to.have.been.calledWith(routeData.addApplication);
-        expect(stubProcessException).to.have.been.calledOnce;
-        expect(response).to.have.status(200);
-        expect(response.text).to.include('Summary message for sample field');
-        expect(stubSave).to.not.have.been.called;
-        expect(stubGetList).to.not.have.been.called;
       });
   });
   it('should serve up details of a single application', () => {
@@ -302,6 +276,60 @@ describe('routes/applications.js', () => {
         expect(stubProcessException).to.have.been.calledWith(testErr);
         expect(response.text).to.include('Internal server error. Please try again');
         expect(response).to.have.status(200);
+      });
+  });
+  it('should serve up the add new key page', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(response.text).to.include('New API client key');
+        expect(response).to.have.status(200);
+      });
+  });
+  it('should save a rest key and redirect to the view application page on the /manage-applications mount path', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    const stubAddKeyValidator = sinon.stub(Validator.prototype, 'addNewKey').returns(Promise.resolve(true));
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+      .returns(Promise.resolve(keyData.getApiKeyList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.addNewKey)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledThrice;
+        expect(stubAddKeyValidator).to.have.been.calledOnce;
+        expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewKey);
+        expect(stubSave).to.have.been.calledOnce;
+        expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
+        expect(stubGetList).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+      });
+  });
+  it('should serve add new key with an error on validation', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    const validationException = exceptions.validationException;
+    const stubValidatorReject = sinon.stub(Validator.prototype, 'addNewKey').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+      .returns(Promise.resolve(keyData.getApiKeyList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.addNewKey)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledWith(routeData.addNewKey);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+        expect(stubSave).to.not.have.been.called;
+        expect(stubGetList).to.not.have.been.called;
       });
   });
 });
