@@ -3,12 +3,13 @@ const nunjucks = require('nunjucks');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
+const Redis = require('ioredis');
 
 const app = express();
 const morgan = require('morgan');
 global.serverRoot = __dirname;
 
-const Session = require(`${serverRoot}/lib/Session`);
+const { SessionStore, SessionMiddleware } = require('ch-node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
 
 // log requests
@@ -41,6 +42,17 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const sessionStore = new SessionStore(new Redis(`redis://${process.env.CACHE_SERVER}`));
+const middleware = SessionMiddleware({
+    cookieName: process.env.COOKIE_NAME,
+    cookieDomain: process.env.COOKIE_DOMAIN,
+    cookieSecureFlag: process.env.COOKIE_SECURE_ONLY,
+    cookieTimeToLiveInSeconds: process.env.DEFAULT_SESSION_EXPIRATION,
+    cookieSecret: process.env.COOKIE_SECRET
+}, sessionStore);
+
+app.use(middleware);
+
 // unhandled errors
 app.use((err, req, res, next) => {
   Utility.logException(err);
@@ -52,22 +64,30 @@ njk.addGlobal('cdnHost', process.env.CDN_HOST);
 njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
 
-/**
-  * COMMENTING OUT SESSION HANDLING FOR TIME BEING
-  *
-  // load the session data into res.locals
+  // check if a user is logged in and redirect accordingly
   app.use((req, res, next) => {
-    const session = new Session(req, res);
-    session.read()
-      .then(data => {
-        res.locals.session = data;
+    try {
+     let authCheck = false;
+      if(typeof req.session !== 'undefined') {
+        if(typeof req.session.data.signin_info !== 'undefined') {
+          if (req.session.data.signin_info.signed_in === 1) {
+            njk.addGlobal('userProfile', req.session.data.signin_info.user_profile);
+            authCheck = true;
+          }
+        }
+      }
+      if(!authCheck) {
+        throw new Error('User not signed in');
+      } else {
         next();
-      }).catch(err => {
-        Utility.logException(err);
-        next();
-      });
+      }
+    } catch (err) {
+      Utility.logException(err);
+      const port = req.socket.localPort && req.socket.localPort !== '80' ? ':' + req.socket.localPort : '';
+      const returnUrl = `${req.protocol}://${req.hostname}${port}${req.originalUrl}`;
+      return res.redirect(302, `${process.env.ACCOUNT_URL}/signin?return_to=${returnUrl}`);
+    }
   });
-**/
 
 // channel all requests through the router
 require('./router')(app);
