@@ -29,6 +29,7 @@ const njk = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(app.get('views'),
     nunjucksLoaderOpts)
 );
+njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 njk.express(app);
 app.set('view engine', 'njk');
 

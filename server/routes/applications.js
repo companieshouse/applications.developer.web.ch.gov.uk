@@ -17,11 +17,12 @@ router.get('(/manage-applications)?', (req, res, next) => {
     applicationsDeveloperService.getApplicationList('live'),
     applicationsDeveloperService.getApplicationList('test')
   ];
-  if (viewData.future_flag === 'true') {
+  const futureFlag = process.env.FUTURE_DISPLAY_FLAG;
+  if (futureFlag === 'true') {
     applicationQueries.push(applicationsDeveloperService.getApplicationList('future'));
   };
   Promise.all(applicationQueries).then(([listLive, listTest, listFuture]) => {
-    if (viewData.future_flag === 'true') {
+    if (futureFlag === 'true') {
       viewData.this_data = {
         live: listLive.data,
         test: listTest.data,

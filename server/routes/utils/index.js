@@ -23,8 +23,7 @@ const routeUtils = {
       this_data: null,
       this_errors: null,
       active_page: activePage,
-      title: title,
-      future_flag: process.env.FUTURE_DISPLAY_FLAG
+      title: title
     };
   }
 };

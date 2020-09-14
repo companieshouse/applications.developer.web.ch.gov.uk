@@ -56,12 +56,5 @@ describe('routes/utils/index', () => {
       expect(viewData.title).to.eql(mockTitle);
       expect(viewData.active_page).to.eql(mockActivePage);
     });
-
-    it('accesses EnvVariables', () => {
-      const mockFlag = 'true';
-      process.env.FUTURE_DISPLAY_PAGE = mockFlag;
-      const viewData = ModuleUnderTest.createViewData('mockTitle', 'mockActivePage');
-      expect(viewData.future_flag).to.eql(mockFlag);
-    });
   });
 });
