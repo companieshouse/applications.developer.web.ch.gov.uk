@@ -22,16 +22,16 @@ router.get('(/manage-applications)?', (req, res, next) => {
     applicationQueries.push(applicationsDeveloperService.getApplicationList('future'));
   };
   Promise.all(applicationQueries).then(([listLive, listTest, listFuture]) => {
-    if (futureFlag === 'true') {
+    if (listFuture === undefined) {
       viewData.this_data = {
         live: listLive.data,
-        test: listTest.data,
-        future: listFuture.data
+        test: listTest.data
       };
     } else {
       viewData.this_data = {
         live: listLive.data,
-        test: listTest.data
+        test: listTest.data,
+        future: listFuture.data
       };
     };
     res.render(`${routeViews}/index.njk`, viewData);
