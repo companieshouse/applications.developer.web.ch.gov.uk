@@ -68,8 +68,27 @@
   </h2>
   <p class="govuk-body">After you delete this application all associated information and keys will also be removed.</p>
 
-  <button class="govuk-button govuk-button--warning" data-module="govuk-button">
-      Delete application
-  </button>
+  {% if this_data.confirmDelete %}
+    <form action="/manage-applications/{{ this_data.appId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-application">
+      <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
+        <h2 class="govuk-error-summary__title" id="error-summary-title">
+          Are you sure you want to delete this application?
+        </h2>
+        <input class="govuk-button govuk-button--warning" id="deleteApp" name="deleteApp" type="submit" value="Yes, delete application" />
+        <a href="/manage-applications/{{ this_data.appId }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+          Cancel
+        </a>
+      </div>
+    </form>
+  {% else %}
+     <div>
+       <a href="/manage-applications/{{ this_data.appId }}/update/{{ this_data.env }}/confirm">
+         <button class="govuk-button govuk-button--warning" data-module="govuk-button">
+           Delete application
+         </button>
+       </a>
+     </div>
+  {% endif %}
+
 
 {% endblock %}

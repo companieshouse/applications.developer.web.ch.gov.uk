@@ -343,4 +343,52 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
+
+  it('should delete an application and then redirect to /manage-applications', () => {
+    const slug = '/manage-applications/mockAppId/delete/mockEnv';
+    const stubDeleteApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApplication').returns(Promise.resolve(true));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.callCount(5);
+        expect(stubDeleteApplication).to.have.been.calledOnce;
+        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(response).to.redirectTo(/manage-applications/);
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('When delete application errors it should serve the manage applications page with errors', () => {
+    const slug = '/manage-applications/mockAppId/delete/mockEnv';
+    const stubDeleteApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApplication').rejects(new Error('Generic error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(exceptions.genericServerException);
+
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubDeleteApplication).to.have.been.calledOnce;
+        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Internal server error. Please try again');
+      });
+  });
+
+  it('should serve up the confirm delete application page on a Get', () => {
+    const slug = '/manage-applications/mockAppId/update/mockEnv/confirm';
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
+    return request(app)
+      .get(slug)
+      .set('Cookie', cookieStr)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(response.text).to.include('Are you sure you want to delete this application?');
+        expect(response).to.have.status(200);
+      });
+  });
 });

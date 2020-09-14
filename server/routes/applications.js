@@ -86,16 +86,17 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
-  logger.info(`GET request to update application : ${req.path}`);
-  const viewData = routeUtils.createViewData('Manage Application', 'application-overview');
+router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
+  logger.info(`GET request to serve update application page: ${req.path}`);
   const id = req.params.appId;
   const env = req.params.env;
+  const confirmDelete = typeof req.params.confirm !== 'undefined' && req.params.confirm === 'confirm';
+  const viewData = routeUtils.createViewData('Edit application', 'application-overview');
   viewData.this_data = {
     appId: id,
-    env: env
+    env: env,
+    confirmDelete: confirmDelete
   };
-
   applicationsDeveloperService.getApplication(id, env)
     .then(appData => {
       viewData.this_data.applicationName = appData.data.name;
@@ -103,6 +104,26 @@ router.get('/manage-applications/:appId/update/:env', (req, res, next) => {
       viewData.this_data.privacyPolicy = appData.data.privacy_policy_url;
       viewData.this_data.terms = appData.data.terms_and_conditions_url;
       res.render(`${routeViews}/edit.njk`, viewData);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/edit.njk`, viewData);
+    });
+});
+
+router.post('/manage-applications/:appId/delete/:env', (req, res) => {
+  logger.info(`DELETE request to update the application: ${req.path}`);
+  const appId = req.params.appId;
+  const env = req.params.env;
+  const viewData = {
+    this_data: null,
+    this_errors: null,
+    active_page: 'application-overview',
+    title: 'Edit application'
+  };
+
+  applicationsDeveloperService.deleteApplication(appId, env)
+    .then(_ => {
+      return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       res.render(`${routeViews}/edit.njk`, viewData);
