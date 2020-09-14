@@ -15,29 +15,26 @@ function showInDevelopmentOption () {
   }
 }
 
-$(document).ready(function () {
-  window.GOVUKFrontend.initAll()
-   $(".restrictedIps").hide();
-   $(".javaScriptDomains").hide();
-   $(".redirectURIs").hide();
-})
+document.getElementById('restricted-ips').style.display='none';
+document.getElementById('js-domains').style.display='none';
+document.getElementById('redirect-uris').style.display='none';
 
-$("input[name='keyType']").on('change', function () {
-  if ($(this).val() == 'rest') {
-      $(".restrictedIps").show();
-      $(".javaScriptDomains").show();
-      $(".redirectURIs").hide();
-  } else if ($(this).val() == 'stream'){
-      $(".restrictedIps").show();
-      $(".javaScriptDomains").hide();
-      $(".redirectURIs").hide();
-  } else if ($(this).val() == 'web'){
-      $(".restrictedIps").hide();
-      $(".javaScriptDomains").hide();
-      $(".redirectURIs").show();
-  }
-
-})
-
-
-})
+function restClick(){
+  document.getElementById('restricted-ips').style.visibility='visible';
+  document.getElementById('restricted-ips').style.display = 'block';
+  document.getElementById('js-domains').style.visibility='visible';
+  document.getElementById('js-domains').style.display = 'block';
+  document.getElementById('redirect-uris').style.display='none';
+}
+function streamClick(){
+  document.getElementById('restricted-ips').style.visibility='visible';
+  document.getElementById('restricted-ips').style.display = 'block';
+  document.getElementById('js-domains').style.display='none';
+  document.getElementById('redirect-uris').style.display='none';
+}
+function webClick(){
+  document.getElementById('restricted-ips').style.display='none';
+  document.getElementById('js-domains').style.display='none';
+  document.getElementById('redirect-uris').style.visibility='visible';
+  document.getElementById('redirect-uris').style.display = 'block';
+}

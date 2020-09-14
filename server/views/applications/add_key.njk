@@ -45,19 +45,19 @@
     {% endif %}
     <div class="govuk-radios">
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest" {{ ' checked="checked"' if this_data.body.keyType === 'rest' }}/>
+        <input class="govuk-radios__input" id="rest" name="keyType" type="radio" value="rest" onclick="restClick();"{{ ' checked="checked"' if this_data.body.keyType === 'rest' }}/>
         <label class="govuk-label govuk-radios__label" for="rest">
           REST
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream" {{ ' checked="checked"' if this_data.body.keyType === 'stream' }}/>
+        <input class="govuk-radios__input" id="stream" name="keyType" type="radio" value="stream" onclick="streamClick();"{{ ' checked="checked"' if this_data.body.keyType === 'stream' }}/>
         <label class="govuk-label govuk-radios__label" for="stream">
           Streaming
         </label>
       </div>
       <div class="govuk-radios__item">
-        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web" {{ ' checked="checked"' if this_data.body.keyType === 'web' }}/>
+        <input class="govuk-radios__input" id="web" name="keyType" type="radio" value="web" onclick="webClick();"{{ ' checked="checked"' if this_data.body.keyType === 'web' }}/>
         <label class="govuk-label govuk-radios__label" for="web">
           Web
         </label>
@@ -67,7 +67,7 @@
   <br>
   <br>
 
-<div class="govuk-form-group">
+<div class="govuk-form-group" id='restricted-ips'>
   <label class="govuk-label" for="more-detail-ip">
     Restricted IPs
   </label>
@@ -80,7 +80,7 @@ Separate each IP with a comma.
 </div>
 
 
-<div class="govuk-form-group">
+<div class="govuk-form-group" id='js-domains'>
   <label class="govuk-label" for="more-detail-domain">
     JavaScript domains
   </label>
@@ -91,7 +91,7 @@ Separate each domain with a comma.
   <textarea class="govuk-textarea" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain">{{ this_data.body.javaScriptDomains }}</textarea>
 </div>
 
-<div class="govuk-form-group">
+<div class="govuk-form-group" id='redirect-uris'>
   <label class="govuk-label" for="more-detail-uri">
     Redirect URIs
   </label>
