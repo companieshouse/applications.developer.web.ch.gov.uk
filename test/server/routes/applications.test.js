@@ -9,7 +9,6 @@ const ApplicationsDeveloperService = require(`${serverRoot}/services/Application
 const exceptions = require(`${testRoot}/server/_fakes/mocks`);
 
 const routeUtils = require(`${serverRoot}/routes/utils`);
-let app;
 
 const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application`);
@@ -18,6 +17,9 @@ const { sessionSignedIn, SIGNED_IN_COOKIE } = require(`${testRoot}/server/_fakes
 const singleAppData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
 
 let stubLogger;
+let app;
+
+const signedInCookie = [`__SID=${SIGNED_IN_COOKIE}`];
 
 describe('routes/applications.js', () => {
   beforeEach(done => {
@@ -44,7 +46,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubGetApplicationList).to.have.been.calledThrice;
@@ -61,7 +63,7 @@ describe('routes/applications.js', () => {
       .returns(genericServerException);
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubGetListReject).to.have.been.called;
@@ -75,7 +77,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/add';
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(response.text).to.include('New application');
@@ -91,7 +93,7 @@ describe('routes/applications.js', () => {
       .returns(Promise.resolve(serviceData.getApplicationList));
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledTwice;
@@ -114,7 +116,7 @@ describe('routes/applications.js', () => {
       .returns(Promise.resolve(serviceData.getApplicationList));
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -133,7 +135,7 @@ describe('routes/applications.js', () => {
     const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplication).to.have.been.calledOnce;
@@ -153,7 +155,7 @@ describe('routes/applications.js', () => {
       .returns(genericServerException);
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplicationReject).to.have.been.calledOnce;
@@ -170,7 +172,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplication).to.have.been.calledOnce;
@@ -184,7 +186,7 @@ describe('routes/applications.js', () => {
     const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleKey).to.have.been.calledOnce;
@@ -202,7 +204,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplicationError).to.have.been.calledOnce;
@@ -222,7 +224,7 @@ describe('routes/applications.js', () => {
       .returns(genericServerException);
     return request(app)
       .get(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleKey).to.have.been.calledOnce;
@@ -241,7 +243,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.callCount(4);
@@ -261,7 +263,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -281,7 +283,7 @@ describe('routes/applications.js', () => {
     const stubGetApplicationKeyss = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(true));
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledTwice;
         expect(stubDeleteKey).to.have.been.calledOnce;
@@ -299,7 +301,7 @@ describe('routes/applications.js', () => {
       .returns(genericServerException);
     return request(app)
       .post(slug)
-      .set('Cookie', [`__SID=${SIGNED_IN_COOKIE}`])
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledOnce;
