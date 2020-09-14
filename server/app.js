@@ -29,7 +29,6 @@ const njk = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(app.get('views'),
     nunjucksLoaderOpts)
 );
-njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 njk.express(app);
 app.set('view engine', 'njk');
 
@@ -52,6 +51,7 @@ njk.addGlobal('cdnUrlJs', process.env.CDN_URL_JS);
 njk.addGlobal('cdnHost', process.env.CDN_HOST);
 njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
+njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 
 /**
   * COMMENTING OUT SESSION HANDLING FOR TIME BEING
