@@ -65,7 +65,7 @@ describe('routes/applications.js', () => {
       .returns(genericServerException);
     return request(app)
       .get(slug)
-      .set('Cookie', cookieStr)
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubGetListReject).to.have.been.called;
@@ -82,7 +82,7 @@ describe('routes/applications.js', () => {
       .returns(Promise.resolve(serviceData.getList));
     return request(app)
       .get(slug)
-      .set('Cookie', cookieStr)
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubGetApplicationList).to.have.been.calledTwice;
@@ -357,7 +357,7 @@ describe('routes/applications.js', () => {
     const stubDeleteApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApplication').returns(Promise.resolve(true));
     return request(app)
       .post(slug)
-      .set('Cookie', cookieStr)
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubDeleteApplication).to.have.been.calledOnce;
@@ -374,7 +374,7 @@ describe('routes/applications.js', () => {
 
     return request(app)
       .post(slug)
-      .set('Cookie', cookieStr)
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubDeleteApplication).to.have.been.calledOnce;
@@ -390,7 +390,7 @@ describe('routes/applications.js', () => {
     const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
     return request(app)
       .get(slug)
-      .set('Cookie', cookieStr)
+      .set('Cookie', signedInCookie)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleKey).to.have.been.calledOnce;
