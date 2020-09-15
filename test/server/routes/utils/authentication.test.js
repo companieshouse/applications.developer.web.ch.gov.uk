@@ -7,7 +7,7 @@ let app;
 
 const signedOutCookie = [`__SID=${SIGNED_OUT_COOKIE}`];
 
-describe.only('routes/applications.js', () => {
+describe('routes/applications.js', () => {
   describe('signed out routes', () => {
     beforeEach(done => {
       sinon.reset();

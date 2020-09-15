@@ -24,7 +24,7 @@ const routeUtils = {
       this_errors: null,
       active_page: activePage,
       title: title,
-      userProfile: req.session.data.signin_info.user_profile
+      user_profile: req.session.data.signin_info.user_profile
     };
   }
 };
