@@ -7,7 +7,7 @@ let app;
 
 const signedOutCookie = [`${process.env.COOKIE_NAME}=${SIGNED_OUT_COOKIE}`];
 
-describe('routes/applications.js', () => {
+describe('routes/authentication.js', () => {
   describe('signed out routes', () => {
     beforeEach(done => {
       sinon.reset();
