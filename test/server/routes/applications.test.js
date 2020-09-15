@@ -19,7 +19,7 @@ const singleAppData = require(`${testRoot}/server/_fakes/data/services/singleApp
 let stubLogger;
 let app;
 
-const signedInCookie = [`__SID=${SIGNED_IN_COOKIE}`];
+const signedInCookie = [`${process.env.COOKIE_NAME}=${SIGNED_IN_COOKIE}`];
 
 describe('routes/applications.js', () => {
   beforeEach(done => {

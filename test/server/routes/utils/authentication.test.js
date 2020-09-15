@@ -5,7 +5,7 @@ const { sessionSignedOut, SIGNED_OUT_COOKIE } = require(`${testRoot}/server/_fak
 
 let app;
 
-const signedOutCookie = [`__SID=${SIGNED_OUT_COOKIE}`];
+const signedOutCookie = [`${process.env.COOKIE_NAME}=${SIGNED_OUT_COOKIE}`];
 
 describe('routes/applications.js', () => {
   describe('signed out routes', () => {
