@@ -269,6 +269,31 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
+  it('should delete an application using the applications.api service', () => {
+    // static test vars
+    const mockURL = 'https://mockurl.com';
+    const mockId = 'app123';
+    const finalVars = Object.assign({}, baseOptions);
+    finalVars.method = 'DELETE';
+    finalVars.url = mockURL + '/applications/' + mockId;
+
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve());
+
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+    // Call method
+    expect(applicationDeveloper.deleteApplication(mockId, 'mock'))
+      // Assertions
+      .to.eventually.eql();
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
   it('getBaseUrlForPostFormData should return empty string when empty or undefined environment is requested', () => {
     const env = 'future';
     const data = {

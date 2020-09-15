@@ -46,13 +46,12 @@
           <input class="govuk-radios__input" id="testEnvironment" name="environment" type="radio" value="test" aria-controls="conditional-environment"{{ ' checked="checked"' if this_data.environment === 'test' }} />
           <label class="govuk-label govuk-radios__label" for="testEnvironment">Test</label>
         </div>
-
+        {% if FUTURE_DISPLAY_FLAG === 'true' %}
         <div class="govuk-radios__conditional" id="conditional-environment">
 {# govuk-radios__conditional--hidden #}
           <div class="govuk-form-group">
 
             <fieldset class="govuk-fieldset">
-
               <legend class="govuk-fieldset__legend">In development for upcoming Companies House changes</legend>
               <div class="govuk-checkboxes">
                 <div class="govuk-checkboxes__item">
@@ -63,7 +62,7 @@
             </fieldset>
           </div>
         </div>
-
+        {% endif %}
         <div class="govuk-radios__item">
           <input class="govuk-radios__input" id="liveEnvironment" name="environment" type="radio" value="live"{{ ' checked="checked"' if this_data.environment === 'live' }} />
           <label class="govuk-label govuk-radios__label" for="liveEnvironment">Live</label>
@@ -96,8 +95,6 @@
   </div>
 
   <input class="govuk-button" id="submitApp" name="submitApp" type="submit" value="create" />
-  {#<button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Create</button>#}
-
   <a href="/" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
     Cancel
   </a>

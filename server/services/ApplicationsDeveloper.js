@@ -147,6 +147,15 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
+  deleteApplication (applicationId, environment) {
+    const baseUrl = this.server.baseUrl[environment];
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'DELETE',
+      url: `${baseUrl}/applications/${applicationId}`
+    });
+    logger.info('Service request to delete data, with payload: ', options);
+    return this.request(options);
+  }
 
   getKeysForApplication (appId, environment) {
       const options = Object.assign(this._getBaseOptions(), {

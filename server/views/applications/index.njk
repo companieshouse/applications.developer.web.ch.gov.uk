@@ -26,15 +26,29 @@
           </th>
         </tr>
       {% endfor %}
-      {% for app in this_data.future.items %}
-        <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">
-            <a href="/manage-applications/{{ app.id }}/view/future">{{ app.name }}</a>
-          </th>
-        </tr>
-      {% endfor %}
     </tbody>
   </table>
+  {% if FUTURE_DISPLAY_FLAG === 'true' %}
+  <h2 class="govuk-heading-l">Upcoming test applications</h2>
+  <h3 class="govuk-heading-s govuk-!-font-weight-regular">In development for upcoming Companies House changes</h3>
+  <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Application name</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        {% for app in this_data.future.items %}
+          <tr class="govuk-table__row">
+            <th scope="row" class="govuk-table__header">
+              <a href="/manage-applications/{{ app.id }}/view/future">{{ app.name }}</a>
+            </th>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+          
   <h2 class="govuk-heading-l">Live applications</h2>
   <p class="govuk-body">Released and in use publicly</p>
   <table class="govuk-table">

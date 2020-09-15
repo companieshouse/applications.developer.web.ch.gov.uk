@@ -47,4 +47,14 @@ describe('routes/utils/index', () => {
       expect(stubExceptionLogger).to.have.been.calledWith(exceptionWithNoStatus);
     });
   });
+
+  describe('correctly format view data', () => {
+    it('places parameters in correct place', () => {
+      const mockTitle = 'title';
+      const mockActivePage = 'activePage';
+      const viewData = ModuleUnderTest.createViewData(mockTitle, mockActivePage);
+      expect(viewData.title).to.eql(mockTitle);
+      expect(viewData.active_page).to.eql(mockActivePage);
+    });
+  });
 });
