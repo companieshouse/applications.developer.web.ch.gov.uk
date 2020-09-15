@@ -11,6 +11,7 @@ global.serverRoot = __dirname;
 
 const { SessionStore, SessionMiddleware } = require('ch-node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
+const authentication = require(`${serverRoot}/routes/utils/authentication`);
 
 // log requests
 app.use(morgan('combined'));
@@ -65,29 +66,7 @@ njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
 
 // check if a user is logged in and redirect accordingly
-app.use((req, res, next) => {
-  try {
-    let authCheck = false;
-    if (typeof req.session !== 'undefined') {
-      if (typeof req.session.data.signin_info !== 'undefined') {
-        if (req.session.data.signin_info.signed_in === 1) {
-          njk.addGlobal('userProfile', req.session.data.signin_info.user_profile);
-          authCheck = true;
-        }
-      }
-    }
-    if (!authCheck) {
-      throw new Error('User not signed in');
-    } else {
-      next();
-    }
-  } catch (err) {
-    Utility.logException(err);
-    const port = req.socket.localPort && req.socket.localPort !== '80' ? ':' + req.socket.localPort : '';
-    const returnUrl = `${req.protocol}://${req.hostname}${port}${req.originalUrl}`;
-    return res.redirect(302, `${process.env.ACCOUNT_URL}/signin?return_to=${returnUrl}`);
-  }
-});
+app.use(authentication);
 
 // channel all requests through the router
 require('./router')(app);
