@@ -82,8 +82,8 @@ class ApplicationsDeveloper {
   addNewRestKey (data, appId, env) {
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(", ");
-    javaScriptDomains = data.javaScriptDomains.split(", ");
+    restrictedIps = data.restrictedIps.split(",");
+    javaScriptDomains = data.javaScriptDomains.split(",");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -100,7 +100,7 @@ class ApplicationsDeveloper {
 
   addNewWebKey(data, appId, env){
     let restrictedURIs = [];
-    restrictedURIs = data.restrictedURIs.split(", ");
+    restrictedURIs = data.restrictedURIs.split(",");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -116,7 +116,7 @@ class ApplicationsDeveloper {
 
   addNewStreamKey(data, appId, env){
     let restrictedIps = [];
-    restrictedIps = data.restrictedIps.split(", ");
+    restrictedIps = data.restrictedIps.split(",");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {

@@ -133,6 +133,29 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
+  it('should serve add application with an error on validation', () => {
+    const slug = '/manage-applications/add';
+    const validationException = exceptions.validationException;
+    const stubValidatorReject = sinon.stub(Validator.prototype, 'addApplication').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
+      .returns(Promise.resolve(serviceData.getApplicationList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', cookieStr)
+      .send(routeData.addApplication)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledWith(routeData.addApplication);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+        expect(stubSave).to.not.have.been.called;
+        expect(stubGetList).to.not.have.been.called;
+      });
+  });
   it('should serve up details of a single application', () => {
     const slug = '/manage-applications/appId123/view/test';
     const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));

@@ -66,7 +66,15 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   const id = req.params.appId;
   const env = req.params.env;
-  const viewData = routeUtils.createViewData('View application', 'view-application');
+  const viewData = {
+    this_data: {
+      appId: req.params.appId,
+      env: env
+    },
+    this_errors: null,
+    active_page: 'view-application',
+    title: 'View application'
+  };
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, env),
