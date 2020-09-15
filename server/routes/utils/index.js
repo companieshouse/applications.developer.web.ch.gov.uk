@@ -16,6 +16,15 @@ const routeUtils = {
       e.genericError = errorManifest.serverError;
     }
     return e;
+  },
+
+  createViewData: (title, activePage) => {
+    return {
+      this_data: null,
+      this_errors: null,
+      active_page: activePage,
+      title: title
+    };
   }
 };
 
