@@ -100,13 +100,13 @@ class ApplicationsDeveloper {
 
   addNewWebKey(data, appId, env){
     let restrictedURIs = [];
-    restrictedURIs = data.restrictedURIs.split(",");
+    redirectURIs = data.redirectURIs.split(",");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
         name: data.keyName,
         description: data.keyDescription,
-        restricted_uris: restrictedURIs
+        restricted_uris: redirectURIs
       },
       url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/web`
     });
