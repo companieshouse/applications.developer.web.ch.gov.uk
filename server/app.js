@@ -64,6 +64,7 @@ njk.addGlobal('cdnUrlJs', process.env.CDN_URL_JS);
 njk.addGlobal('cdnHost', process.env.CDN_HOST);
 njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
+njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 
 // check if a user is logged in and redirect accordingly
 app.use(authentication);
