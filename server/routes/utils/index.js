@@ -18,12 +18,13 @@ const routeUtils = {
     return e;
   },
 
-  createViewData: (title, activePage) => {
+  createViewData: (title, activePage, req) => {
     return {
       this_data: null,
       this_errors: null,
       active_page: activePage,
-      title: title
+      title: title,
+      user_profile: req.session.data.signin_info.user_profile
     };
   }
 };

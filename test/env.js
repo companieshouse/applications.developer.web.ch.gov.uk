@@ -7,7 +7,9 @@ const envVars = {
     process.env.NODE_BASE_URL = 'http://localhost:3009';
     process.env.NODE_BASE_URL_SECURE = 'http://localhost:3009';
     process.env.CACHE_SERVER = 'localhost:1234';
-    process.env.COOKIE_SECRET = 'xyz123';
+    process.env.COOKIE_NAME = '__SID';
+    process.env.COOKIE_DOMAIN = 'chs-dev.internal';
+    process.env.COOKIE_SECRET = 'Xy6onkjQWF0TkRn0hfdqUw==';
     process.env.NUNJUCKS_LOADER_WATCH = false;
     process.env.NUNJUCKS_LOADER_NO_CACHE = true;
     process.env.CDN_HOST = 'http://localhost:3009';

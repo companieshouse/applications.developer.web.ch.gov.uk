@@ -12,7 +12,7 @@ const routeViews = 'applications';
 
 router.get('(/manage-applications)?', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  const viewData = routeUtils.createViewData('Application overview', 'application-overview');
+  const viewData = routeUtils.createViewData('Application overview', 'application-overview', req);
   const applicationQueries = [
     applicationsDeveloperService.getApplicationList('live'),
     applicationsDeveloperService.getApplicationList('test')
@@ -43,13 +43,13 @@ router.get('(/manage-applications)?', (req, res, next) => {
 
 router.get('/manage-applications/add', (req, res, next) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
-  const viewData = routeUtils.createViewData('Add an application', 'add-application');
+  const viewData = routeUtils.createViewData('Add an application', 'add-application', req);
   res.render(`${routeViews}/add.njk`, viewData);
 });
 
 router.post('/manage-applications/add', (req, res, next) => {
   logger.info(`POST request to process add application page: ${req.path}`);
-  const viewData = routeUtils.createViewData('Add an application', 'add-application');
+  const viewData = routeUtils.createViewData('Add an application', 'add-application', req);
   viewData.this_data = req.body;
   validator.addApplication(req.body)
     .then(_ => {
@@ -66,7 +66,7 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   const id = req.params.appId;
   const env = req.params.env;
-  const viewData = routeUtils.createViewData('View application', 'view-application');
+  const viewData = routeUtils.createViewData('View application', 'view-application', req);
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, env),
@@ -91,7 +91,7 @@ router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
   const id = req.params.appId;
   const env = req.params.env;
   const confirmDelete = typeof req.params.confirm !== 'undefined' && req.params.confirm === 'confirm';
-  const viewData = routeUtils.createViewData('Edit application', 'application-overview');
+  const viewData = routeUtils.createViewData('Edit application', 'application-overview', req);
   viewData.this_data = {
     appId: id,
     env: env,
@@ -137,7 +137,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
   const payload = req.body;
   payload.env = env;
   payload.appId = appId;
-  const viewData = routeUtils.createViewData('Update an application', 'application-overview');
+  const viewData = routeUtils.createViewData('Update an application', 'application-overview', req);
   viewData.this_data = payload;
   validator.updateApplication(payload)
     .then(_ => {
@@ -157,7 +157,7 @@ router.get('/manage-applications/:appId/delete', (req, res, next) => {
 
 router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
   logger.info(`GET request to serve index page: ${req.path}`);
-  const viewData = routeUtils.createViewData('Add Key', 'application-overview');
+  const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
 
@@ -167,7 +167,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
   const keyId = req.params.keyId;
   const keyType = req.params.keyType;
   const env = req.params.env;
-  const viewData = routeUtils.createViewData('Delete Key', 'view-application');
+  const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
   applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
     .then(
       apiKey => {
@@ -199,7 +199,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
       res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(
       err => {
-        const viewData = routeUtils.createViewData('Delete Key', 'view-application');
+        const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
         viewData.this_errors = routeUtils.processException(err);
         res.render(`${routeViews}/delete_key.njk`, viewData);
       }
@@ -208,13 +208,13 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
 
 router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {
   logger.info(`GET request to update a key: ${req.path}`);
-  const viewData = routeUtils.createViewData('Update Key', 'application-overview');
+  const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
   res.render(`${routeViews}/update_key.njk`, viewData);
 });
 
 router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
   logger.info(`POST request to update a key: ${req.path}`);
-  const viewData = routeUtils.createViewData('Update Key', 'application-overview');
+  const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
   res.render(`${routeViews}/index.njk`, viewData);
 });
 
