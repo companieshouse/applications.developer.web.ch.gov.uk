@@ -15,7 +15,9 @@ const routeData = {
   addNewKey:{
     keyName: 'key demo',
     keyDescription: 'description',
-    keyType: 'rest'
+    keyType: 'rest',
+    restrictedIps: '00000',
+    javaScriptDomains: 'javascriptDomain'
   }
 };
 
