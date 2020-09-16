@@ -97,7 +97,7 @@ class ApplicationsDeveloper {
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
-
+//addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
   addNewWebKey(data, appId, env){
     let restrictedURIs = [];
     redirectURIs = data.redirectURIs.split(",");
@@ -113,7 +113,7 @@ class ApplicationsDeveloper {
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
-
+//addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
   addNewStreamKey(data, appId, env){
     let restrictedIps = [];
     restrictedIps = data.restrictedIps.split(",");
@@ -158,10 +158,10 @@ class ApplicationsDeveloper {
   }
 
   getKeysForApplication (appId, environment) {
-      const options = Object.assign(this._getBaseOptions(), {
-        method: 'GET',
-        url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
-      });
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'GET',
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
+    });
     logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
     return this.request(options);
   }

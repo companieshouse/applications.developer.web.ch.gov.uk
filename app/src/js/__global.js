@@ -15,26 +15,26 @@ function showInDevelopmentOption () {
   }
 }
 
-document.getElementById('restricted-ips').style.display='none';
-document.getElementById('js-domains').style.display='none';
-document.getElementById('redirect-uris').style.display='none';
+function clearDivs(){
+  document.getElementById('restricted-ips').style.display='none';
+  document.getElementById('js-domains').style.display='none';
+  document.getElementById('redirect-uris').style.display='none';
+}
 
 function restClick(){
+  clearDivs();
   document.getElementById('restricted-ips').style.visibility='visible';
   document.getElementById('restricted-ips').style.display = 'block';
   document.getElementById('js-domains').style.visibility='visible';
   document.getElementById('js-domains').style.display = 'block';
-  document.getElementById('redirect-uris').style.display='none';
 }
 function streamClick(){
+  clearDivs();
   document.getElementById('restricted-ips').style.visibility='visible';
   document.getElementById('restricted-ips').style.display = 'block';
-  document.getElementById('js-domains').style.display='none';
-  document.getElementById('redirect-uris').style.display='none';
 }
 function webClick(){
-  document.getElementById('restricted-ips').style.display='none';
-  document.getElementById('js-domains').style.display='none';
+  clearDivs();
   document.getElementById('redirect-uris').style.visibility='visible';
   document.getElementById('redirect-uris').style.display = 'block';
 }

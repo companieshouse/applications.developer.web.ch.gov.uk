@@ -89,7 +89,6 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
     res.render(`${routeViews}/view.njk`, viewData);
   });
 });
-
 router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
   logger.info(`GET request to serve update application page: ${req.path}`);
   const id = req.params.appId;
