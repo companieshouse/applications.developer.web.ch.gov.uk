@@ -3,13 +3,15 @@ const nunjucks = require('nunjucks');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const path = require('path');
+const Redis = require('ioredis');
 
 const app = express();
 const morgan = require('morgan');
 global.serverRoot = __dirname;
 
-const Session = require(`${serverRoot}/lib/Session`);
+const { SessionStore, SessionMiddleware } = require('ch-node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
+const authentication = require(`${serverRoot}/routes/utils/authentication`);
 
 // log requests
 app.use(morgan('combined'));
@@ -41,6 +43,17 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const sessionStore = new SessionStore(new Redis(`redis://${process.env.CACHE_SERVER}`));
+const middleware = SessionMiddleware({
+  cookieName: process.env.COOKIE_NAME,
+  cookieDomain: process.env.COOKIE_DOMAIN,
+  cookieSecureFlag: process.env.COOKIE_SECURE_ONLY,
+  cookieTimeToLiveInSeconds: process.env.DEFAULT_SESSION_EXPIRATION,
+  cookieSecret: process.env.COOKIE_SECRET
+}, sessionStore);
+
+app.use(middleware);
+
 // unhandled errors
 app.use((err, req, res, next) => {
   Utility.logException(err);
@@ -53,22 +66,8 @@ njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
 njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 
-/**
-  * COMMENTING OUT SESSION HANDLING FOR TIME BEING
-  *
-  // load the session data into res.locals
-  app.use((req, res, next) => {
-    const session = new Session(req, res);
-    session.read()
-      .then(data => {
-        res.locals.session = data;
-        next();
-      }).catch(err => {
-        Utility.logException(err);
-        next();
-      });
-  });
-**/
+// check if a user is logged in and redirect accordingly
+app.use(authentication);
 
 // channel all requests through the router
 require('./router')(app);

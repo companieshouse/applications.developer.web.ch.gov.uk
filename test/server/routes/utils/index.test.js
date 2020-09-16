@@ -52,9 +52,21 @@ describe('routes/utils/index', () => {
     it('places parameters in correct place', () => {
       const mockTitle = 'title';
       const mockActivePage = 'activePage';
-      const viewData = ModuleUnderTest.createViewData(mockTitle, mockActivePage);
-      expect(viewData.title).to.eql(mockTitle);
-      expect(viewData.active_page).to.eql(mockActivePage);
+      const mockRequest = {
+        session: {
+          data: {
+            signin_info: {
+              user_profile: {
+                email: 'test@mail.com'
+              }
+            }
+          }
+        }
+      };
+      const viewData = ModuleUnderTest.createViewData(mockTitle, mockActivePage, mockRequest);
+      expect(viewData.title).to.equal(mockTitle);
+      expect(viewData.active_page).to.equal(mockActivePage);
+      expect(viewData.user_profile.email).to.equal('test@mail.com');
     });
   });
 });
