@@ -13,8 +13,7 @@ const authentication = (req, res, next) => {
     if (authCheck) {
       next();
     } else {
-      const port = req.socket.localPort && req.socket.localPort !== '80' ? ':' + req.socket.localPort : '';
-      const returnUrl = `${req.protocol}://${req.hostname}${port}${req.originalUrl}`;
+      const returnUrl = process.env.DEV_HUB_URL;
       return res.redirect(302, `${process.env.ACCOUNT_URL}/signin?return_to=${returnUrl}`);
     }
   } catch (err) {
