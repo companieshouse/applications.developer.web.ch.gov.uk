@@ -13,8 +13,7 @@ const authentication = (req, res, next) => {
     if (authCheck) {
       next();
     } else {
-      const returnUrl = process.env.DEV_HUB_URL;
-      return res.redirect(302, `${process.env.ACCOUNT_URL}/signin?return_to=${returnUrl}`);
+      return res.redirect(302, `${process.env.DEV_HUB_URL}/signin`);
     }
   } catch (err) {
     Utility.logException(err);
