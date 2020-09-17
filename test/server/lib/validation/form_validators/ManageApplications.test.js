@@ -181,4 +181,111 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubValidUrl).to.have.been.calledTwice;
     expect(stubLogger).to.have.been.calledOnce;
   });
+  it('should validate the addNewKey sucessfully and return true', () => {
+    const payload = {
+      keyName: 'Hello',
+      keyDescription: 'World',
+      keyType: 'rest',
+      restrictedIps: '0.0.0.0, 1.1.1.1.1',
+      javaScriptDomains: 'js0, js1'
+    };
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.eventually.equal(true);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+  it('should validate the addNewKey and return invalid type validation error', () => {
+    const payload = {
+      keyName: 'Hello',
+      keyDescription: 'World',
+      keyType: '',
+      restrictedIps: '',
+      javaScriptDomains: ''
+    };
+    const validationException = exceptions.validationException;
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate the addNewKey and return blank name validation error', () => {
+    const payload = {
+      keyName: '',
+      keyDescription: 'World',
+      keyType: 'rest',
+      restrictedIps: '',
+      javaScriptDomains: ''
+    };
+    const validationException = exceptions.validationException;
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(false);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate the addNewKey and return invalid name validation error', () => {
+    const payload = {
+      keyName: ')))))(((((******INVALID_NAME',
+      keyDescription: 'World',
+      keyType: 'rest',
+      restrictedIps: '',
+      javaScriptDomains: ''
+    };
+    const validationException = exceptions.validationException;
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(false);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate the addNewKey and return blank description validation error', () => {
+    const payload = {
+      keyName: 'Hello',
+      keyDescription: '',
+      keyType: 'rest',
+      restrictedIps: '',
+      javaScriptDomains: ''
+    };
+    const validationException = exceptions.validationException;
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate the addNewKey and return invalid description validation error', () => {
+    const payload = {
+      keyName: 'Hello',
+      keyDescription: '//@,///w//w/w/////////1!',
+      keyType: 'rest',
+      restrictedIps: '',
+      javaScriptDomains: ''
+    };
+    const validationException = exceptions.validationException;
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
 });

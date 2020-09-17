@@ -202,6 +202,36 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubOpts).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
+  it('should save a rest key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const finalVars = Object.assign({}, baseOptions);
+    const mockId = 'test';
+    finalVars.method = 'POST';
+    finalVars.url = mockURL + '/applications/'+mockId+'/api-clients/key';
+    finalVars.data = {
+      description: 'description',
+      name: 'key demo',
+      restricted_ips: ['00000'],
+      js_domains: ['javascriptDomain']
+    };
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.addNewKey));
+
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+    // Call method
+    expect(applicationDeveloper.addNewRestKey(routeData.addNewKey, mockId, mockEnv))
+      // Assertions
+      .to.eventually.eql(routeData.addNewKey);
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
 
   it('getBaseUrlForPostFormData should return environment live when live is requested', () => {
     const env = 'live';

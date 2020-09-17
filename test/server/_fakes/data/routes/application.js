@@ -11,6 +11,13 @@ const routeData = {
     privacyPolicy: 'priv',
     appId: 'app123',
     env: 'test'
+  },
+  addNewKey:{
+    keyName: 'key demo',
+    keyDescription: 'description',
+    keyType: 'rest',
+    restrictedIps: '00000',
+    javaScriptDomains: 'javascriptDomain'
   }
 };
 

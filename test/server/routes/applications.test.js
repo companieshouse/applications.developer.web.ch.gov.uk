@@ -109,7 +109,6 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
-
   it('should serve up the add application page', () => {
     const slug = '/manage-applications/add';
     return request(app)
@@ -121,7 +120,6 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
-
   it('should save an application and redirect to the application overview page on the /manage-applications mount path', () => {
     const slug = '/manage-applications/add';
     process.env.FUTURE_DISPLAY_FLAG = 'true';
@@ -143,7 +141,6 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
-
   it('should serve add application with an error on validation', () => {
     const slug = '/manage-applications/add';
     const validationException = exceptions.validationException;
@@ -351,6 +348,61 @@ describe('routes/applications.js', () => {
         expect(response).to.have.status(200);
       });
   });
+  it('should serve up the add new key page', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    return request(app)
+      .get(slug)
+      .set('Cookie', signedInCookie)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(response.text).to.include('New API client key');
+        expect(response).to.have.status(200);
+      });
+  });
+  it('should save a rest key and redirect to the view application page on the /manage-applications mount path', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    const stubAddKeyValidator = sinon.stub(Validator.prototype, 'addNewKey').returns(Promise.resolve(true));
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+      .returns(Promise.resolve(keyData.getApiKeyList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', signedInCookie)
+      .send(routeData.addNewKey)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledThrice;
+        expect(stubAddKeyValidator).to.have.been.calledOnce;
+        expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewKey);
+        expect(stubSave).to.have.been.calledOnce;
+        expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
+        expect(stubGetList).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+      });
+  });
+  it('should serve add new key with an error on validation', () => {
+    const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
+    const validationException = exceptions.validationException;
+    const stubValidatorReject = sinon.stub(Validator.prototype, 'addNewKey').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
+    const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+      .returns(Promise.resolve(keyData.getApiKeyList));
+    return request(app)
+      .post(slug)
+      .set('Cookie', signedInCookie)
+      .send(routeData.addNewKey)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledOnce;
+        expect(stubValidatorReject).to.have.been.calledWith(routeData.addNewKey);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+        expect(stubSave).to.not.have.been.called;
+        expect(stubGetList).to.not.have.been.called;
+      })
+      });
+
 
   it('should delete an application and then redirect to /manage-applications', () => {
     const slug = '/manage-applications/mockAppId/delete/mockEnv';

@@ -23,7 +23,7 @@
     {# <script>if (typeof window.GOVUK === 'undefined') document.body.className = document.body.className.replace('js-enabled', '');</script> #}
   </head>
 
-  <body class="govuk-template__body">
+  <body class="govuk-template__body" onload="clearDivs();">
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <a href="#main-page-content" class="govuk-skip-link">Skip to main content</a>

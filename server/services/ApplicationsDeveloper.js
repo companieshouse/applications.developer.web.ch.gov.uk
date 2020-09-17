@@ -79,6 +79,58 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
+  addNewRestKey (data, appId, env) {
+    let restrictedIps = [];
+    let javaScriptDomains = [];
+    restrictedIps = data.restrictedIps.split(",");
+    javaScriptDomains = data.javaScriptDomains.split(",");
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restricted_ips: restrictedIps,
+        js_domains: javaScriptDomains
+      },
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key`
+    });
+    logger.info('Service request to save key data, with payload: ', options);
+    return this.request(options);
+  }
+//addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewWebKey(data, appId, env){
+    let restrictedURIs = [];
+    redirectURIs = data.redirectURIs.split(",");
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restricted_uris: redirectURIs
+      },
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/web`
+    });
+    logger.info('Service request to save key data, with payload: ', options);
+    return this.request(options);
+  }
+//addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewStreamKey(data, appId, env){
+    let restrictedIps = [];
+    restrictedIps = data.restrictedIps.split(",");
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'POST',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restricted_ips: restrictedIps
+      },
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/stream`
+    });
+    logger.info('Service request to save key data, with payload: ', options);
+    return this.request(options);
+  }
+
+
   updateApplication (data) {
     const baseUrl = this.server.baseUrl[data.env];
     const options = Object.assign(this._getBaseOptions(), {
@@ -112,7 +164,7 @@ class ApplicationsDeveloper {
     });
     logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
     return this.request(options);
-  };
+  }
 
   getSpecificKey (appId, keyId, keyType, environment) {
     const options = Object.assign(this._getBaseOptions(), {

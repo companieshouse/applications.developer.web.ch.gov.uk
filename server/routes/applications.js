@@ -67,17 +67,18 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   const id = req.params.appId;
   const env = req.params.env;
   const viewData = routeUtils.createViewData('View application', 'view-application', req);
+  viewData.this_data = {
+    appId: req.params.appId,
+    env: env
+  };
+  viewData.this_errors = null;
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, env),
       applicationsDeveloperService.getKeysForApplication(id, env)
     ]).then(([appData, keyData]) => {
-    viewData.this_data = {
-      appId: req.params.appId,
-      app: appData.data,
-      keys: keyData.data,
-      env: env
-    };
+    viewData.this_data.app = appData.data;
+    viewData.this_data.keys = keyData.data;
     viewData.title = `${viewData.title}: ${appData.data.name}`;
     res.render(`${routeViews}/view.njk`, viewData);
   }).catch(err => {
@@ -114,12 +115,7 @@ router.post('/manage-applications/:appId/delete/:env', (req, res) => {
   logger.info(`DELETE request to update the application: ${req.path}`);
   const appId = req.params.appId;
   const env = req.params.env;
-  const viewData = {
-    this_data: null,
-    this_errors: null,
-    active_page: 'application-overview',
-    title: 'Edit application'
-  };
+  const viewData = routeUtils.createViewData('Edit application', 'application-overview', req);
 
   applicationsDeveloperService.deleteApplication(appId, env)
     .then(_ => {
@@ -155,10 +151,41 @@ router.get('/manage-applications/:appId/delete', (req, res, next) => {
   res.render(`${routeViews}/index.njk`);
 });
 
-router.get('/manage-applications/:appId/api-key/add', (req, res, next) => {
-  logger.info(`GET request to serve index page: ${req.path}`);
+router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
+  logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
+  viewData.this_data = {
+    appId: req.params.appId,
+    env: req.params.env
+  };
+  viewData.this_errors = null;
   res.render(`${routeViews}/add_key.njk`, viewData);
+});
+
+router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
+  logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
+  const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
+  viewData.this_data = {
+    body: req.body,
+    appId: req.params.appId,
+    env: req.params.env
+  };
+  viewData.this_errors = null;
+  validator.addNewKey(req.body)
+    .then(_ => {
+      if(req.body.keyType==='rest'){
+        applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
+      }else if(req.body.keyType==='web'){
+        applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
+      }else if(req.body.keyType==='stream'){
+        applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
+      }
+    }).then(_ => {
+      return res.redirect(302, "/manage-applications/"+req.params.appId+"/view/"+req.params.env);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/add_key.njk`, viewData);
+    });
 });
 
 router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {

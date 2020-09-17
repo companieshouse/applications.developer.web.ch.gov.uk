@@ -45,6 +45,37 @@ class ManageApplication extends Validator {
       }
     });
   }
+  addNewKey (payload) {
+    logger.info('Validating key payload data');
+    this.errors = {};
+    this._formatIncomingPayload(payload);
+    return new Promise((resolve, reject) => {
+      if (!this.isValidKeyName(payload.keyName)) {
+        if (payload.keyName.length === 0) {
+          this.errors.name = errorManifest.name.blank;
+        } else {
+          this.errors.name = errorManifest.name.invalid;
+        }
+      }
+      if (!this.isValidDescription(payload.keyDescription)) {
+        if (payload.keyDescription.length === 0) {
+          this.errors.description = errorManifest.description.blank;
+        } else {
+          this.errors.description = errorManifest.description.invalid;
+        }
+      }
+      if (typeof payload.keyType === 'undefined' || payload.keyType === '') {
+        this.errors.type = errorManifest.type.blank;
+      }
+      if (Object.keys(this.errors).length === 0) {
+        resolve(true);
+      } else {
+        const e = this.getErrorSignature();
+        e.stack = this.errors;
+        reject(e);
+      }
+    });
+  }
 
   validateApplication (payload) {
     logger.info('Validating application payload data');
