@@ -131,13 +131,17 @@ class ApplicationsDeveloper {
   }
 
   updateKey (data) {
+    let restrictedIps = [];
+    let javaScriptDomains = [];
+    restrictedIps = data.restrictedIps.split(",");
+    javaScriptDomains = data.javaScriptDomains.split(",");
     const options = Object.assign(this._getBaseOptions(), {
       method: 'PUT',
       data: {
         name: data.keyName,
         description: data.keyDescription,
-        restriced_ips: data.restrictedIps,
-        js_domains: data.javaScriptDomains
+        restricted_ips: restrictedIps,
+        js_domains: javaScriptDomains
       },
       url: `${this.server.baseUrl[data.env]}/applications/${data.appId}/api-clients/key/${data.keyId}`
     });
