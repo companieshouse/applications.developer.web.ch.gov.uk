@@ -130,6 +130,20 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
+  updateKey (data) {
+    const options = Object.assign(this._getBaseOptions(), {
+      method: 'PUT',
+      data: {
+        name: data.keyName,
+        description: data.keyDescription,
+        restriced_ips: data.restrictedIps,
+        js_domains: data.javaScriptDomains
+      },
+      url: `${this.server.baseUrl[data.env]}/applications/${data.appId}/api-clients/key/${data.keyId}`
+    });
+    logger.info('Service request to update key data, with payload: ', options);
+    return this.request(options);
+  }
 
   updateApplication (data) {
     const baseUrl = this.server.baseUrl[data.env];

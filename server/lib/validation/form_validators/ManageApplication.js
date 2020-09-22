@@ -46,24 +46,8 @@ class ManageApplication extends Validator {
     });
   }
   addNewKey (payload) {
-    logger.info('Validating key payload data');
-    this.errors = {};
-    this._formatIncomingPayload(payload);
     return new Promise((resolve, reject) => {
-      if (!this.isValidKeyName(payload.keyName)) {
-        if (payload.keyName.length === 0) {
-          this.errors.name = errorManifest.name.blank;
-        } else {
-          this.errors.name = errorManifest.name.invalid;
-        }
-      }
-      if (!this.isValidDescription(payload.keyDescription)) {
-        if (payload.keyDescription.length === 0) {
-          this.errors.description = errorManifest.description.blank;
-        } else {
-          this.errors.description = errorManifest.description.invalid;
-        }
-      }
+      this.validateKey(payload);
       if (typeof payload.keyType === 'undefined' || payload.keyType === '') {
         this.errors.type = errorManifest.type.blank;
       }
@@ -75,6 +59,39 @@ class ManageApplication extends Validator {
         reject(e);
       }
     });
+  }
+
+  updateKey (payload) {
+    return new Promise((resolve, reject) => {
+      this.validateKey(payload);
+      if (Object.keys(this.errors).length === 0) {
+        resolve(true);
+      } else {
+        const e = this.getErrorSignature();
+        e.stack = this.errors;
+        reject(e);
+      }
+    });
+  }
+
+  validateKey (payload) {
+    logger.info('Validating key payload data');
+    this.errors = {};
+    this._formatIncomingPayload(payload);
+    if (!this.isValidKeyName(payload.keyName)) {
+      if (payload.keyName.length === 0) {
+        this.errors.name = errorManifest.name.blank;
+      } else {
+        this.errors.name = errorManifest.name.invalid;
+      }
+    }
+    if (!this.isValidDescription(payload.keyDescription)) {
+      if (payload.keyDescription.length === 0) {
+        this.errors.description = errorManifest.description.blank;
+      } else {
+        this.errors.description = errorManifest.description.invalid;
+      }
+    }
   }
 
   validateApplication (payload) {

@@ -7,18 +7,28 @@
       <h1 class="govuk-heading-xl">
         Update key
       </h1>
-      <form action="#" method="post">
+      <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/update/{{ this_data.env }}" method="post">
         <div class="govuk-form-group">
           <label class="govuk-label" for="update-key-name">
             Key name
           </label>
-          <input class="govuk-input" id="update-key-name" name="update-key-name" type="text">
+          <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="update-key-name" name="keyName" type="text" value="{{ this_data.keyName }}">
+          {% if this_errors.name is not undefined %}
+            <span id="err-id-name" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
+            </span>
+          {% endif %}
         </div>
         <div class="govuk-form-group">
           <label class="govuk-label" for="update-key-description-detail">
             Key description
           </label>
-          <textarea class="govuk-textarea" id="update-key-description-detail" name="update-key-description-detail" rows="5"></textarea>
+          <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="update-key-description-detail" name="keyDescription" rows="5">{{ this_data.keyDescription }}</textarea>
+          {% if this_errors.description is not undefined %}
+            <span id="err-id-description" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
+            </span>
+          {% endif %}
         </div>
         <p class="govuk-body">Rest API key</p>
         <p class="govuk-body" style="color: #016061">ff78ff7b-542c-4a2c-85ba-c8ebe26ad23f</p>
@@ -32,7 +42,7 @@
           <div id="restrictedIP-detail-hint" class="govuk-hint">
             Separate each IP with a comma.
           </div>
-          <textarea class="govuk-textarea" id="restrictedIP-detail" name="restrictedIP-detail" rows="5" aria-describedby="restrictedIP-detail-hint"></textarea>
+          <textarea class="govuk-textarea" id="restrictedIP-detail" name="restrictedIps" rows="5" aria-describedby="restrictedIP-detail-hint">{{ this_data.restrictedIps }}</textarea>
         </div>
         <div class="govuk-form-group">
           <label class="govuk-label" for="javascriptDomain-detail">
@@ -41,7 +51,7 @@
           <div id="javascriptDomain-detail-hint" class="govuk-hint">
             Separate each domain with a comma.
           </div>
-          <textarea class="govuk-textarea" id="javascriptDomain-detail" name="javascriptDomain-detail" rows="5" aria-describedby="javascriptDomain-detail-hint"></textarea>
+          <textarea class="govuk-textarea" id="javascriptDomain-detail" name="javaScriptDomains" rows="5" aria-describedby="javascriptDomain-detail-hint">{{ this_data.javaScriptDomains }}</textarea>
         </div>
         <button class="govuk-button govuk-!-margin-right-1" data-module="govuk-button">Update key</button>
         <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">Cancel</a>

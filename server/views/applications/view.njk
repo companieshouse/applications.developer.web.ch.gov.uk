@@ -47,7 +47,7 @@
                 <dd class="govuk-summary-list__value">{{ key.name }}</dd>
                 <dd class="govuk-summary-list__actions">
                   <p class="govuk-body govuk-!-font-size-16">
-                    <a href="/manage-applications/{{ this_data.appId }}/api-key/update">Update key</a>
+                    <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/update/{{ this_data.env }}">Update key</a>
                   </p>
                   <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">
                     <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/delete/{{ this_data.env }}">Delete key</a>
