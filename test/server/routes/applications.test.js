@@ -216,6 +216,21 @@ describe('routes/applications.js', () => {
       });
   });
 
+  it('should serve up the update key page on the /manage-applications/:appId/:keyType/:keyId/update/:env mount path', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
+    return request(app)
+      .get(slug)
+      .set('Cookie', signedInCookie)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(response.text).to.include('Update key');
+        expect(response).to.have.status(200);
+      });
+  });
+
   it('should serve up the delete application page on a Get', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
@@ -231,7 +246,7 @@ describe('routes/applications.js', () => {
       });
   });
 
-  it('should serve the update application page with an errpr on the /manage-applications/:appId/update/:env mount path', () => {
+  it('should serve the update application page with an error on the /manage-applications/:appId/update/:env mount path', () => {
     const slug = '/manage-applications/app123/update/test';
     const stubSingleApplicationError = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').rejects(new Error('Test error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException')
@@ -244,6 +259,28 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleApplicationError).to.have.been.calledOnce;
         expect(stubProcessException).to.have.been.calledOnce;
+        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response).to.have.status(200);
+      });
+  });
+
+  it('should serve up the update key page with an error on the /manage-applications/:appId/:keyType/:keyId/update/:env mount path', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
+    const genericServerException = exceptions.genericServerException;
+    const testErr = new Error('Test error');
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey')
+      .rejects(testErr);
+    const stubProcessException = sinon.stub(routeUtils, 'processException')
+      .returns(genericServerException);
+    return request(app)
+      .get(slug)
+      .set('Cookie', signedInCookie)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledOnce;
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(stubProcessException).to.have.been.calledWith(testErr);
         expect(response.text).to.include('Internal server error. Please try again');
         expect(response).to.have.status(200);
       });
@@ -305,6 +342,27 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorError).to.have.been.calledOnce;
         expect(stubValidatorError).to.have.been.calledWith(routeData.updateApplication);
+        expect(stubProcessException).to.have.been.calledOnce;
+        expect(stubUpdate).to.not.have.been.called;
+        expect(response).to.have.status(200);
+        expect(response.text).to.include('Summary message for sample field');
+      });
+  });
+
+  it('should serve the update key page on the /manage-applications/:appId/:keyType/:keyId/update/:env with errors', () => {
+    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
+    const stubValidatorError = sinon.stub(Validator.prototype, 'updateKey').rejects(new Error('Validation error'));
+    const stubProcessException = sinon.stub(routeUtils, 'processException').returns(exceptions.validationException.stack);
+    const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateKey').returns(Promise.resolve(true));
+
+    return request(app)
+      .post(slug)
+      .set('Cookie', signedInCookie)
+      .send(routeData.updateKey)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubValidatorError).to.have.been.calledOnce;
+        expect(stubValidatorError).to.have.been.calledWith(routeData.updateKey);
         expect(stubProcessException).to.have.been.calledOnce;
         expect(stubUpdate).to.not.have.been.called;
         expect(response).to.have.status(200);
