@@ -130,7 +130,7 @@ class ApplicationsDeveloper {
     return this.request(options);
   }
 
-  updateKey (data) {
+  updateKey (data, appId, keyId, env) {
     let restrictedIps = [];
     let javaScriptDomains = [];
     restrictedIps = data.restrictedIps.split(",");
@@ -143,7 +143,7 @@ class ApplicationsDeveloper {
         restricted_ips: restrictedIps,
         js_domains: javaScriptDomains
       },
-      url: `${this.server.baseUrl[data.env]}/applications/${data.appId}/api-clients/key/${data.keyId}`
+      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key/${keyId}`
     });
     logger.info('Service request to update key data, with payload: ', options);
     return this.request(options);

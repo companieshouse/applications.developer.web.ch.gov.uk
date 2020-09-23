@@ -265,16 +265,12 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   const env = req.params.env;
   const keyType = req.params.keyType;
   const keyId = req.params.keyId;
-  const payload = req.body;
-  payload.env = env;
-  payload.appId = appId;
-  payload.keyType = keyType;
-  payload.keyId = keyId;
+  const data = req.body;
   const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
-  viewData.this_data = payload;
-  validator.updateKey(payload)
+  viewData.this_data = data;
+  validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(payload);
+      return applicationsDeveloperService.updateKey(data, appId, keyId, env);
     }).then(_ => {
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {

@@ -299,6 +299,38 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
+  it('should update a key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockAppId = 'test';
+    const mockURL = 'https://mocksite.com';
+    const finalVars = Object.assign({}, baseOptions);
+    const mockKeyId = 'test';
+    finalVars.method = 'PUT';
+    finalVars.url = mockURL + '/applications/'+mockAppId+'/api-clients/key/'+mockKeyId;
+    finalVars.data = {
+      description: 'description',
+      name: 'test',
+      restricted_ips: ['00000'],
+      js_domains: ['javascriptDomain']
+    };
+    // Create stubs
+    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
+    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.updateKey));
+
+    // Inject stubs
+    applicationDeveloper.request = stubAxios;
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+    // Call method
+    expect(applicationDeveloper.updateKey(routeData.updateKey, mockAppId, mockKeyId, mockEnv))
+      // Assertions
+      .to.eventually.eql(routeData.updateKey);
+    expect(stubAxios).to.have.been.calledOnce;
+    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
+    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+
   it('should delete an application using the applications.api service', () => {
     // static test vars
     const mockURL = 'https://mockurl.com';
