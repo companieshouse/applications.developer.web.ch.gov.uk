@@ -233,16 +233,50 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
     );
 });
 
-router.get('/manage-applications/:appId/api-key/update', (req, res, next) => {
+router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res, next) => {
   logger.info(`GET request to update a key: ${req.path}`);
+  const appId = req.params.appId;
+  const env = req.params.env;
+  const keyType = req.params.keyType;
+  const keyId = req.params.keyId;
   const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
-  res.render(`${routeViews}/update_key.njk`, viewData);
+  viewData.this_data = {
+    appId: appId,
+    env: env,
+    keyType: keyType,
+    keyId: keyId
+  };
+  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
+    .then(keyData => {
+      viewData.this_data.keyName = keyData.data.name;
+      viewData.this_data.keyDescription = keyData.data.description;
+      viewData.this_data.restrictedIps = keyData.data.restricted_ips;
+      viewData.this_data.javaScriptDomains = keyData.data.js_domains;
+      res.render(`${routeViews}/update_key.njk`, viewData);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/update_key.njk`, viewData);
+    });
 });
 
-router.post('/manage-applications/:appId/api-key/update', (req, res, next) => {
+router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res, next) => {
   logger.info(`POST request to update a key: ${req.path}`);
+  const appId = req.params.appId;
+  const env = req.params.env;
+  const keyType = req.params.keyType;
+  const keyId = req.params.keyId;
+  const data = req.body;
   const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
-  res.render(`${routeViews}/index.njk`, viewData);
+  viewData.this_data = data;
+  validator.updateKey(data)
+    .then(_ => {
+      return applicationsDeveloperService.updateKey(data, appId, keyId, env);
+    }).then(_ => {
+      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+    }).catch(err => {
+      viewData.this_errors = routeUtils.processException(err);
+      res.render(`${routeViews}/update_key.njk`, viewData);
+    });
 });
 
 module.exports = router;

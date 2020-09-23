@@ -18,6 +18,13 @@ const routeData = {
     keyType: 'rest',
     restrictedIps: '00000',
     javaScriptDomains: 'javascriptDomain'
+  },
+  updateKey:{
+    keyName: 'test',
+    keyDescription: 'description',
+    keyType: 'rest',
+    restrictedIps: '00000',
+    javaScriptDomains: 'javascriptDomain'
   }
 };
 

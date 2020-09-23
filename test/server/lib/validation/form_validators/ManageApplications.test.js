@@ -181,6 +181,22 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubValidUrl).to.have.been.calledTwice;
     expect(stubLogger).to.have.been.calledOnce;
   });
+  it('should validate the updateKey sucessfully, exclude the type and return true', () => {
+    const payload = {
+      keyName: 'test',
+      description: 'Test description',
+      restrictedIps: '00000',
+      javaScriptDomains: 'javascriptDomain'
+    };
+    const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
+    const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
+    expect(ManageApplication.prototype.updateKey(payload)).to.eventually.equal(true);
+    expect(stubValidName).to.have.been.calledOnce;
+    expect(stubValidDesc).to.have.been.calledOnce;
+    expect(stubKeys).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
   it('should validate the addNewKey sucessfully and return true', () => {
     const payload = {
       keyName: 'Hello',
