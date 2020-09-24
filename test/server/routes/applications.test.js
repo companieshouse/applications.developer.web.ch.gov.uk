@@ -181,6 +181,24 @@ describe('routes/applications.js', () => {
       });
   });
 
+  it('should serve up details of a single application with updated key confirmation message', () => {
+    const slug = '/manage-applications/appId123/view/test/keyName';
+    const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
+    const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
+    return request(app)
+      .get(slug)
+      .set('Cookie', signedInCookie)
+      .then(response => {
+        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubSingleApplication).to.have.been.calledOnce;
+        expect(stubKeyList).to.have.been.calledOnce;
+        expect(response.text).to.include('Application details');
+        expect(response.text).to.include('Keys for this application');
+        expect(response.text).to.include('has been updated');
+        expect(response).to.have.status(200);
+      });
+  });
+
   it('should serve up the application overview page with an error on the /manage-applications/appId/view/env path', () => {
     const slug = '/manage-applications/appId123/view/test';
     const genericServerException = exceptions.genericServerException;
