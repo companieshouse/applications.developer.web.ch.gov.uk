@@ -31,3 +31,10 @@
 .inline-form {
   display:inline-block;
 }
+#update-key-notification-banner-title {
+  margin-top: 1em;
+  border:5px;
+  border-style:solid;
+  border-color:#00703c;
+  padding: 1em;
+}
