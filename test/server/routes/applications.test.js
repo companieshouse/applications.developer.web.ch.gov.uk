@@ -182,7 +182,7 @@ describe('routes/applications.js', () => {
   });
 
   it('should serve up details of a single application with updated key confirmation message', () => {
-    const slug = '/manage-applications/appId123/view/test/keyName';
+    const slug = '/manage-applications/appId123/view/keyName/test';
     const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
     const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
     return request(app)

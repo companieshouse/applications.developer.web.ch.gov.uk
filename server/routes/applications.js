@@ -87,7 +87,7 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/:appId/view/:env/:keyName', (req, res, next) => {
+router.get('/manage-applications/:appId/view/:keyName/:env', (req, res, next) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   const id = req.params.appId;
   const env = req.params.env;
@@ -299,7 +299,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
     .then(_ => {
       return applicationsDeveloperService.updateKey(data, appId, keyId, env);
     }).then(_ => {
-      return res.redirect(302, `/manage-applications/${appId}/view/${env}/${data.keyName}`);
+      return res.redirect(302, `/manage-applications/${appId}/view/${data.keyName}/${env}`);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       res.render(`${routeViews}/update_key.njk`, viewData);
