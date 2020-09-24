@@ -87,6 +87,33 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
+router.get('/manage-applications/:appId/view/:env/:keyName', (req, res, next) => {
+  logger.info(`GET request to view a single application: ${req.path}`);
+  const id = req.params.appId;
+  const env = req.params.env;
+  const keyName = req.params.keyName;
+  const viewData = routeUtils.createViewData('View application', 'view-application', req);
+  viewData.this_data = {
+    appId: req.params.appId,
+    env: env,
+    keyName: keyName
+  };
+  viewData.this_errors = null;
+  Promise.all(
+    [
+      applicationsDeveloperService.getApplication(id, env),
+      applicationsDeveloperService.getKeysForApplication(id, env)
+    ]).then(([appData, keyData]) => {
+    viewData.this_data.app = appData.data;
+    viewData.this_data.keys = keyData.data;
+    viewData.title = `${viewData.title}: ${appData.data.name}`;
+    res.render(`${routeViews}/view.njk`, viewData);
+  }).catch(err => {
+    viewData.this_errors = routeUtils.processException(err);
+    res.render(`${routeViews}/view.njk`, viewData);
+  });
+});
+
 router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
   logger.info(`GET request to serve update application page: ${req.path}`);
   const id = req.params.appId;
@@ -272,7 +299,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
     .then(_ => {
       return applicationsDeveloperService.updateKey(data, appId, keyId, env);
     }).then(_ => {
-      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+      return res.redirect(302, `/manage-applications/${appId}/view/${env}/${data.keyName}`);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       res.render(`${routeViews}/update_key.njk`, viewData);
