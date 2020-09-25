@@ -24,7 +24,10 @@ const routeData = {
     keyDescription: 'description',
     keyType: 'rest',
     restrictedIps: '00000',
-    javaScriptDomains: 'javascriptDomain'
+    javaScriptDomains: 'javascriptDomain',
+    appId: "app123",
+    env: "test",
+    keyId: "key123"
   }
 };
 

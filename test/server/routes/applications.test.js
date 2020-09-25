@@ -368,7 +368,7 @@ describe('routes/applications.js', () => {
   });
 
   it('should serve the update key page on the /manage-applications/:appId/:keyType/:keyId/update/:env with errors', () => {
-    const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
+    const slug = '/manage-applications/app123/rest/key123/update/test';
     const stubValidatorError = sinon.stub(Validator.prototype, 'updateKey').rejects(new Error('Validation error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException').returns(exceptions.validationException.stack);
     const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateKey').returns(Promise.resolve(true));
