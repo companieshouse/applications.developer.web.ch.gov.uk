@@ -92,7 +92,7 @@ class ManageApplication extends Validator {
         this.errors.description = errorManifest.description.invalid;
       }
     }
-    if (payload.restrictedIps.length > 0) {
+    if (payload.restrictedIps && payload.restrictedIps.length > 0) {
       let restrictedIps = payload.restrictedIps.split(',');
       for (const restrictedIp of restrictedIps){
         if (restrictedIp.length > 0) {
@@ -102,7 +102,7 @@ class ManageApplication extends Validator {
         }
       }
     }
-    if (payload.javaScriptDomains.length > 0) {
+    if (payload.javaScriptDomains && payload.javaScriptDomains.length > 0) {
       let javaScriptDomains =  payload.javaScriptDomains.split(',');
       for (const javaScriptDomain of javaScriptDomains){
         if (javaScriptDomain.length > 0) {
