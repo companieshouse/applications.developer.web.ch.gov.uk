@@ -52,6 +52,18 @@ let ErrorManifest = {
         summary: "Enter a valid privacy policy url",
         inline: "Enter a valid privacy policy url"
       }
+    },
+    restrictedIp: {
+      invalid: {
+        summary: "Enter a valid ip address",
+        inline: "Enter a valid ip address"
+      }
+    },
+    javaScriptDomain: {
+      invalid: {
+        summary: "Enter a vaild javascript domain",
+        inline: "Enter a vaild javascript domain"
+      }
     }
   }
 };

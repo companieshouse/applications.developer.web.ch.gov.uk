@@ -185,8 +185,8 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     const payload = {
       keyName: 'test',
       description: 'Test description',
-      restrictedIps: '00000',
-      javaScriptDomains: 'javascriptDomain'
+      restrictedIps: '192.168.0.1',
+      javaScriptDomains: 'http://app.domain'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
@@ -195,15 +195,15 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledThrice;
   });
   it('should validate the addNewKey sucessfully and return true', () => {
     const payload = {
       keyName: 'Hello',
       keyDescription: 'World',
       keyType: 'rest',
-      restrictedIps: '0.0.0.0, 1.1.1.1.1',
-      javaScriptDomains: 'js0, js1'
+      restrictedIps: '192.168.0.1, 192.168.0.2',
+      javaScriptDomains: 'http://app.domain, http://apb.domain'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
@@ -212,7 +212,7 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(stubLogger).to.have.callCount(6);
   });
   it('should validate the addNewKey and return invalid type validation error', () => {
     const payload = {
