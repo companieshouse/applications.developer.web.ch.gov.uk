@@ -229,6 +229,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
           appId: appId,
           keyId: keyId,
           keyType: keyType,
+          keyKind: apiKey.data.kind,
           env: env,
           keyName: apiKey.data.name
         };
