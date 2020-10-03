@@ -128,6 +128,7 @@ describe('services/ApplicationDeveloper', () => {
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
     const mockId = 'test';
+    const mockOauthToken = 'token';
     const finalVars = Object.assign({}, baseOptions);
     finalVars.method = 'GET';
     finalVars.url = mockURL + '/applications/' + mockId;
@@ -139,7 +140,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.server.baseUrl.mock = mockURL;
 
     // Call method
-    expect(applicationDeveloper.getApplication(mockId, mockEnv))
+    expect(applicationDeveloper.getApplication(mockId, mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(appData.singleApp.data.getApplication);
     expect(stubAxios).to.have.been.calledOnce;
