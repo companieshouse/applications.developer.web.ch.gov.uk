@@ -172,7 +172,7 @@ describe('routes/applications.js', () => {
       .get(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubLogger).to.have.been.calledThrice;
         expect(stubSingleApplication).to.have.been.calledOnce;
         expect(stubKeyList).to.have.been.calledOnce;
         expect(response.text).to.include('Application details');
@@ -210,7 +210,7 @@ describe('routes/applications.js', () => {
       .get(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubLogger).to.have.been.calledTwice;
         expect(stubSingleApplicationReject).to.have.been.calledOnce;
         expect(stubKeyListReject).to.have.been.calledOnce;
         expect(stubProcessException).to.have.been.calledOnce;
@@ -337,7 +337,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.updateApplication)
       .then(response => {
-        expect(stubLogger).to.have.callCount(4);
+        expect(stubLogger).to.have.callCount(5);
         expect(stubValidateApplicationValidator).to.have.been.calledOnce;
         expect(stubValidateApplicationValidator).to.have.been.calledWith(routeData.updateApplication);
         expect(stubUpdate).to.have.been.calledOnce;
@@ -397,7 +397,7 @@ describe('routes/applications.js', () => {
       .post(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.been.calledTwice;
+        expect(stubLogger).to.have.callCount(4);
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -446,7 +446,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.addNewKey)
       .then(response => {
-        expect(stubLogger).to.have.been.calledThrice;
+        expect(stubLogger).to.have.callCount(4);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewKey);
         expect(stubSave).to.have.been.calledOnce;
@@ -489,7 +489,7 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubDeleteApplication).to.have.been.calledOnce;
-        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications/);
         expect(response).to.have.status(200);
       });
@@ -506,7 +506,7 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubDeleteApplication).to.have.been.calledOnce;
-        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
         expect(response.text).to.include('Internal server error. Please try again');
@@ -522,7 +522,7 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubSingleKey).to.have.been.calledOnce;
-        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'mockEnv');
+        expect(stubSingleKey).to.have.been.calledWith('mockAppId', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(response.text).to.include('Are you sure you want to delete this application?');
         expect(response).to.have.status(200);
       });
