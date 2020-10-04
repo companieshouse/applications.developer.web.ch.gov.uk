@@ -81,9 +81,9 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, oauthToken, env),
-      applicationsDeveloperService.getKeysForApplication(id, env)
+      applicationsDeveloperService.getKeysForApplication(id, oauthToken, env)
     ]).then(([appData, keyData]) => {
-    logger.info(`appData=[${appData}], appData.name=[${appData.name}]`)
+    logger.info(`appData=[${JSON.stringify(appData)}]`)
     viewData.this_data.app = appData;
     viewData.this_data.keys = keyData.data;
     viewData.title = `${viewData.title}: ${appData.name}`;
@@ -110,7 +110,7 @@ router.get('/manage-applications/:appId/view/:keyName/:env', (req, res, next) =>
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, oauthToken, env),
-      applicationsDeveloperService.getKeysForApplication(id, env)
+      applicationsDeveloperService.getKeysForApplication(id, oauthToken, env)
     ]).then(([appData, keyData]) => {
     viewData.this_data.app = appData;
     viewData.this_data.keys = keyData.data;
@@ -202,6 +202,7 @@ router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
 
 router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
+  const oauthToken = Utility.getOAuthToken(req);
   const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
   viewData.this_data = {
     body: req.body,
@@ -212,11 +213,11 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
   validator.addNewKey(req.body)
     .then(_ => {
       if(req.body.keyType==='rest'){
-        applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
+        applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, oauthToken, req.params.env);
       }else if(req.body.keyType==='web'){
-        applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
+        applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, oauthToken, req.params.env);
       }else if(req.body.keyType==='stream'){
-        applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
+        applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, oauthToken, req.params.env);
       }
     }).then(_ => {
       return res.redirect(302, "/manage-applications/"+req.params.appId+"/view/"+req.params.env);
@@ -231,18 +232,19 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
   const appId = req.params.appId;
   const keyId = req.params.keyId;
   const keyType = req.params.keyType;
+  const oauthToken = Utility.getOAuthToken(req);
   const env = req.params.env;
   const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
-  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
+  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, oauthToken, env)
     .then(
       apiKey => {
         viewData.this_data = {
           appId: appId,
           keyId: keyId,
           keyType: keyType,
-          keyKind: apiKey.data.kind,
+          keyKind: apiKey.kind,
           env: env,
-          keyName: apiKey.data.name
+          keyName: apiKey.name
         };
         res.render(`${routeViews}/delete_key.njk`, viewData);
       }
@@ -258,9 +260,10 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
   const appId = req.params.appId;
   const keyId = req.params.keyId;
   const keyType = req.params.keyType;
+  const oauthToken = Utility.getOAuthToken(req);
   const env = req.params.env;
   logger.info(`POST request to delete a key: ${req.path}`);
-  applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, env)
+  applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, oauthToken, env)
     .then(response => {
       res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(
@@ -278,6 +281,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
   const env = req.params.env;
   const keyType = req.params.keyType;
   const keyId = req.params.keyId;
+  const oauthToken = Utility.getOAuthToken(req);
   const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
   viewData.this_data = {
     appId: appId,
@@ -285,12 +289,12 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     keyType: keyType,
     keyId: keyId
   };
-  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, env)
+  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, oauthToken, env)
     .then(keyData => {
-      viewData.this_data.keyName = keyData.data.name;
-      viewData.this_data.keyDescription = keyData.data.description;
-      viewData.this_data.restrictedIps = keyData.data.restricted_ips;
-      viewData.this_data.javaScriptDomains = keyData.data.js_domains;
+      viewData.this_data.keyName = keyData.name;
+      viewData.this_data.keyDescription = keyData.description;
+      viewData.this_data.restrictedIps = keyData.restrictedIPs;
+      viewData.this_data.javaScriptDomains = keyData.jsDomains;
       res.render(`${routeViews}/update_key.njk`, viewData);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -305,10 +309,11 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   const keyType = req.params.keyType;
   const keyId = req.params.keyId;
   const data = req.body;
+  const oauthToken = Utility.getOAuthToken(req);
   const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
   validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(data, appId, keyId, env);
+      return applicationsDeveloperService.updateKey(data, appId, keyId, oauthToken, env);
     }).then(_ => {
       return res.redirect(302, `/manage-applications/${appId}/view/${data.keyName}/${env}`);
     }).catch(err => {

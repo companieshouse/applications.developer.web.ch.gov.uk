@@ -89,26 +89,31 @@ class ApplicationsDeveloper {
     return application.resource;
   }
 
-  addNewRestKey (data, appId, env) {
+  async addNewRestKey (data, appId, oauthToken, environment) {
+    const serverUrl = this.server.baseUrl[environment];
+    logger.info(`creating api key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+
     let restrictedIps = [];
     let javaScriptDomains = [];
     restrictedIps = data.restrictedIps.split(",");
     javaScriptDomains = data.javaScriptDomains.split(",");
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'POST',
-      data: {
-        name: data.keyName,
-        description: data.keyDescription,
-        restricted_ips: restrictedIps,
-        js_domains: javaScriptDomains
-      },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key`
-    });
-    logger.info('Service request to save key data, with payload: ', options);
-    return this.request(options);
+    const apiKeyPostRequest = {
+      name: data.keyName,
+      description: data.keyDescription,
+      restrictedIPs: restrictedIps,
+      jsDomains: javaScriptDomains
+    }
+
+    logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPostRequest)}]`);
+    const apiKey = await client.apiKeysService.postAPIKey(apiKeyPostRequest, appId);
+    
+    logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
+    return apiKey.resource;
   }
+
 //addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewWebKey(data, appId, env){
+  addNewWebKey(data, appId, oauthToken, environment){
     let restrictedURIs = [];
     redirectURIs = data.redirectURIs.split(",");
     const options = Object.assign(this._getBaseOptions(), {
@@ -118,13 +123,14 @@ class ApplicationsDeveloper {
         description: data.keyDescription,
         restricted_uris: redirectURIs
       },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/web`
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/web`
     });
+    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
 //addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewStreamKey(data, appId, env){
+  addNewStreamKey(data, appId, oauthToken, environment){
     let restrictedIps = [];
     restrictedIps = data.restrictedIps.split(",");
     const options = Object.assign(this._getBaseOptions(), {
@@ -134,29 +140,34 @@ class ApplicationsDeveloper {
         description: data.keyDescription,
         restricted_ips: restrictedIps
       },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/stream`
+      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/stream`
     });
+    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
 
-  updateKey (data, appId, keyId, env) {
+  async updateKey (data, appId, keyId, oauthToken, environment) {
+    const serverUrl = this.server.baseUrl[environment];
+    logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+
     let restrictedIps = [];
     let javaScriptDomains = [];
     restrictedIps = data.restrictedIps.split(",");
     javaScriptDomains = data.javaScriptDomains.split(",");
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'PUT',
-      data: {
-        name: data.keyName,
-        description: data.keyDescription,
-        restricted_ips: restrictedIps,
-        js_domains: javaScriptDomains
-      },
-      url: `${this.server.baseUrl[env]}/applications/${appId}/api-clients/key/${keyId}`
-    });
-    logger.info('Service request to update key data, with payload: ', options);
-    return this.request(options);
+    const apiKeyPutRequest = {
+      name: data.keyName,
+      description: data.keyDescription,
+      restrictedIPs: restrictedIps,
+      jsDomains: javaScriptDomains
+    }
+
+    logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPutRequest)}]`);
+    const apiKey = await client.apiKeysService.putAPIKey(apiKeyPutRequest, appId, keyId);
+    
+    logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
+    return apiKey.resource;
   }
 
   async updateApplication (data, oauthToken) {
@@ -190,31 +201,47 @@ class ApplicationsDeveloper {
     return application.resource;
   }
 
-  getKeysForApplication (appId, environment) {
+  getKeysForApplication (appId, oauthToken, environment) {
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
     });
+    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
     return this.request(options);
   }
 
-  getSpecificKey (appId, keyId, keyType, environment) {
+  async getSpecificKey (appId, keyId, keyType, oauthToken, environment) {
+    if (keyType == 'key') {
+      const serverUrl = this.server.baseUrl[environment];
+      logger.info(`get api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+      const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+  
+      const apiKey = await client.apiKeysService.getAPIKey(appId, keyId);
+  
+      logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
+      return apiKey.resource;
+    }
+
+    // convert this block to use sdk when other key types are added to sdk
     const options = Object.assign(this._getBaseOptions(), {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
     });
+    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info(`Service request to retrieve ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
-    return this.request(options);
+    return this.request(options).data;
   }
 
-  deleteApiKey (appId, keyId, keyType, environment) {
-    const options = Object.assign(this._getBaseOptions(), {
-      method: 'DELETE',
-      url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
-    });
-    logger.info(`Service request to delete ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
-    return this.request(options);
+  async deleteApiKey (appId, keyId, keyType, oauthToken, environment) {
+    const serverUrl = this.server.baseUrl[environment];
+    logger.info(`deleting api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+
+    const apiKey = await client.apiKeysService.deleteAPIKey(appId, keyId);
+
+    logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
+    return apiKey.resource;
   }
 }
 module.exports = ApplicationsDeveloper;

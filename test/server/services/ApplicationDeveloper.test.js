@@ -51,9 +51,11 @@ describe('services/ApplicationDeveloper', () => {
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
     const mockId = 'test';
+    const mockToken = 'token';
     const finalVars = Object.assign({}, baseOptions);
     finalVars.method = 'GET';
     finalVars.url = mockURL + '/applications/' + mockId + '/api-clients?items_per_page=20&start_index=0';
+    finalVars.headers.authorization = mockToken;
     // Create stubs
     const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
     const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
@@ -62,7 +64,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.server.baseUrl.mock = mockURL;
 
     // Call method
-    expect(applicationDeveloper.getKeysForApplication(mockId, mockEnv))
+    expect(applicationDeveloper.getKeysForApplication(mockId, mockToken, mockEnv))
     // Assertions
       .to.eventually.eql(apiKeyData.getApiKeyList);
     expect(stubAxios).to.have.been.calledOnce;
@@ -75,26 +77,24 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const mockAppId = 'testApp';
-    const mockKeyId = 'testKey';
-    const mockKeyType = 'mock';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'GET';
-    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const mockAppId = 'test';
+    const mockKeyId = 'testkey';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        getAPIKey: (applicationId, apiKeyId) => {
+          return privateSdkData.getAPIKey;
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, mockKeyType, mockEnv))
+    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, "key", mockOauthToken, mockEnv))
     // Assertions
-      .to.eventually.eql(apiKeyData.getApiKeyList);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithMatch(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+      .to.eventually.eql(privateSdkData.getAPIKey.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
@@ -102,26 +102,26 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const mockAppId = 'testApp';
-    const mockKeyId = 'testKey';
-    const mockKeyType = 'mock';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'DELETE';
-    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const mockAppId = 'test';
+    const mockKeyId = 'testkey';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        deleteAPIKey: (applicationId, apiKeyId) => {
+          return {
+            'httpStatusCode': privateSdkData.getAPIKey.httpResponse
+          };
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, mockKeyType, mockEnv))
+    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, "key", mockOauthToken, mockEnv))
     // Assertions
-      .to.eventually.eql(apiKeyData.getApiKeyList);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithMatch(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+      .to.eventually.eql();
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
@@ -209,31 +209,32 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const finalVars = Object.assign({}, baseOptions);
     const mockId = 'test';
-    finalVars.method = 'POST';
-    finalVars.url = mockURL + '/applications/'+mockId+'/api-clients/key';
-    finalVars.data = {
-      description: 'description',
-      name: 'key demo',
-      restricted_ips: ['00000'],
-      js_domains: ['javascriptDomain']
-    };
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.addNewKey));
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        postAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // create response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
-    applicationDeveloper.server.baseUrl.mock = mockURL;
+    const data = {
+      keyType: 'rest',
+      keyName: privateSdkData.getAPIKey.resource.name,
+      keyDescription: privateSdkData.getAPIKey.resource.description,
+      restrictedIps: privateSdkData.getAPIKey.resource.restricted_ips[0],
+      javaScriptDomains: privateSdkData.getAPIKey.resource.js_domains[0]
+    };
+
     // Call method
-    expect(applicationDeveloper.addNewRestKey(routeData.addNewKey, mockId, mockEnv))
-      // Assertions
-      .to.eventually.eql(routeData.addNewKey);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(applicationDeveloper.addNewRestKey(data, mockId, mockOauthToken, mockEnv))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getAPIKey.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
   });
 
   it('getBaseUrlForPostFormData should return environment live when live is requested', () => {
@@ -309,33 +310,37 @@ describe('services/ApplicationDeveloper', () => {
   it('should update a key using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
-    const mockAppId = 'test';
     const mockURL = 'https://mocksite.com';
-    const finalVars = Object.assign({}, baseOptions);
-    const mockKeyId = 'test';
-    finalVars.method = 'PUT';
-    finalVars.url = mockURL + '/applications/'+mockAppId+'/api-clients/key/'+mockKeyId;
-    finalVars.data = {
-      description: 'description',
-      name: 'test',
-      restricted_ips: ['00000'],
-      js_domains: ['javascriptDomain']
-    };
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.updateKey));
+    const mockAppId = 'test';
+    const mockKeyId = 'test-key';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        putAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // update response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
-    applicationDeveloper.server.baseUrl.mock = mockURL;
+    const data = {
+      keyType: 'rest',
+      keyName: privateSdkData.getAPIKey.resource.name,
+      keyDescription: privateSdkData.getAPIKey.resource.description,
+      restrictedIps: privateSdkData.getAPIKey.resource.restricted_ips[0],
+      javaScriptDomains: privateSdkData.getAPIKey.resource.js_domains[0],
+      appId: mockAppId,
+      env: mockEnv,
+      keyId: mockKeyId
+    };
+
     // Call method
-    expect(applicationDeveloper.updateKey(routeData.updateKey, mockAppId, mockKeyId, mockEnv))
-      // Assertions
-      .to.eventually.eql(routeData.updateKey);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getAPIKey.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
   });
 
   it('should delete an Application using the applications.api service', () => {
