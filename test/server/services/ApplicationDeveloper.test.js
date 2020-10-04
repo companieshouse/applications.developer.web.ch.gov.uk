@@ -1,13 +1,15 @@
 const ApplicationDeveloper = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationDeveloper = new ApplicationDeveloper();
 const logger = require(`${serverRoot}/config/winston`);
+const privateSdk = require('private-ch-sdk-node');
+const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
 
 const request = require('axios');
 const chai = require('chai');
 const assert = chai.assert;
 
 const apiKeyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
-const appData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
+const privateSdkData = require(`${testRoot}/server/_fakes/data/services/private_ch_sdk_node`);
 const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application.js`);
 
@@ -129,23 +131,21 @@ describe('services/ApplicationDeveloper', () => {
     const mockURL = 'https://mocksite.com';
     const mockId = 'test';
     const mockOauthToken = 'token';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'GET';
-    finalVars.url = mockURL + '/applications/' + mockId;
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(appData.singleApp.data.getApplication));
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        getApplication: applicationId => {
+          return privateSdkData.getApplication;
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
     expect(applicationDeveloper.getApplication(mockId, mockOauthToken, mockEnv))
     // Assertions
-      .to.eventually.eql(appData.singleApp.data.getApplication);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+      .to.eventually.eql(privateSdkData.getApplication.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
@@ -153,56 +153,58 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'GET';
-    finalVars.url = mockURL + '/applications/?items_per_page=20&start_index=0';
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(serviceData.getList));
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        getApplications: (itemsPerPage, startIndex) => {
+          return privateSdkData.getApplications;
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.getApplicationList(mockEnv))
-      // Assertions
-      .to.eventually.eql(serviceData.getList);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+    expect(applicationDeveloper.getApplicationList(mockOauthToken, mockEnv))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getApplications.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
   it('should save an application using the applications.api service', () => {
     // static test vars
+    const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'POST';
-    finalVars.url = mockURL + '/applications';
-    finalVars.data = {
-      description: 'description',
-      name: undefined,
-      privacy_policy_url: undefined,
-      terms_and_conditions_url: undefined
-    };
-    // Create stubs
-    const stubGetBaseUrlFromEnv = sinon.stub(ApplicationDeveloper.prototype, '_getBaseUrlForPostFormData').returns(mockURL);
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.addApplication));
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        postApplication: applicationPostRequest => {
+          return privateSdkData.getApplication; // create response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
-    applicationDeveloper.server.baseUrl.mock = mockURL;
+    const data = {
+      environment: 'live',
+      applicationName: privateSdkData.getApplication.resource.name,
+      description: privateSdkData.getApplication.resource.description,
+      terms: privateSdkData.getApplication.resource.termsAndConsitionsUrl,
+      privacyPolicy: privateSdkData.getApplication.resource.privacyPolicyUrl
+    };
+
     // Call method
-    expect(applicationDeveloper.saveApplication(routeData.addApplication))
-      // Assertions
-      .to.eventually.eql(routeData.addApplication);
-    expect(stubGetBaseUrlFromEnv).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(applicationDeveloper.saveApplication(data, mockOauthToken))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getApplication.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
   });
+
   it('should save a rest key using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
@@ -273,31 +275,35 @@ describe('services/ApplicationDeveloper', () => {
 
   it('should update an application using the applications.api service', () => {
     // static test vars
-    const mockURL = 'https://mockurl.com';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'PUT';
-    finalVars.url = mockURL + '/applications' + '/app123';
-    finalVars.data = {
-      name: 'test',
-      description: 'description',
-      privacy_policy_url: 'priv',
-      terms_and_conditions_url: 'terms'
-    };
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(routeData.updateApplication));
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        putApplication: (applicationPutRequest, applicationId) => {
+          return privateSdkData.getApplication; // update response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
-    applicationDeveloper.server.baseUrl.test = mockURL;
+    const data = {
+      env: mockEnv,
+      appId: mockId,
+      applicationName: privateSdkData.getApplication.resource.name,
+      description: privateSdkData.getApplication.resource.description,
+      terms: privateSdkData.getApplication.resource.termsAndConsitionsUrl,
+      privacyPolicy: privateSdkData.getApplication.resource.privacyPolicyUrl
+    };
+
     // Call method
-    expect(applicationDeveloper.updateApplication(routeData.updateApplication))
-      // Assertions
-      .to.eventually.eql(routeData.updateApplication);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
-    expect(stubLogger).to.have.been.calledOnce;
+    expect(applicationDeveloper.updateApplication(data, mockOauthToken))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getApplication.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
   });
 
   it('should update a key using the applications.api service', () => {
@@ -332,28 +338,29 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
-  it('should delete an application using the applications.api service', () => {
+  it('should delete an Application using the applications.api service', () => {
     // static test vars
-    const mockURL = 'https://mockurl.com';
-    const mockId = 'app123';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'DELETE';
-    finalVars.url = mockURL + '/applications/' + mockId;
-
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve());
-
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        deleteApplication: applicationId => {
+          return {
+            'httpStatusCode': privateSdkData.getApplication.httpResponse
+          };
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
     // Call method
-    expect(applicationDeveloper.deleteApplication(mockId, 'mock'))
-      // Assertions
+    expect(applicationDeveloper.deleteApplication(mockId, mockOauthToken, mockEnv))
+    // Assertions
       .to.eventually.eql();
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithExactly(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 

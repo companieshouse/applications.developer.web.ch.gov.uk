@@ -7,7 +7,6 @@ class ApplicationsDeveloper {
     this.server = {
       apiKey: process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY,
       baseUrl: {
-        // live: process.env.APPLICATIONS_DEVELOPER_SERVICE_LIVE_BASE_URL,
         live: process.env.ACCOUNT_LOCAL_URL,
         test: process.env.APPLICATIONS_DEVELOPER_SERVICE_TEST_BASE_URL,
         future: process.env.APPLICATIONS_DEVELOPER_SERVICE_FUTURE_BASE_URL
@@ -185,7 +184,6 @@ class ApplicationsDeveloper {
     logger.info(`deleting application=[${applicationId}] in environment=[${environment}] using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
-    logger.info(`Service request to delete data for applicationId=[${applicationId}]`);
     const application = await client.applicationsService.deleteApplication(applicationId);
     
     logger.debug(`application=[${JSON.stringify(application)}]`);
