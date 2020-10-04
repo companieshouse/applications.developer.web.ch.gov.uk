@@ -55,7 +55,7 @@ class Validator {
 
   isValidDomain (domain) {
     logger.info('Validating domain: ', domain);
-    if (/^[a-z]$/.test(domain)) {
+    if (/^http(?:s){0,1}:\/\/(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}(?::\d{1,6}){0,1}$/.test(domain)) {
       return true;
     } else {
       return false;
