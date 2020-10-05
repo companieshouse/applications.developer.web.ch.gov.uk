@@ -38,4 +38,16 @@ describe('services/Notification', () => {
     assert.lengthOf(notifications, 1);
     assert.equal(notifications[0], MockMessage);
   });
+
+  it('should retrieve an empty list if notifications are retrieved twice', () => {
+    const session = new Session();
+    request = { session: session };
+    const MockMessage = 'MockMessage';
+    notificationService.notify(MockMessage, request);
+    notificationService.getNotifications(request);
+    const notifications = notificationService.getNotifications(request);
+    assert.isArray(notifications);
+    assert.isEmpty(notifications);
+  });
+
 });
