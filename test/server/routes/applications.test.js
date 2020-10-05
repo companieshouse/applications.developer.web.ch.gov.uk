@@ -5,6 +5,7 @@ const logger = require(`${serverRoot}/config/winston`);
 const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
 
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
+const NotificationService = require(`${serverRoot}/services/Notification`);
 
 const exceptions = require(`${testRoot}/server/_fakes/mocks`);
 
@@ -126,7 +127,7 @@ describe('routes/applications.js', () => {
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
-      .returns(Promise.resolve(serviceData.getApplicationList));
+      .returns(Promise.resolve(serviceData.getApplicationList));const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -139,6 +140,7 @@ describe('routes/applications.js', () => {
         expect(response).to.redirectTo(/manage-applications/);
         expect(stubGetList).to.have.been.calledThrice;
         expect(response).to.have.status(200);
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
   it('should serve add application with an error on validation', () => {
@@ -177,24 +179,6 @@ describe('routes/applications.js', () => {
         expect(stubKeyList).to.have.been.calledOnce;
         expect(response.text).to.include('Application details');
         expect(response.text).to.include('Keys for this application');
-        expect(response).to.have.status(200);
-      });
-  });
-
-  it('should serve up details of a single application with updated key confirmation message', () => {
-    const slug = '/manage-applications/appId123/view/keyName/test';
-    const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
-    const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
-    return request(app)
-      .get(slug)
-      .set('Cookie', signedInCookie)
-      .then(response => {
-        expect(stubLogger).to.have.been.calledOnce;
-        expect(stubSingleApplication).to.have.been.calledOnce;
-        expect(stubKeyList).to.have.been.calledOnce;
-        expect(response.text).to.include('Application details');
-        expect(response.text).to.include('Keys for this application');
-        expect(response.text).to.include('has been updated');
         expect(response).to.have.status(200);
       });
   });
@@ -331,7 +315,7 @@ describe('routes/applications.js', () => {
     process.env.FUTURE_DISPLAY_FLAG = 'true';
     const stubValidateApplicationValidator = sinon.stub(Validator.prototype, 'updateApplication').returns(Promise.resolve(true));
     const stubUpdate = sinon.stub(ApplicationsDeveloperService.prototype, 'updateApplication').returns(Promise.resolve(true));
-
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -343,6 +327,7 @@ describe('routes/applications.js', () => {
         expect(stubUpdate).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/app123\/view\/test/);
         expect(response).to.have.status(200);
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
 
@@ -393,6 +378,7 @@ describe('routes/applications.js', () => {
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey').returns(Promise.resolve(true));
     const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(true));
     const stubGetApplicationKeyss = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(true));
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -401,6 +387,7 @@ describe('routes/applications.js', () => {
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
   it('should serve up the delete key page on the delete path when got with an error', () => {
@@ -441,6 +428,7 @@ describe('routes/applications.js', () => {
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
       .returns(Promise.resolve(keyData.getApiKeyList));
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -453,6 +441,7 @@ describe('routes/applications.js', () => {
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
         expect(stubGetList).to.have.been.calledOnce;
         expect(response).to.have.status(200);
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
   it('should serve add new key with an error on validation', () => {
@@ -476,13 +465,13 @@ describe('routes/applications.js', () => {
         expect(response.text).to.include('Summary message for sample field');
         expect(stubSave).to.not.have.been.called;
         expect(stubGetList).to.not.have.been.called;
-      })
       });
-
+  });
 
   it('should delete an application and then redirect to /manage-applications', () => {
     const slug = '/manage-applications/mockAppId/delete/mockEnv';
     const stubDeleteApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApplication').returns(Promise.resolve(true));
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -492,6 +481,7 @@ describe('routes/applications.js', () => {
         expect(stubDeleteApplication).to.have.been.calledWith('mockAppId', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications/);
         expect(response).to.have.status(200);
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
 

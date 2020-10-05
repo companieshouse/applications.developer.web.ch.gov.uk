@@ -1,6 +1,8 @@
 describe('routes/utils/index', () => {
   const Utility = require(`${serverRoot}/lib/Utility`);
   const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).generic;
+  const { Session } = require('ch-node-session-handler');
+  const NotificationService = require(`${serverRoot}/services/Notification`);
 
   const { validationException, serviceException, genericServerException, exceptionWithNoStatus } = require(`${testRoot}/server/_fakes/mocks`);
 
@@ -19,11 +21,16 @@ describe('routes/utils/index', () => {
 
   describe('correctly process exceptions as thrown by a route', () => {
     let stubExceptionLogger;
+    // let stubNotificationService;
+
     const processedException = {
       genericError: errorManifest.serverError
     };
     beforeEach(() => {
       stubExceptionLogger = sinon.stub(Utility, 'logException').returns(true);
+      // stubNotificationService = new NotificationService();
+      // sinon.stub(stubNotificationService,'getNotifications').returns('notifications');
+      // sinon.stub(NotificationService, 'Notification').returns(stubNotificationService);
     });
 
     it.skip('should return the error stack of a validation exception thrown by a route', () => {
@@ -52,21 +59,26 @@ describe('routes/utils/index', () => {
     it('places parameters in correct place', () => {
       const mockTitle = 'title';
       const mockActivePage = 'activePage';
-      const mockRequest = {
-        session: {
-          data: {
-            signin_info: {
-              user_profile: {
-                email: 'test@mail.com'
-              }
-            }
+      const mockNotifications = ['notifications'];
+      const sessionData = {
+        signin_info: {
+          user_profile: {
+            email: 'test@mail.com'
           }
         }
+      };
+      const stubSession = new Session();
+      sinon.stub(stubSession, 'getExtraData').returns(mockNotifications);
+      sinon.stub(stubSession, 'setExtraData');
+      sinon.stub(stubSession, 'data').value(sessionData);
+      const mockRequest = {
+        session: stubSession
       };
       const viewData = ModuleUnderTest.createViewData(mockTitle, mockActivePage, mockRequest);
       expect(viewData.title).to.equal(mockTitle);
       expect(viewData.active_page).to.equal(mockActivePage);
       expect(viewData.user_profile.email).to.equal('test@mail.com');
+      expect(viewData.this_notifications).to.equal(mockNotifications);
     });
   });
 });

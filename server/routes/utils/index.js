@@ -6,6 +6,9 @@ const Utility = require(`${serverRoot}/lib/Utility`);
 
 const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).generic;
 
+const NotificationService = require(`${serverRoot}/services/Notification`);
+const notificationService = new NotificationService();
+
 const routeUtils = {
   processException: err => {
     Utility.logException(err);
@@ -24,7 +27,8 @@ const routeUtils = {
       this_errors: null,
       active_page: activePage,
       title: title,
-      user_profile: req.session.data.signin_info.user_profile
+      user_profile: req.session.data.signin_info.user_profile,
+      this_notifications: notificationService.getNotifications(req)
     };
   }
 };

@@ -82,8 +82,8 @@ class ApplicationsDeveloper {
   addNewRestKey (data, appId, env) {
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(",");
-    javaScriptDomains = data.javaScriptDomains.split(",");
+    restrictedIps = data.restrictedIps.split(',');
+    javaScriptDomains = data.javaScriptDomains.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -97,10 +97,11 @@ class ApplicationsDeveloper {
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
-//addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewWebKey(data, appId, env){
-    let restrictedURIs = [];
-    redirectURIs = data.redirectURIs.split(",");
+
+  // addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewWebKey (data, appId, env) {
+    const restrictedURIs = [];
+    redirectURIs = data.redirectURIs.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -113,10 +114,11 @@ class ApplicationsDeveloper {
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
-//addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewStreamKey(data, appId, env){
+
+  // addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewStreamKey (data, appId, env) {
     let restrictedIps = [];
-    restrictedIps = data.restrictedIps.split(",");
+    restrictedIps = data.restrictedIps.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -133,8 +135,8 @@ class ApplicationsDeveloper {
   updateKey (data, appId, keyId, env) {
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(",");
-    javaScriptDomains = data.javaScriptDomains.split(",");
+    restrictedIps = data.restrictedIps.split(',');
+    javaScriptDomains = data.javaScriptDomains.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'PUT',
       data: {

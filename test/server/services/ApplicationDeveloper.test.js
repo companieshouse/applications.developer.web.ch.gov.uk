@@ -78,7 +78,7 @@ describe('services/ApplicationDeveloper', () => {
     const mockKeyType = 'mock';
     const finalVars = Object.assign({}, baseOptions);
     finalVars.method = 'GET';
-    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
+    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/' + mockKeyType + '/' + mockKeyId;
     // Create stubs
     const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
     const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
@@ -105,7 +105,7 @@ describe('services/ApplicationDeveloper', () => {
     const mockKeyType = 'mock';
     const finalVars = Object.assign({}, baseOptions);
     finalVars.method = 'DELETE';
-    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/'+ mockKeyType +'/'+ mockKeyId;
+    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/' + mockKeyType + '/' + mockKeyId;
     // Create stubs
     const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
     const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
@@ -209,7 +209,7 @@ describe('services/ApplicationDeveloper', () => {
     const finalVars = Object.assign({}, baseOptions);
     const mockId = 'test';
     finalVars.method = 'POST';
-    finalVars.url = mockURL + '/applications/'+mockId+'/api-clients/key';
+    finalVars.url = mockURL + '/applications/' + mockId + '/api-clients/key';
     finalVars.data = {
       description: 'description',
       name: 'key demo',
@@ -307,7 +307,7 @@ describe('services/ApplicationDeveloper', () => {
     const finalVars = Object.assign({}, baseOptions);
     const mockKeyId = 'test';
     finalVars.method = 'PUT';
-    finalVars.url = mockURL + '/applications/'+mockAppId+'/api-clients/key/'+mockKeyId;
+    finalVars.url = mockURL + '/applications/' + mockAppId + '/api-clients/key/' + mockKeyId;
     finalVars.data = {
       description: 'description',
       name: 'test',

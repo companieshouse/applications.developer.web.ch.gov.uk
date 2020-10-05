@@ -4,6 +4,9 @@ const logger = require(`${serverRoot}/config/winston`);
 const ApplicationsDeveloperService = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationsDeveloperService = new ApplicationsDeveloperService();
 
+const NotificationService = require(`${serverRoot}/services/Notification`);
+const notificationService = new NotificationService();
+
 const Validator = require(`${serverRoot}/lib/validation/form_validators/ManageApplication`);
 const validator = new Validator();
 
@@ -55,6 +58,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     .then(_ => {
       return applicationsDeveloperService.saveApplication(req.body);
     }).then(_ => {
+      notificationService.notify('Application successfully created.', req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -87,32 +91,32 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/:appId/view/:keyName/:env', (req, res, next) => {
-  logger.info(`GET request to view a single application: ${req.path}`);
-  const id = req.params.appId;
-  const env = req.params.env;
-  const keyName = req.params.keyName;
-  const viewData = routeUtils.createViewData('View application', 'view-application', req);
-  viewData.this_data = {
-    appId: req.params.appId,
-    env: env,
-    keyName: keyName
-  };
-  viewData.this_errors = null;
-  Promise.all(
-    [
-      applicationsDeveloperService.getApplication(id, env),
-      applicationsDeveloperService.getKeysForApplication(id, env)
-    ]).then(([appData, keyData]) => {
-    viewData.this_data.app = appData.data;
-    viewData.this_data.keys = keyData.data;
-    viewData.title = `${viewData.title}: ${appData.data.name}`;
-    res.render(`${routeViews}/view.njk`, viewData);
-  }).catch(err => {
-    viewData.this_errors = routeUtils.processException(err);
-    res.render(`${routeViews}/view.njk`, viewData);
-  });
-});
+// router.get('/manage-applications/:appId/view/:keyName/:env', (req, res, next) => {
+//   logger.info(`GET request to view a single application: ${req.path}`);
+//   const id = req.params.appId;
+//   const env = req.params.env;
+//   const keyName = req.params.keyName;
+//   const viewData = routeUtils.createViewData('View application', 'view-application', req);
+//   viewData.this_data = {
+//     appId: req.params.appId,
+//     env: env,
+//     keyName: keyName
+//   };
+//   viewData.this_errors = null;
+//   Promise.all(
+//     [
+//       applicationsDeveloperService.getApplication(id, env),
+//       applicationsDeveloperService.getKeysForApplication(id, env)
+//     ]).then(([appData, keyData]) => {
+//     viewData.this_data.app = appData.data;
+//     viewData.this_data.keys = keyData.data;
+//     viewData.title = `${viewData.title}: ${appData.data.name}`;
+//     res.render(`${routeViews}/view.njk`, viewData);
+//   }).catch(err => {
+//     viewData.this_errors = routeUtils.processException(err);
+//     res.render(`${routeViews}/view.njk`, viewData);
+//   });
+// });
 
 router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
   logger.info(`GET request to serve update application page: ${req.path}`);
@@ -146,6 +150,7 @@ router.post('/manage-applications/:appId/delete/:env', (req, res) => {
 
   applicationsDeveloperService.deleteApplication(appId, env)
     .then(_ => {
+      notificationService.notify('Application successfully deleted.', req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -166,6 +171,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload);
     }).then(_ => {
+      notificationService.notify('Application successfully updated.', req);
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -200,15 +206,16 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
   viewData.this_errors = null;
   validator.addNewKey(req.body)
     .then(_ => {
-      if(req.body.keyType==='rest'){
+      if (req.body.keyType === 'rest') {
         applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, req.params.env);
-      }else if(req.body.keyType==='web'){
+      } else if (req.body.keyType === 'web') {
         applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, req.params.env);
-      }else if(req.body.keyType==='stream'){
+      } else if (req.body.keyType === 'stream') {
         applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, req.params.env);
       }
     }).then(_ => {
-      return res.redirect(302, "/manage-applications/"+req.params.appId+"/view/"+req.params.env);
+      notificationService.notify('Key successfully created.', req);
+      return res.redirect(302, '/manage-applications/' + req.params.appId + '/view/' + req.params.env);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
       res.render(`${routeViews}/add_key.njk`, viewData);
@@ -251,6 +258,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
   logger.info(`POST request to delete a key: ${req.path}`);
   applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, env)
     .then(response => {
+      notificationService.notify('Key successfully Deleted.', req);
       res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(
       err => {
@@ -298,8 +306,9 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   validator.updateKey(data)
     .then(_ => {
       return applicationsDeveloperService.updateKey(data, appId, keyId, env);
-    }).then(_ => {
-      return res.redirect(302, `/manage-applications/${appId}/view/${data.keyName}/${env}`);
+    }).then(updatedKey => {
+      notificationService.notify(`'${updatedKey.data.name}' key has been updated'`, req);
+      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
       viewData.this_data = data;
       viewData.this_data.appId = appId;
