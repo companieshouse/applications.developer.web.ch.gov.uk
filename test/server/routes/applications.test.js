@@ -127,7 +127,8 @@ describe('routes/applications.js', () => {
     const stubAddApplicationValidator = sinon.stub(Validator.prototype, 'addApplication').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'saveApplication').returns(Promise.resolve(true));
     const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplicationList')
-      .returns(Promise.resolve(serviceData.getApplicationList));const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
+      .returns(Promise.resolve(serviceData.getApplicationList));
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
