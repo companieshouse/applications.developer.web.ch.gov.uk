@@ -63,9 +63,8 @@ describe('routes/utils/index', () => {
           }
         }
       };
+      const stubNotifications = sinon.stub(NotificationService.prototype, 'getNotifications').returns(mockNotifications);
       const stubSession = new Session();
-      sinon.stub(stubSession, 'getExtraData').returns(mockNotifications);
-      sinon.stub(stubSession, 'setExtraData');
       sinon.stub(stubSession, 'data').value(sessionData);
       const mockRequest = {
         session: stubSession
@@ -75,6 +74,7 @@ describe('routes/utils/index', () => {
       expect(viewData.active_page).to.equal(mockActivePage);
       expect(viewData.user_profile.email).to.equal('test@mail.com');
       expect(viewData.this_notifications).to.equal(mockNotifications);
+      expect(stubNotifications).to.have.been.calledOnce;
     });
   });
 });

@@ -1,5 +1,3 @@
-const logger = require(`${serverRoot}/config/winston`);
-
 class Notification {
   _getNotificationsFromSession (session) {
     let notifications;

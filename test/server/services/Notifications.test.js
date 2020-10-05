@@ -49,5 +49,4 @@ describe('services/Notification', () => {
     assert.isArray(notifications);
     assert.isEmpty(notifications);
   });
-
 });
