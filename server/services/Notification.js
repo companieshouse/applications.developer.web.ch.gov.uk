@@ -1,9 +1,6 @@
 class Notification {
   _getNotificationsFromSession (session) {
-    let notifications;
-    if (session !== undefined) {
-      notifications = session.getExtraData('notification');
-    }
+    const notifications = session.getExtraData('notification');
     return notifications !== undefined ? notifications : [];
   }
 
