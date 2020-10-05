@@ -21,16 +21,12 @@ describe('routes/utils/index', () => {
 
   describe('correctly process exceptions as thrown by a route', () => {
     let stubExceptionLogger;
-    // let stubNotificationService;
 
     const processedException = {
       genericError: errorManifest.serverError
     };
     beforeEach(() => {
       stubExceptionLogger = sinon.stub(Utility, 'logException').returns(true);
-      // stubNotificationService = new NotificationService();
-      // sinon.stub(stubNotificationService,'getNotifications').returns('notifications');
-      // sinon.stub(NotificationService, 'Notification').returns(stubNotificationService);
     });
 
     it.skip('should return the error stack of a validation exception thrown by a route', () => {
