@@ -30,6 +30,23 @@ class Utility {
     const errStack = typeof err.stack === 'object' && err.stack !== null ? JSON.stringify(err.stack) : err.stack;
     logger.error(`${status} - ${category}: ${err.message}\r\n${errStack}`);
   }
+
+  /**
+   * Retrieve the oauth access token from a request
+   *  
+   * @param {req} request
+   */
+  static getOAuthToken (req) {
+    const signinInfo = req.session.data.signin_info;
+    if ( !signinInfo ) {
+      return;
+    }
+    const accessToken = signinInfo.access_token;
+    if ( !accessToken ) {
+      return
+    }
+    return accessToken.access_token;
+  }
 }
 
 module.exports = Utility;
