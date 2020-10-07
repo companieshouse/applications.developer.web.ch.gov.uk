@@ -14,6 +14,7 @@ const envVars = {
     process.env.NUNJUCKS_LOADER_NO_CACHE = true;
     process.env.CDN_HOST = 'http://localhost:3009';
     process.env.APPLICATIONS_DEVELOPER_SERVICE_BASE_URL = 'http://api.localhost:3008';
+    process.env.ACCOUNT_LOCAL_URL = 'http://account.localhost:3010';
     process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY = 'abc123';
     process.env.APPLICATIONS_DEVELOPER_SERVICE_USERNAME = '';
     process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD = '';
