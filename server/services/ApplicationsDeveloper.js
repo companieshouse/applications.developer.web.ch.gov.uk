@@ -125,7 +125,7 @@ class ApplicationsDeveloper {
       },
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/web`
     });
-    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
+    options.headers.authorization = `Bearer ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
@@ -142,7 +142,7 @@ class ApplicationsDeveloper {
       },
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/stream`
     });
-    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
+    options.headers.authorization = `Bearer ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
@@ -206,7 +206,7 @@ class ApplicationsDeveloper {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients?items_per_page=20&start_index=0`
     });
-    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
+    options.headers.authorization = `Bearer ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info(`Service request to retrieve ${environment} api key list for application ${appId}, with payload: `, options);
     return this.request(options);
   }
@@ -228,7 +228,7 @@ class ApplicationsDeveloper {
       method: 'GET',
       url: `${this.server.baseUrl[environment]}/applications/${appId}/api-clients/${keyType}/${keyId}`
     });
-    options.headers.authorization = `Bearer: ${oauthToken}`; // temp assign auth header manually until switching to sdk
+    options.headers.authorization = `Bearer ${oauthToken}`; // temp assign auth header manually until switching to sdk
     logger.info(`Service request to retrieve ${environment} ${keyType} api key ${keyId} for application ${appId}, with payload: `, options);
     return this.request(options).data;
   }
