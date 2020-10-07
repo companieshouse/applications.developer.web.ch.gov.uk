@@ -28,7 +28,8 @@ const routeUtils = {
       active_page: activePage,
       title: title,
       user_profile: req.session.data.signin_info.user_profile,
-      this_notifications: notificationService.getNotifications(req)
+      this_notifications: notificationService.getNotifications(req),
+      back_link: null
     };
   }
 };

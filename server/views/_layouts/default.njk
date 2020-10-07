@@ -38,6 +38,7 @@
             {% include "_partials/nav_bar.njk" %}
           </div>
           <div class="govuk-grid-column-two-thirds" id="main-page-content">
+            {% include "_partials/_back_link.njk" %}
             {% include "_partials/notifications_summary.njk" %}
             {% block main_content %}
             {% endblock %}

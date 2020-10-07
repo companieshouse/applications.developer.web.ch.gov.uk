@@ -322,7 +322,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.updateApplication)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(6);
         expect(stubValidateApplicationValidator).to.have.been.calledOnce;
         expect(stubValidateApplicationValidator).to.have.been.calledWith(routeData.updateApplication);
         expect(stubUpdate).to.have.been.calledOnce;
