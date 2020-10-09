@@ -59,7 +59,7 @@ class ApplicationsDeveloper {
     return applicationList.resource;
   }
 
-  async getApplication(id, oauthToken, environment) {
+  async getApplication (id, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`trying to retrieve application with id=[${id}] from environment=[${environment}] using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
@@ -80,11 +80,11 @@ class ApplicationsDeveloper {
       description: data.description,
       privacyPolicyUrl: data.privacyPolicy,
       termsAndConditionsUrl: data.terms
-    }
+    };
 
     logger.info(`Service request to save data, with payload=[${JSON.stringify(applicationPostRequest)}]`);
     const application = await client.applicationsService.postApplication(applicationPostRequest);
-    
+
     logger.debug(`application=[${JSON.stringify(application)}]`);
     return application.resource;
   }
@@ -96,26 +96,26 @@ class ApplicationsDeveloper {
 
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(",");
-    javaScriptDomains = data.javaScriptDomains.split(",");
+    restrictedIps = data.restrictedIps.split(',');
+    javaScriptDomains = data.javaScriptDomains.split(',');
     const apiKeyPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
       restrictedIPs: restrictedIps,
       jsDomains: javaScriptDomains
-    }
+    };
 
     logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPostRequest)}]`);
     const apiKey = await client.apiKeysService.postAPIKey(apiKeyPostRequest, appId);
-    
+
     logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
     return apiKey.resource;
   }
 
-//addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewWebKey(data, appId, oauthToken, environment){
-    let restrictedURIs = [];
-    redirectURIs = data.redirectURIs.split(",");
+  // addNewWebKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewWebKey (data, appId, oauthToken, environment) {
+    const restrictedURIs = [];
+    redirectURIs = data.redirectURIs.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -129,10 +129,11 @@ class ApplicationsDeveloper {
     logger.info('Service request to save key data, with payload: ', options);
     return this.request(options);
   }
-//addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
-  addNewStreamKey(data, appId, oauthToken, environment){
+
+  // addNewStreamKey will not currently submit data to the db, as the api functionality has not been implemented
+  addNewStreamKey (data, appId, oauthToken, environment) {
     let restrictedIps = [];
-    restrictedIps = data.restrictedIps.split(",");
+    restrictedIps = data.restrictedIps.split(',');
     const options = Object.assign(this._getBaseOptions(), {
       method: 'POST',
       data: {
@@ -154,18 +155,18 @@ class ApplicationsDeveloper {
 
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(",");
-    javaScriptDomains = data.javaScriptDomains.split(",");
+    restrictedIps = data.restrictedIps.split(',');
+    javaScriptDomains = data.javaScriptDomains.split(',');
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
       restrictedIPs: restrictedIps,
       jsDomains: javaScriptDomains
-    }
+    };
 
     logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPutRequest)}]`);
     const apiKey = await client.apiKeysService.putAPIKey(apiKeyPutRequest, appId, keyId);
-    
+
     logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
     return apiKey.resource;
   }
@@ -180,12 +181,12 @@ class ApplicationsDeveloper {
       description: data.description,
       privacyPolicyUrl: data.privacyPolicy,
       termsAndConditionsUrl: data.terms
-    }
+    };
 
     const applicationId = data.appId;
     logger.info(`Service request to update data for applicationId=[${applicationId}], with payload=[${JSON.stringify(applicationPutRequest)}]`);
     const application = await client.applicationsService.putApplication(applicationPutRequest, applicationId);
-    
+
     logger.debug(`application=[${JSON.stringify(application)}]`);
     return application.resource;
   }
@@ -196,7 +197,7 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     const application = await client.applicationsService.deleteApplication(applicationId);
-    
+
     logger.debug(`application=[${JSON.stringify(application)}]`);
     return application.resource;
   }
@@ -216,9 +217,9 @@ class ApplicationsDeveloper {
       const serverUrl = this.server.baseUrl[environment];
       logger.info(`get api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
       const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-  
+
       const apiKey = await client.apiKeysService.getAPIKey(appId, keyId);
-  
+
       logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
       return apiKey.resource;
     }

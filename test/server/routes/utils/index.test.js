@@ -1,6 +1,8 @@
 describe('routes/utils/index', () => {
   const Utility = require(`${serverRoot}/lib/Utility`);
   const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).generic;
+  const { Session } = require('ch-node-session-handler');
+  const NotificationService = require(`${serverRoot}/services/Notification`);
 
   const { validationException, serviceException, genericServerException, exceptionWithNoStatus } = require(`${testRoot}/server/_fakes/mocks`);
 
@@ -19,6 +21,7 @@ describe('routes/utils/index', () => {
 
   describe('correctly process exceptions as thrown by a route', () => {
     let stubExceptionLogger;
+
     const processedException = {
       genericError: errorManifest.serverError
     };
@@ -52,21 +55,26 @@ describe('routes/utils/index', () => {
     it('places parameters in correct place', () => {
       const mockTitle = 'title';
       const mockActivePage = 'activePage';
-      const mockRequest = {
-        session: {
-          data: {
-            signin_info: {
-              user_profile: {
-                email: 'test@mail.com'
-              }
-            }
+      const mockNotifications = ['notifications'];
+      const sessionData = {
+        signin_info: {
+          user_profile: {
+            email: 'test@mail.com'
           }
         }
+      };
+      const stubNotifications = sinon.stub(NotificationService.prototype, 'getNotifications').returns(mockNotifications);
+      const stubSession = new Session();
+      sinon.stub(stubSession, 'data').value(sessionData);
+      const mockRequest = {
+        session: stubSession
       };
       const viewData = ModuleUnderTest.createViewData(mockTitle, mockActivePage, mockRequest);
       expect(viewData.title).to.equal(mockTitle);
       expect(viewData.active_page).to.equal(mockActivePage);
       expect(viewData.user_profile.email).to.equal('test@mail.com');
+      expect(viewData.this_notifications).to.equal(mockNotifications);
+      expect(stubNotifications).to.have.been.calledOnce;
     });
   });
 });

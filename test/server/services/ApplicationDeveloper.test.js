@@ -91,7 +91,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, "key", mockOauthToken, mockEnv))
+    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(privateSdkData.getAPIKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
@@ -109,7 +109,7 @@ describe('services/ApplicationDeveloper', () => {
       apiKeysService: {
         deleteAPIKey: (applicationId, apiKeyId) => {
           return {
-            'httpStatusCode': privateSdkData.getAPIKey.httpResponse
+            httpStatusCode: privateSdkData.getAPIKey.httpResponse
           };
         }
       }
@@ -118,7 +118,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, "key", mockOauthToken, mockEnv))
+    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql();
     expect(stubAPIClientHelper).to.have.been.calledOnce;
@@ -353,7 +353,7 @@ describe('services/ApplicationDeveloper', () => {
       applicationsService: {
         deleteApplication: applicationId => {
           return {
-            'httpStatusCode': privateSdkData.getApplication.httpResponse
+            httpStatusCode: privateSdkData.getApplication.httpResponse
           };
         }
       }

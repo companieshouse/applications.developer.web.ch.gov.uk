@@ -86,7 +86,8 @@ describe('server/lib/validation/index', () => {
   it('should validate and return an error for an blank or invalid Ip', () => {
     expect(validator.isValidIp('')).to.be.false;
     expect(validator.isValidIp('25555.2335.11344.2344')).to.be.false;
+    expect(validator.isValidIp('204.120.0.15h')).to.be.false;
     expect(validator.isValidIp(null)).to.be.false;
-    expect(stubLogger).to.have.been.calledThrice;
+    expect(stubLogger).to.have.callCount(4);
   });
 });

@@ -12,22 +12,22 @@ const routeData = {
     appId: 'app123',
     env: 'test'
   },
-  addNewKey:{
+  addNewKey: {
     keyName: 'key demo',
     keyDescription: 'description',
     keyType: 'rest',
     restrictedIps: '00000',
     javaScriptDomains: 'javascriptDomain'
   },
-  updateKey:{
+  updateKey: {
     keyName: 'test',
     keyDescription: 'description',
     keyType: 'rest',
     restrictedIps: '00000',
     javaScriptDomains: 'javascriptDomain',
-    appId: "app123",
-    env: "test",
-    keyId: "key123"
+    appId: 'app123',
+    env: 'test',
+    keyId: 'key123'
   }
 };
 
