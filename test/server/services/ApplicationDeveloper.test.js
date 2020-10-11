@@ -1,7 +1,7 @@
 const ApplicationDeveloper = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationDeveloper = new ApplicationDeveloper();
 const logger = require(`${serverRoot}/config/winston`);
-const privateSdk = require('private-ch-sdk-node');
+const privateSdk = require('private-api-sdk-node');
 const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
 
 const request = require('axios');

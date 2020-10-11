@@ -2,7 +2,7 @@
 /*
  * Central class for accessing SDK library clients
  */
-const privateSDK = require("private-ch-sdk-node");
+const privateSDK = require("private-api-sdk-node");
 
 class APIClientHelper {
     /**
