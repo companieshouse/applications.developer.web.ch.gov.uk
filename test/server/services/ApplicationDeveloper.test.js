@@ -1,17 +1,12 @@
 const ApplicationDeveloper = require(`${serverRoot}/services/ApplicationsDeveloper`);
 const applicationDeveloper = new ApplicationDeveloper();
 const logger = require(`${serverRoot}/config/winston`);
-const privateSdk = require('private-api-sdk-node');
 const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
 
-const request = require('axios');
 const chai = require('chai');
 const assert = chai.assert;
 
-const apiKeyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
 const privateSdkData = require(`${testRoot}/server/_fakes/data/services/private_ch_sdk_node`);
-const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
-const routeData = require(`${testRoot}/server/_fakes/data/routes/application.js`);
 
 describe('services/ApplicationDeveloper', () => {
   let stubLogger;
@@ -29,47 +24,27 @@ describe('services/ApplicationDeveloper', () => {
     done();
   });
 
-  const baseOptions = {
-    headers: {
-      // authorization: this.server.apiKey
-      content_type: 'application/json'
-    },
-    responseType: 'json'
-  };
-
-  it('should correctly get the base options for the Api Client Service', () => {
-    const opts = applicationDeveloper._getBaseOptions();
-    expect(opts).to.have.own.property('headers')
-      .to.have.own.property('content_type')
-      .that.is.equal('application/json');
-    expect(opts).to.have.own.property('responseType')
-      .that.is.equal('json');
-  });
-
-  it('should fetch Api Keys from the applications.api service', () => {
+  it('should fetch a list of api clients from the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
     const mockId = 'test';
-    const mockToken = 'token';
-    const finalVars = Object.assign({}, baseOptions);
-    finalVars.method = 'GET';
-    finalVars.url = mockURL + '/applications/' + mockId + '/api-clients?items_per_page=20&start_index=0';
-    finalVars.headers.authorization = mockToken;
-    // Create stubs
-    const stubOpts = sinon.stub(ApplicationDeveloper.prototype, '_getBaseOptions').returns(baseOptions);
-    const stubAxios = sinon.stub(request, 'request').returns(Promise.resolve(apiKeyData.getApiKeyList));
-    // Inject stubs
-    applicationDeveloper.request = stubAxios;
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      applicationsService: {
+        getApplicationAPIClients: (itemsPerPage, startIndex) => {
+          return privateSdkData.getApplicationAPIClients;
+        }
+      }
+    });
     applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.getKeysForApplication(mockId, mockToken, mockEnv))
+    expect(applicationDeveloper.getAPIClientsForApplication(mockId, mockOauthToken, mockEnv))
     // Assertions
-      .to.eventually.eql(apiKeyData.getApiKeyList);
-    expect(stubAxios).to.have.been.calledOnce;
-    expect(stubAxios).to.have.been.calledWithMatch(finalVars);
-    expect(stubOpts).to.have.been.calledOnce;
+      .to.eventually.eql(privateSdkData.getApplicationAPIClients.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledOnce;
   });
 
@@ -91,7 +66,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.getSpecificKey(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
+    expect(applicationDeveloper.getAPIClient(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(privateSdkData.getAPIKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
@@ -118,7 +93,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     // Call method
-    expect(applicationDeveloper.deleteApiKey(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
+    expect(applicationDeveloper.deleteAPIClient(mockAppId, mockKeyId, 'key', mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql();
     expect(stubAPIClientHelper).to.have.been.calledOnce;
@@ -153,7 +128,6 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const mockId = 'test';
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
       applicationsService: {
@@ -177,7 +151,6 @@ describe('services/ApplicationDeveloper', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
-    const mockId = 'test';
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
       applicationsService: {

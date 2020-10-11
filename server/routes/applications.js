@@ -93,11 +93,11 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
   Promise.all(
     [
       applicationsDeveloperService.getApplication(id, oauthToken, env),
-      applicationsDeveloperService.getKeysForApplication(id, oauthToken, env)
+      applicationsDeveloperService.getAPIClientsForApplication(id, oauthToken, env)
     ]).then(([appData, keyData]) => {
     logger.info(`appData=[${JSON.stringify(appData)}]`);
     viewData.this_data.app = appData;
-    viewData.this_data.keys = keyData.data;
+    viewData.this_data.keys = keyData;
     viewData.title = `${viewData.title}: ${appData.name}`;
     res.render(`${routeViews}/view.njk`, viewData);
   }).catch(err => {
@@ -241,7 +241,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
     message: 'Back to all Applications',
     link: '/manage-applications'
   };
-  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, oauthToken, env)
+  applicationsDeveloperService.getAPIClient(appId, keyId, keyType, oauthToken, env)
     .then(
       apiKey => {
         viewData.this_data = {
@@ -269,7 +269,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
   const oauthToken = Utility.getOAuthToken(req);
   const env = req.params.env;
   logger.info(`POST request to delete a key: ${req.path}`);
-  applicationsDeveloperService.deleteApiKey(appId, keyId, keyType, oauthToken, env)
+  applicationsDeveloperService.deleteAPIClient(appId, keyId, keyType, oauthToken, env)
     .then(response => {
       notificationService.notify('Key successfully Deleted.', req);
       res.redirect(302, `/manage-applications/${appId}/view/${env}`);
@@ -304,7 +304,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     message: 'Back to Application',
     link: `/manage-applications/${appId}/view/${env}`
   };
-  applicationsDeveloperService.getSpecificKey(appId, keyId, keyType, oauthToken, env)
+  applicationsDeveloperService.getAPIClient(appId, keyId, keyType, oauthToken, env)
     .then(keyData => {
       viewData.this_data.keyName = keyData.name;
       viewData.this_data.keyDescription = keyData.description;

@@ -170,7 +170,7 @@ describe('routes/applications.js', () => {
   it('should serve up details of a single application', () => {
     const slug = '/manage-applications/appId123/view/test';
     const stubSingleApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(singleAppData.singleApp));
-    const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
+    const stubKeyList = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication').returns(Promise.resolve(Promise.resolve(keyData.getApiKeyList)));
     return request(app)
       .get(slug)
       .set('Cookie', signedInCookie)
@@ -188,7 +188,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/appId123/view/test';
     const genericServerException = exceptions.genericServerException;
     const stubSingleApplicationReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').rejects(new Error('Test error'));
-    const stubKeyListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').rejects(new Error('Test error'));
+    const stubKeyListReject = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication').rejects(new Error('Test error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException')
       .returns(genericServerException);
     return request(app)
@@ -221,7 +221,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the update key page on the /manage-applications/:appId/:keyType/:keyId/update/:env mount path', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
-    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClient').returns(Promise.resolve(keyData.getRestApiKey));
     return request(app)
       .get(slug)
       .set('Cookie', signedInCookie)
@@ -236,7 +236,7 @@ describe('routes/applications.js', () => {
 
   it('should serve up the delete application page on a Get', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
-    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey').returns(Promise.resolve(keyData.getRestApiKey));
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClient').returns(Promise.resolve(keyData.getRestApiKey));
     return request(app)
       .get(slug)
       .set('Cookie', signedInCookie)
@@ -271,7 +271,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/update/mockEnv';
     const genericServerException = exceptions.genericServerException;
     const testErr = new Error('Test error');
-    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey')
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
       .returns(genericServerException);
@@ -293,7 +293,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const genericServerException = exceptions.genericServerException;
     const testErr = new Error('Test error');
-    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getSpecificKey')
+    const stubSingleKey = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
       .returns(genericServerException);
@@ -376,9 +376,9 @@ describe('routes/applications.js', () => {
 
   it('should serve up the delete a key and then redirect to view application that owned the key on success', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
-    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey').returns(Promise.resolve(true));
+    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient').returns(Promise.resolve(true));
     const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(true));
-    const stubGetApplicationKeyss = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication').returns(Promise.resolve(true));
+    const stubGetApplicationKeys = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication').returns(Promise.resolve(true));
     const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
@@ -395,7 +395,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const genericServerException = exceptions.genericServerException;
     const testErr = new Error('Test error');
-    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteApiKey')
+    const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
       .returns(genericServerException);
@@ -427,7 +427,7 @@ describe('routes/applications.js', () => {
     const slug = '/manage-applications/mockAppId/api-key/add/mockEnv';
     const stubAddKeyValidator = sinon.stub(Validator.prototype, 'addNewKey').returns(Promise.resolve(true));
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
-    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication')
       .returns(Promise.resolve(keyData.getApiKeyList));
     const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
@@ -451,7 +451,7 @@ describe('routes/applications.js', () => {
     const stubValidatorReject = sinon.stub(Validator.prototype, 'addNewKey').rejects(new Error('Validation error'));
     const stubProcessException = sinon.stub(routeUtils, 'processException').returns(validationException.stack);
     const stubSave = sinon.stub(ApplicationsDeveloperService.prototype, 'addNewRestKey').returns(Promise.resolve(true));
-    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getKeysForApplication')
+    const stubGetList = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication')
       .returns(Promise.resolve(keyData.getApiKeyList));
     return request(app)
       .post(slug)
