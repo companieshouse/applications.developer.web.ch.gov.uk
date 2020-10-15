@@ -203,9 +203,45 @@ describe('services/ApplicationDeveloper', () => {
     };
 
     // Call method
-    expect(applicationDeveloper.addNewRestKey(data, mockId, mockOauthToken, mockEnv))
+    expect(applicationDeveloper.addNewKey(data, mockId, mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(privateSdkData.getAPIKey.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+
+  it('should save a stream key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        postAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // create response is the same structure as get response
+        }
+      },
+      streamKeysService: {
+        postStreamKey: streamKeyPostRequest => {
+          return privateSdkData.getStreamKey;
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    const data = {
+      keyType: 'stream',
+      keyName: privateSdkData.getStreamKey.resource.name,
+      keyDescription: privateSdkData.getStreamKey.resource.description,
+      restrictedIps: privateSdkData.getStreamKey.resource.restricted_ips[0]
+    };
+
+    // Call method
+    expect(applicationDeveloper.addNewKey(data, mockId, mockOauthToken, mockEnv))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getStreamKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
   });
