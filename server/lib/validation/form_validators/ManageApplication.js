@@ -45,6 +45,7 @@ class ManageApplication extends Validator {
       }
     });
   }
+
   addNewKey (payload) {
     return new Promise((resolve, reject) => {
       this.validateKey(payload);
@@ -93,8 +94,8 @@ class ManageApplication extends Validator {
       }
     }
     if (payload.restrictedIps && payload.restrictedIps.length > 0) {
-      let restrictedIps = payload.restrictedIps.split(',');
-      for (const restrictedIp of restrictedIps){
+      const restrictedIps = payload.restrictedIps.split(',');
+      for (const restrictedIp of restrictedIps) {
         if (restrictedIp.length > 0) {
           if (!this.isValidIp(restrictedIp)) {
             this.errors.restrictedIp = errorManifest.restrictedIp.invalid;
@@ -103,8 +104,8 @@ class ManageApplication extends Validator {
       }
     }
     if (payload.javaScriptDomains && payload.javaScriptDomains.length > 0) {
-      let javaScriptDomains =  payload.javaScriptDomains.split(',');
-      for (const javaScriptDomain of javaScriptDomains){
+      const javaScriptDomains = payload.javaScriptDomains.split(',');
+      for (const javaScriptDomain of javaScriptDomains) {
         if (javaScriptDomain.length > 0) {
           if (!this.isValidDomain(javaScriptDomain)) {
             this.errors.javaScriptDomain = errorManifest.javaScriptDomain.invalid;

@@ -203,13 +203,7 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
   const oauthToken = Utility.getOAuthToken(req);
   validator.addNewKey(req.body)
     .then(_ => {
-      if (req.body.keyType === 'rest') {
-        applicationsDeveloperService.addNewRestKey(req.body, req.params.appId, oauthToken, req.params.env);
-      } else if (req.body.keyType === 'web') {
-        applicationsDeveloperService.addNewWebKey(req.body, req.params.appId, oauthToken, req.params.env);
-      } else if (req.body.keyType === 'stream') {
-        applicationsDeveloperService.addNewStreamKey(req.body, req.params.appId, oauthToken, req.params.env);
-      }
+      applicationsDeveloperService.addNewKey(req.body, req.params.appId, oauthToken, req.params.env);
     }).then(_ => {
       notificationService.notify('Key successfully created.', req);
       return res.redirect(302, '/manage-applications/' + req.params.appId + '/view/' + req.params.env);
