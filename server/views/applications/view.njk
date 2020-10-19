@@ -96,10 +96,10 @@
         {% if key.kind === 'api-client#web' %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
-            'Client Secret'
+            Client Secret
           </dt>
           <dd class="govuk-summary-list__value">
-            <span class="api-value" style="-webkit-text-security: disc;" id={{ key.id+"-secret" }}>Words {{key.client_secret}}</span>
+            <span class="api-value" style="-webkit-text-security: disc;" id={{ key.id+"-secret" }}>{{key.client_secret}}</span>
           </dd>
           <dd class="govuk-summary-list__actions">
             <p class="govuk-body govuk-!-font-size-16">
