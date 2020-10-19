@@ -31,6 +31,19 @@ const njk = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(app.get('views'),
     nunjucksLoaderOpts)
 );
+njk.addGlobal('Date', function (d) {
+  const date = new Date(Date.parse(d));
+  const monthFormat = new Intl.DateTimeFormat('en', {
+    month: 'long'
+  });
+  const day = date.getDay();
+  const month = monthFormat.format(date);
+  const year = date.getFullYear();
+  const hour = date.getHours();
+  const mins = date.getMinutes();
+  const seconds = date.getSeconds();
+  return `${day} ${month} ${year} - ${hour}:${mins}:${seconds}`;
+});
 njk.express(app);
 app.set('view engine', 'njk');
 

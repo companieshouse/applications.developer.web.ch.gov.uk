@@ -1,4 +1,3 @@
-const axios = require('axios');
 const logger = require(`${serverRoot}/config/winston`);
 const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
 
@@ -16,7 +15,6 @@ class ApplicationsDeveloper {
         password: process.env.APPLICATIONS_DEVELOPER_SERVICE_PASSWORD
       }
     };
-    this.request = axios;
   }
 
   _getBaseUrlForPostFormData (data) {
@@ -79,6 +77,17 @@ class ApplicationsDeveloper {
     return application.resource;
   }
 
+  async addNewKey (data, appId, oauthToken, environment) {
+    if (data.keyType === 'rest') {
+      return this.addNewRestKey(data, appId, oauthToken, environment);
+    } else if (data.keyType === 'web') {
+      return this.addNewWebKey(data, appId, oauthToken, environment);
+    } else if (data.keyType === 'stream') {
+      return this.addNewStreamKey(data, appId, oauthToken, environment);
+    }
+    return Promise.reject(new Error('Could not match Key Type'));
+  }
+
   async addNewRestKey (data, appId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`creating api key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
@@ -108,7 +117,7 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     let redirectURIs = [];
-      redirectURIs = data.redirectURIs.split(',');
+    redirectURIs = data.redirectURIs.split(',');
     const webClientPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -116,7 +125,7 @@ class ApplicationsDeveloper {
     };
 
     logger.info(`Service request to save web client data against application=[${appId}], with payload=[${JSON.stringify(webClientPostRequest)}]`);
-    const webClient = await client.apiKeysService.postWebClient(webClientPostRequest, appId);
+    const webClient = await client.webClientsService.postWebClient(webClientPostRequest, appId);
 
     logger.debug(`webClient=[${JSON.stringify(webClient)}]`);
     return webClient.resource;
@@ -136,7 +145,7 @@ class ApplicationsDeveloper {
     };
 
     logger.info(`Service request to save stream key data against application=[${appId}], with payload=[${JSON.stringify(streamKeyPostRequest)}]`);
-    const streamKey = await client.apiKeysService.postStreamKey(streamKeyPostRequest, appId);
+    const streamKey = await client.streamKeysService.postStreamKey(streamKeyPostRequest, appId);
 
     logger.debug(`streamKey=[${JSON.stringify(streamKey)}]`);
     return streamKey.resource;

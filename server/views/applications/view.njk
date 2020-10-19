@@ -3,118 +3,140 @@
 {% block main_content %}
 
   {% from "govuk/components/details/macro.njk" import govukDetails %}
-    {% if this_data.keyName is not undefined %}
+  {% if this_data.keyName is not undefined %}
     <a href="/manage-applications" class="govuk-back-link">Back to all applications</a>
     <div aria-labelledby="notification-banner-title" role="alert" tabindex="-1" data-module="initial-focus">
-        <h2 class="govuk-heading-m" id="update-key-notification-banner-title">'{{ this_data.keyName }}' key has been updated</h2>
+      <h2 class="govuk-heading-m" id="update-key-notification-banner-title">'{{ this_data.keyName }}' key has been updated</h2>
     </div>
-    {% endif %}
+  {% endif %}
 
-    <h1 class="govuk-heading-xl">
-      {{ this_data.app.name }}
-    </h1>
-    <p class="govuk-body app-description">{{ this_data.app.description }}</p>
-    <h2 class="govuk-heading-l">Application details</h2>
-    <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Application environment
-        </dt>
-        <dd class="govuk-summary-list__value">
-          {{ this_data.env }}
-        </dd>
-        <dd class="govuk-summary-list__actions"></dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Privacy policy URL
-        </dt>
-        <dd class="govuk-summary-list__value">{{ this_data.app.privacyPolicyUrl }}</dd>
-        <dd class="govuk-summary-list__actions"></dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Terms and conditions URL
-        </dt>
-        <dd class="govuk-summary-list__value">{{ this_data.app.termsAndConditionsUrl }}</dd>
-        <dd class="govuk-summary-list__actions"></dd>
-      </div>
-    </dl>
-    <a href="/manage-applications/{{ this_data.app.id }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" role="button" draggable="false">Manage application</a>
-    <h2 class="govuk-heading-l">Keys for this application</h2>
-      {% for key in this_data.keys.items %}
-        <div class = "govuk-summary-list__row">
-            <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Key name
-                </dt>
-                <dd class="govuk-summary-list__value">{{ key.name }}</dd>
-                <dd class="govuk-summary-list__actions">
-                  <p class="govuk-body govuk-!-font-size-16">
-                    <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/update/{{ this_data.env }}">Update key</a>
-                  </p>
-                  <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">
-                    <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/delete/{{ this_data.env }}">Delete key</a>
-                  </p>
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Key type
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  {{ 'Rest API key' if key.kind === 'api-client#key' }}
-                  {{ 'Stream API Key' if key.kind === 'api-client#stream-key' }}
-                  {{ 'Web API Key' if key.kind === 'api-client#web' }}
-                </dd>
-                <dd class="govuk-summary-list__actions"></dd>
-              </div>
-
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  API key ID
-                </dt>
-                <dd class="govuk-summary-list__value">
-                      <span class="api-value">
-                        {{key.id}}</span>
-                </dd>
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="#">
-                    Copy<span class="govuk-visually-hidden">
-                          key</span>
-                  </a>
-                </dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Restricted IPs
-                </dt>
-                <dd class="govuk-summary-list__value">
-                  {{ key.restricted_ips }}
-                </dd>
-                <dd class="govuk-summary-list__actions"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  JavaScript domains
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    {{ key.js_domains }}
-                </dd>
-                <dd class="govuk-summary-list__actions"></dd>
-              </div>
-              <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                  Redirect URIs
-                </dt>
-                <dd class="govuk-summary-list__value">{{ key.redirect_url }}</dd>
-                <dd class="govuk-summary-list__actions"></dd>
-              </div>
-            </dl>
+  <h1 class="govuk-heading-xl">
+    {{ this_data.app.name }}
+  </h1>
+  <p class="govuk-body app-description">{{ this_data.app.description }}</p>
+  <h2 class="govuk-heading-l">Application details</h2>
+  <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Application environment
+      </dt>
+      <dd class="govuk-summary-list__value">
+        {{ this_data.env }}
+      </dd>
+      <dd class="govuk-summary-list__actions"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Privacy policy URL
+      </dt>
+      <dd class="govuk-summary-list__value">{{ this_data.app.privacyPolicyUrl }}</dd>
+      <dd class="govuk-summary-list__actions"></dd>
+    </div>
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+        Terms and conditions URL
+      </dt>
+      <dd class="govuk-summary-list__value">{{ this_data.app.termsAndConditionsUrl }}</dd>
+      <dd class="govuk-summary-list__actions"></dd>
+    </div>
+  </dl>
+  <a href="/manage-applications/{{ this_data.app.id }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" role="button" draggable="false">Manage application</a>
+  <h2 class="govuk-heading-l">Keys for this application</h2>
+  {% for key in this_data.keys.items %}
+    <div class="govuk-summary-list__row">
+      <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Key name
+          </dt>
+          <dd class="govuk-summary-list__value">{{ key.name }}</dd>
+          <dd class="govuk-summary-list__actions">
+            <p class="govuk-body govuk-!-font-size-16">
+              <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/update/{{ this_data.env }}">Update key</a>
+            </p>
+            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">
+              <a href="/manage-applications/{{ this_data.appId }}/{{ key.type }}/{{ key.id }}/delete/{{ this_data.env }}">Delete key</a>
+            </p>
+          </dd>
         </div>
-      {% endfor %}
-    <div class="govuk-!-margin-top-6">
-      <a href="/manage-applications/{{ this_data.appId }}/api-key/add/{{ this_data.env }}" class="govuk-button" role="button" draggable="false">Add new key</a>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Key description
+          </dt>
+          <dd class="govuk-summary-list__value">{{ key.description }}</dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Key type
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ 'Rest API key' if key.kind === 'api-client#key' }}
+            {{ 'Streaming API Key' if key.kind === 'api-client#stream-key' }}
+            {{ 'Web API Key' if key.kind === 'api-client#web' }}
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{ 'API key' if key.kind === 'api-client#key' }}
+            {{ 'API key' if key.kind === 'api-client#stream-key' }}
+            {{ 'Web API Key' if key.kind === 'api-client#web' }}
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <span class="api-value">{{key.client_id}}</span>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="#">
+              Copy<span class="govuk-visually-hidden">
+                key</span>
+            </a>
+          </dd>
+        </div>
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Restricted IPs
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {% for ip in key.restrictedIPs %}
+              <p>{{ ip }}</p>
+            {% endfor %}
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+        {% if not (key.kind === 'api-client#stream-key') %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              JavaScript domains
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {{ key.js_domains }}
+            </dd>
+            <dd class="govuk-summary-list__actions"></dd>
+          </div>
+        {% endif %}
+        {% if not (key.kind === 'api-client#stream-key') %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Redirect URIs
+            </dt>
+            <dd class="govuk-summary-list__value">{{ key.redirect_url }}</dd>
+            <dd class="govuk-summary-list__actions"></dd>
+          </div>
+        {% endif %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Registered on
+          </dt>
+          <dd class="govuk-summary-list__value">
+            {{ Date(key.createdOn) }}
+          </dd>
+          <dd class="govuk-summary-list__actions"></dd>
+        </div>
+      </dl>
     </div>
+  {% endfor %}
+  <div class="govuk-!-margin-top-6">
+    <a href="/manage-applications/{{ this_data.appId }}/api-key/add/{{ this_data.env }}" class="govuk-button" role="button" draggable="false">Add new key</a>
+  </div>
 {% endblock %}
