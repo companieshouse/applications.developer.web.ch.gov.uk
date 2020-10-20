@@ -85,7 +85,7 @@ class ApplicationsDeveloper {
     } else if (data.keyType === 'stream') {
       return this.addNewStreamKey(data, appId, oauthToken, environment);
     }
-    return Promise.reject(new Error('Could not match Key Type'));
+    // return Promise.reject(new Error('Could not match Key Type'));
   }
 
   async addNewRestKey (data, appId, oauthToken, environment) {

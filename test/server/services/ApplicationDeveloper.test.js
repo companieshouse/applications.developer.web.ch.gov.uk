@@ -246,6 +246,42 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledTwice;
   });
 
+  it('should save a web key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockId = 'test';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        postAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // create response is the same structure as get response
+        }
+      },
+      webClientsService: {
+        postWebClient: streamKeyPostRequest => {
+          return privateSdkData.getWebClient;
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    const data = {
+      keyType: 'web',
+      keyName: privateSdkData.getWebClient.resource.name,
+      keyDescription: privateSdkData.getWebClient.resource.description,
+      redirectURIs: privateSdkData.getWebClient.resource.redirect_uris[0]
+    };
+
+    // Call method
+    expect(applicationDeveloper.addNewKey(data, mockId, mockOauthToken, mockEnv))
+    // Assertions
+      .to.eventually.eql(privateSdkData.getWebClient.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+
   it('getBaseUrlForPostFormData should return environment live when live is requested', () => {
     const env = 'live';
     const data = {
