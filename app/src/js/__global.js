@@ -1,5 +1,5 @@
-$(document).ready(function(event) {
-  $("input[name=environment]").on("change", function (e) {
+$(document).ready(function (event) {
+  $('input[name=environment]').on('change', function (e) {
     showInDevelopmentOption();
   });
   (function () {
@@ -8,33 +8,46 @@ $(document).ready(function(event) {
 });
 
 function showInDevelopmentOption () {
-  if ($("input[name=environment]").prop("checked")) {
-    $("#conditional-environment").show();
+  if ($('input[name=environment]').prop('checked')) {
+    $('#conditional-environment').show();
   } else {
-    $("#conditional-environment").hide();
+    $('#conditional-environment').hide();
   }
 }
 
-function clearDivs(){
-  document.getElementById('restricted-ips').style.display='none';
-  document.getElementById('js-domains').style.display='none';
-  document.getElementById('redirect-uris').style.display='none';
+function clearDivs () {
+  document.getElementById('restricted-ips').style.display = 'none';
+  document.getElementById('js-domains').style.display = 'none';
+  document.getElementById('redirect-uris').style.display = 'none';
 }
 
-function restClick(){
+function restClick () {
   clearDivs();
-  document.getElementById('restricted-ips').style.visibility='visible';
-  document.getElementById('restricted-ips').style.display = 'block';
-  document.getElementById('js-domains').style.visibility='visible';
-  document.getElementById('js-domains').style.display = 'block';
+  showElementById('restricted-ips');
+  showElementById('js-domains');
 }
-function streamClick(){
+function streamClick () {
   clearDivs();
-  document.getElementById('restricted-ips').style.visibility='visible';
-  document.getElementById('restricted-ips').style.display = 'block';
+  showElementById('restricted-ips');
 }
-function webClick(){
+function webClick () {
   clearDivs();
-  document.getElementById('redirect-uris').style.visibility='visible';
-  document.getElementById('redirect-uris').style.display = 'block';
+  showElementById('redirect-uris');
+}
+
+function showElementById (id) {
+  document.getElementById(id).style.visibility = 'visible';
+  document.getElementById(id).style.display = 'block';
+}
+
+function changeFieldSecurity (fieldId) {
+  const security = document.getElementById(fieldId).style.webkitTextSecurity;
+  const linkId = fieldId + '-link';
+  if (security !== 'none') {
+    document.getElementById(fieldId).style.webkitTextSecurity = 'none';
+    document.getElementById(linkId).innerHTML = 'Hide<span class="govuk-visually-hidden"> key</span>';
+  } else {
+    document.getElementById(fieldId).style.webkitTextSecurity = 'disc';
+    document.getElementById(linkId).innerHTML = 'Show<span class="govuk-visually-hidden"> key</span>';
+  }
 }

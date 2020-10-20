@@ -81,7 +81,7 @@ class ApplicationsDeveloper {
     if (data.keyType === 'rest') {
       return this.addNewRestKey(data, appId, oauthToken, environment);
     } else if (data.keyType === 'web') {
-      return this.addNewWebKey(data, appId, oauthToken, environment);
+      return this.addNewWebClient(data, appId, oauthToken, environment);
     } else if (data.keyType === 'stream') {
       return this.addNewStreamKey(data, appId, oauthToken, environment);
     }

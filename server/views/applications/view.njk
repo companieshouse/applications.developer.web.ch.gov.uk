@@ -73,7 +73,7 @@
           <dd class="govuk-summary-list__value">
             {{ 'Rest API key' if key.kind === 'api-client#key' }}
             {{ 'Streaming API Key' if key.kind === 'api-client#stream-key' }}
-            {{ 'Web API Key' if key.kind === 'api-client#web' }}
+            {{ 'Web' if key.kind === 'api-client#web' }}
           </dd>
           <dd class="govuk-summary-list__actions"></dd>
         </div>
@@ -81,7 +81,7 @@
           <dt class="govuk-summary-list__key">
             {{ 'API key' if key.kind === 'api-client#key' }}
             {{ 'API key' if key.kind === 'api-client#stream-key' }}
-            {{ 'Web API Key' if key.kind === 'api-client#web' }}
+            {{ 'Client Id' if key.kind === 'api-client#web' }}
           </dt>
           <dd class="govuk-summary-list__value">
             <span class="api-value">{{key.client_id}}</span>
@@ -93,6 +93,26 @@
             </a>
           </dd>
         </div>
+        {% if key.kind === 'api-client#web' %}
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            Client Secret
+          </dt>
+          <dd class="govuk-summary-list__value">
+            <span class="api-value" style="-webkit-text-security: disc;" id={{ key.id+"-secret" }}>{{key.client_secret}}</span>
+          </dd>
+          <dd class="govuk-summary-list__actions">
+            <p class="govuk-body govuk-!-font-size-16">
+              <a href="javascript:void(0);" onclick={{ "changeFieldSecurity('"+key.id+"-secret');" }} id={{ key.id+"-secret-link" }}>Show<span class="govuk-visually-hidden"> key</span></a>
+            </p>
+            <p class="govuk-body govuk-!-font-size-16 govuk-!-margin-bottom-0">
+              <a class="govuk-link" href="#">Copy<span class="govuk-visually-hidden">key</span>
+            </a>
+            </p>
+            
+          </dd>
+        </div>
+        {% endif %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Restricted IPs
