@@ -75,6 +75,7 @@
           Are you sure you want to delete this application?
         </h2>
         <input class="govuk-button govuk-button--warning" id="deleteApp" name="deleteApp" type="submit" value="Yes, delete application" />
+        <input type="hidden" value="{{ this_data.applicationName }}" name="appName">
         <a href="/manage-applications/{{ this_data.appId }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" data-module="govuk-button">
           Cancel
         </a>
