@@ -66,7 +66,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     .then(_ => {
       return applicationsDeveloperService.saveApplication(req.body, oauthToken);
     }).then(_ => {
-      notificationService.notify('Application successfully created.', req);
+      notificationService.notify(`'${req.body.applicationName}' application has been created.`, req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -144,7 +144,7 @@ router.post('/manage-applications/:appId/delete/:env', (req, res) => {
 
   applicationsDeveloperService.deleteApplication(appId, oauthToken, env)
     .then(_ => {
-      notificationService.notify('Application successfully deleted.', req);
+      notificationService.notify(`'${req.body.appName}' application has been deleted.`, req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -164,7 +164,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload, oauthToken);
     }).then(_ => {
-      notificationService.notify('Application successfully updated.', req);
+      notificationService.notify(`'${payload.applicationName}' application has been updated.`, req);
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Update an application', 'application-overview', req);
@@ -205,7 +205,7 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
     .then(_ => {
       applicationsDeveloperService.addNewKey(req.body, req.params.appId, oauthToken, req.params.env);
     }).then(_ => {
-      notificationService.notify('Key successfully created.', req);
+      notificationService.notify(`'${req.body.keyName}' key has been created.`, req);
       return res.redirect(302, '/manage-applications/' + req.params.appId + '/view/' + req.params.env);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
@@ -265,7 +265,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
   logger.info(`POST request to delete a key: ${req.path}`);
   applicationsDeveloperService.deleteAPIClient(appId, keyId, keyType, oauthToken, env)
     .then(response => {
-      notificationService.notify('Key successfully Deleted.', req);
+      notificationService.notify(`'${req.body.keyName}' key has been deleted.`, req);
       res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(
       err => {
