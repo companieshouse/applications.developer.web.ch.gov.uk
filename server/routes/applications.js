@@ -66,7 +66,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     .then(_ => {
       return applicationsDeveloperService.saveApplication(req.body, oauthToken);
     }).then(_ => {
-      notificationService.notify(`'${req.body.applicationName}' has been created.`, req);
+      notificationService.notify(`'${req.body.applicationName}' application has been created.`, req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -144,7 +144,7 @@ router.post('/manage-applications/:appId/delete/:env', (req, res) => {
 
   applicationsDeveloperService.deleteApplication(appId, oauthToken, env)
     .then(_ => {
-      notificationService.notify(`'${req.body.appName}' has been deleted.`, req);
+      notificationService.notify(`'${req.body.appName}' application has been deleted.`, req);
       return res.redirect(302, '/manage-applications');
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -164,7 +164,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload, oauthToken);
     }).then(_ => {
-      notificationService.notify(`'${payload.applicationName}' has been updated.`, req);
+      notificationService.notify(`'${payload.applicationName}' application has been updated.`, req);
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Update an application', 'application-overview', req);
