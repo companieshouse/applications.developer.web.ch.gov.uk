@@ -41,8 +41,8 @@ function showElementById (id) {
 }
 
 function changeFieldSecurity (fieldId) {
-  const security = document.getElementById(fieldId).style.webkitTextSecurity;
-  const linkId = fieldId + '-link';
+  var security = document.getElementById(fieldId).style.webkitTextSecurity;
+  var linkId = fieldId + '-link';
   if (security !== 'none') {
     document.getElementById(fieldId).style.webkitTextSecurity = 'none';
     document.getElementById(linkId).innerHTML = 'Hide<span class="govuk-visually-hidden"> key</span>';
