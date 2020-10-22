@@ -84,7 +84,7 @@
             {{ 'Client Id' if key.kind === 'api-client#web' }}
           </dt>
           <dd class="govuk-summary-list__value">
-            <span class="api-value">{{key.client_id}}</span>
+            <span class="api-value">{{ key.client_id }}</span>
           </dd>
           <dd class="govuk-summary-list__actions">
             <a class="govuk-link" href="#">
@@ -113,6 +113,7 @@
           </dd>
         </div>
         {% endif %}
+        {% if not ( key.kind === 'api-client#web') %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             Restricted IPs
@@ -124,7 +125,8 @@
           </dd>
           <dd class="govuk-summary-list__actions"></dd>
         </div>
-        {% if not (key.kind === 'api-client#stream-key') %}
+        {% endif %}
+        {% if not (key.kind === 'api-client#stream-key' or key.kind === 'api-client#web') %}
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
               JavaScript domains
