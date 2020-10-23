@@ -113,6 +113,17 @@ class ManageApplication extends Validator {
         }
       }
     }
+    if (payload.redirectURIs && payload.redirectURIs.length > 0) {
+      const redirectUris = payload.redirectURIs.split(',');
+      for (const redirectUri of redirectUris) {
+        if (redirectUri.length > 0) {
+          if (!this.isValidUrl(redirectUri)) {
+            this.errors.redirectURIs = errorManifest.redirectURIs.invalid;
+            break;
+          }
+        }
+      }
+    }
   }
 
   validateApplication (payload) {

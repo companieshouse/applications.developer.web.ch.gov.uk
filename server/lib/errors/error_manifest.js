@@ -64,6 +64,12 @@ let ErrorManifest = {
         summary: "Enter a vaild javascript domain",
         inline: "Enter a vaild javascript domain"
       }
+    },
+    redirectURIs: {
+      invalid: {
+        summary: "The Redirect URI address format for one or more entries is invalid. The format should consist of a 'http://' followed by text seperated by a decimal point. For example, http://example.com/",
+        inline: "The Redirect URI address format for one or more entries is invalid. The format should consist of a 'http://' followed by text seperated by a decimal point. For example, http://example.com/"
+      }
     }
   }
 };
