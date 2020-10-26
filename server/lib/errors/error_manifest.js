@@ -55,14 +55,14 @@ const ErrorManifest = {
     },
     restrictedIp: {
       invalid: {
-        summary: 'Enter a valid ip address',
-        inline: 'Enter a valid ip address'
+        summary: 'The IP address format for one or more entries is invalid. The format should consist of 4 sets of numbers separated by decimal points. For example, 123.54.267.1',
+        inline: 'The IP address format for one or more entries is invalid. The format should consist of 4 sets of numbers separated by decimal points. For example, 123.54.267.1'
       }
     },
     javaScriptDomain: {
       invalid: {
-        summary: 'Enter a vaild javascript domain',
-        inline: 'Enter a vaild javascript domain'
+        summary: 'The JavaScript domain address format for one or more entries is invalid. The format should consist of text separated by a decimal point. For example, test.com',
+        inline: 'The JavaScript domain address format for one or more entries is invalid. The format should consist of text separated by a decimal point. For example, test.com'
       }
     },
     redirectURIs: {
