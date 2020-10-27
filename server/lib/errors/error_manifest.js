@@ -61,8 +61,8 @@ const ErrorManifest = {
     },
     javaScriptDomain: {
       invalid: {
-        summary: 'The JavaScript domain address format for one or more entries is invalid. The format should consist of text separated by a decimal point. For example, test.com',
-        inline: 'The JavaScript domain address format for one or more entries is invalid. The format should consist of text separated by a decimal point. For example, test.com'
+        summary: "The JavaScript domain address format for one or more entries is invalid. The format should consist of 'http://' or 'https://' followed by text separated by a decimal point. For example, http://test.com",
+        inline: "The JavaScript domain address format for one or more entries is invalid. The format should consist of 'http://' or 'https://' followed by text separated by a decimal point. For example, http://test.com"
       }
     },
     redirectURIs: {
