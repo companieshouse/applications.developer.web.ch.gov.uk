@@ -21,7 +21,8 @@ class ApplicationsDeveloper {
     let baseUrl = '';
     if (typeof data.environment !== 'undefined') {
       if (data.environment === 'test') {
-        if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment === 'yes') {
+        if (typeof data.inDevelopment !== 'undefined' && data.inDevelopment ===
+          'yes') {
           baseUrl = this.server.baseUrl.future;
         } else {
           baseUrl = this.server.baseUrl.test;
@@ -35,13 +36,15 @@ class ApplicationsDeveloper {
 
   async getApplicationList (oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
-    logger.info(`trying to retrieve application list from environment=[${environment}] using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `trying to retrieve application list from environment=[${environment}] using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     // MVP pagination
     const itemsPerPage = 20; // api currently limits to 20, this should be increased for MVP without pagination options in the UI
     const startIndex = 0;
-    const applicationList = await client.applicationsService.getApplications(itemsPerPage, startIndex);
+    const applicationList = await client.applicationsService.getApplications(
+      itemsPerPage, startIndex);
 
     logger.debug(`applicationList=[${JSON.stringify(applicationList)}]`);
     return applicationList.resource;
@@ -49,7 +52,8 @@ class ApplicationsDeveloper {
 
   async getApplication (id, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
-    logger.info(`trying to retrieve application with id=[${id}] from environment=[${environment}] using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `trying to retrieve application with id=[${id}] from environment=[${environment}] using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     const application = await client.applicationsService.getApplication(id);
@@ -60,7 +64,8 @@ class ApplicationsDeveloper {
 
   async saveApplication (data, oauthToken) {
     const serverUrl = this._getBaseUrlForPostFormData(data);
-    logger.info(`creating application in environment=[${data.environment}] inDevelopment=[${data.inDevelopment}], using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `creating application in environment=[${data.environment}] inDevelopment=[${data.inDevelopment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     const applicationPostRequest = {
@@ -70,8 +75,10 @@ class ApplicationsDeveloper {
       termsAndConditionsUrl: data.terms
     };
 
-    logger.info(`Service request to save data, with payload=[${JSON.stringify(applicationPostRequest)}]`);
-    const application = await client.applicationsService.postApplication(applicationPostRequest);
+    logger.info(`Service request to save data, with payload=[${JSON.stringify(
+      applicationPostRequest)}]`);
+    const application = await client.applicationsService.postApplication(
+      applicationPostRequest);
 
     logger.debug(`application=[${JSON.stringify(application)}]`);
     return application.resource;
@@ -90,9 +97,9 @@ class ApplicationsDeveloper {
 
   async addNewRestKey (data, appId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
-    logger.info(`creating api key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `creating api key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-
     let restrictedIps = [];
     let javaScriptDomains = [];
     restrictedIps = data.restrictedIps.split(',');
@@ -104,8 +111,11 @@ class ApplicationsDeveloper {
       jsDomains: javaScriptDomains
     };
 
-    logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPostRequest)}]`);
-    const apiKey = await client.apiKeysService.postAPIKey(apiKeyPostRequest, appId);
+    logger.info(
+      `Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(
+        apiKeyPostRequest)}]`);
+    const apiKey = await client.apiKeysService.postAPIKey(apiKeyPostRequest,
+      appId);
 
     logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
     return apiKey.resource;
@@ -113,7 +123,8 @@ class ApplicationsDeveloper {
 
   async addNewWebClient (data, appId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
-    logger.info(`creating web client for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `creating web client for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     let redirectURIs = [];
@@ -124,8 +135,11 @@ class ApplicationsDeveloper {
       redirectURIs: redirectURIs
     };
 
-    logger.info(`Service request to save web client data against application=[${appId}], with payload=[${JSON.stringify(webClientPostRequest)}]`);
-    const webClient = await client.webClientsService.postWebClient(webClientPostRequest, appId);
+    logger.info(
+      `Service request to save web client data against application=[${appId}], with payload=[${JSON.stringify(
+        webClientPostRequest)}]`);
+    const webClient = await client.webClientsService.postWebClient(
+      webClientPostRequest, appId);
 
     logger.debug(`webClient=[${JSON.stringify(webClient)}]`);
     return webClient.resource;
@@ -133,7 +147,8 @@ class ApplicationsDeveloper {
 
   async addNewStreamKey (data, appId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
-    logger.info(`creating stream key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    logger.info(
+      `creating stream key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     let restrictedIps = [];
@@ -144,32 +159,58 @@ class ApplicationsDeveloper {
       restrictedIPs: restrictedIps
     };
 
-    logger.info(`Service request to save stream key data against application=[${appId}], with payload=[${JSON.stringify(streamKeyPostRequest)}]`);
-    const streamKey = await client.streamKeysService.postStreamKey(streamKeyPostRequest, appId);
+    logger.info(
+      `Service request to save stream key data against application=[${appId}], with payload=[${JSON.stringify(
+        streamKeyPostRequest)}]`);
+    const streamKey = await client.streamKeysService.postStreamKey(
+      streamKeyPostRequest, appId);
 
     logger.debug(`streamKey=[${JSON.stringify(streamKey)}]`);
     return streamKey.resource;
   }
 
   async updateKey (data, appId, keyId, oauthToken, environment) {
+    if (data.keyType === 'key') {
+      return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
+    } else if (data.keyType === 'stream-key') {
+      return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
+    } else {
+      return Promise.reject(new Error('Could not match Key Type'));
+    }
+  }
+
+  async updateStreamKey (data, appId, keyId, oauthToken, environment) {
+    const serverUrl = this.server.baseUrl[environment];
+    logger.info(`updating stream key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+    const restrictedIps = data.restrictedIps.split(',');
+    const streamKeyPutRequest = {
+      name: data.keyName,
+      description: data.keyDescription,
+      restrictedIps: restrictedIps
+    };
+    logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(streamKeyPutRequest)}]`);
+
+    const streamKey = await client.streamKeysService.putStreamKey(
+      streamKeyPutRequest, appId, keyId);
+    logger.debug(`streamKey=[${JSON.stringify(streamKey)}]`);
+    return streamKey.resource;
+  }
+
+  async updateRestApiKey (data, appId, keyId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-
-    let restrictedIps = [];
-    let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(',');
-    javaScriptDomains = data.javaScriptDomains.split(',');
+    const restrictedIps = data.restrictedIps.split(',');
+    const javaScriptDomains = data.javaScriptDomains.split(',');
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
-      restrictedIPs: restrictedIps,
-      jsDomains: javaScriptDomains
+      restrictedIps: restrictedIps,
+      javaScriptDomains: javaScriptDomains
     };
-
     logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPutRequest)}]`);
     const apiKey = await client.apiKeysService.putAPIKey(apiKeyPutRequest, appId, keyId);
-
     logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
     return apiKey.resource;
   }
@@ -225,9 +266,9 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     var apiClient;
-    if (keyType == 'stream-key') {
+    if (keyType === 'stream-key') {
       apiClient = await client.streamKeysService.getStreamKey(appId, keyId);
-    } else if (keyType == 'web') {
+    } else if (keyType === 'web') {
       apiClient = await client.webClientsService.getWebClient(appId, keyId);
     } else {
       apiClient = await client.apiKeysService.getAPIKey(appId, keyId);
@@ -243,9 +284,9 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     var apiClient;
-    if (keyType == 'stream-key') {
+    if (keyType === 'stream-key') {
       apiClient = await client.streamKeysService.deleteStreamKey(appId, keyId);
-    } else if (keyType == 'web') {
+    } else if (keyType === 'web') {
       apiClient = await client.webClientsService.deleteWebClient(appId, keyId);
     } else {
       apiClient = await client.apiKeysService.deleteAPIKey(appId, keyId);

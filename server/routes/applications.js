@@ -302,9 +302,11 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     .then(keyData => {
       viewData.this_data.keyName = keyData.name;
       viewData.this_data.keyDescription = keyData.description;
-      if(viewData.this_data.keyType === 'key'){
+      if (viewData.this_data.keyType === 'key') {
         viewData.this_data.restrictedIps = keyData.restrictedIPs;
         viewData.this_data.javaScriptDomains = keyData.jsDomains;
+      } else if (viewData.this_data.keyName === 'stream') {
+        viewData.this_data.restrictedIps = keyData.restrictedIPs;
       }
       res.render(`${routeViews}/update_key.njk`, viewData);
     }).catch(err => {

@@ -30,9 +30,7 @@
             </span>
           {% endif %}
         </div>
-        <p class="govuk-body">Rest API key</p>
-        <p class="govuk-body" style="color: #016061">ff78ff7b-542c-4a2c-85ba-c8ebe26ad23f</p>
-        <div class="govuk-form-group" {{'' if  this_data.keyType === 'key' else 'style=display:none;' }}>
+        <div class="govuk-form-group" {{'' if  this_data.keyType === 'key' or this_data.keyType === 'stream-key' else 'style=display:none;' }}>
           <label class="govuk-label" for="restrictedIP-detail">
             Restricted IPs
           </label>
@@ -60,6 +58,7 @@
             </span>
           {% endif %}
         </div>
+        <input type="hidden" value="{{ this_data.keyType }}" name="keyType"/>
         <input class="govuk-button" id="submitUpdatedKey" name="submitUpdatedKey" type="submit" value="Update key"/>
         <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">Cancel</a>
       </form>
