@@ -174,6 +174,8 @@ class ApplicationsDeveloper {
       return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'stream-key') {
       return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
+    } else {
+      return Promise.reject(new Error('Could not match Key Type'));
     }
   }
 
