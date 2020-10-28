@@ -131,12 +131,12 @@
               JavaScript domains
             </dt>
             <dd class="govuk-summary-list__value">
-              {{ key.js_domains }}
+              {{ key.jsDomains }}
             </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
         {% endif %}
-        {% if not (key.kind === 'api-client#stream-key') %}
+        {% if not (key.kind === 'api-client#stream-key' or key.kind === 'api-client#key') %}
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
               Redirect URIs

@@ -207,8 +207,8 @@ class ApplicationsDeveloper {
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
-      restrictedIps: restrictedIps,
-      javaScriptDomains: javaScriptDomains
+      restrictedIPs: restrictedIps,
+      jsDomains: javaScriptDomains
     };
     logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPutRequest)}]`);
     const apiKey = await client.apiKeysService.putAPIKey(apiKeyPutRequest, appId, keyId);
