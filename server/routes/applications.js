@@ -325,9 +325,8 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   const oauthToken = Utility.getOAuthToken(req);
   validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(data, appId, keyId, oauthToken, env);
+      return applicationsDeveloperService.updateKey(data, appId, keyId, keyType, oauthToken, env);
     }).then(updatedKey => {
-      console.log(updatedKey);
       notificationService.notify(`'${updatedKey.name}' key has been updated'`, req);
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {

@@ -169,13 +169,11 @@ class ApplicationsDeveloper {
     return streamKey.resource;
   }
 
-  async updateKey (data, appId, keyId, oauthToken, environment) {
-    if (data.keyType === 'key') {
+  async updateKey (data, appId, keyId, keyType, oauthToken, environment) {
+    if (keyType === 'key') {
       return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
-    } else if (data.keyType === 'stream-key') {
+    } else if (keyType === 'stream-key') {
       return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
-    } else {
-      return Promise.reject(new Error('Could not match Key Type'));
     }
   }
 
@@ -183,11 +181,12 @@ class ApplicationsDeveloper {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating stream key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    const restrictedIps = data.restrictedIps.split(',');
+    let restrictedIps = [];
+    restrictedIps = data.restrictedIps.split(',');
     const streamKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
-      restrictedIps: restrictedIps
+      restrictedIPs: restrictedIps
     };
     logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(streamKeyPutRequest)}]`);
 
@@ -201,8 +200,10 @@ class ApplicationsDeveloper {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    const restrictedIps = data.restrictedIps.split(',');
-    const javaScriptDomains = data.javaScriptDomains.split(',');
+    let restrictedIps = [];
+    let javaScriptDomains = [];
+    restrictedIps = data.restrictedIps.split(',');
+    javaScriptDomains = data.javaScriptDomains.split(',');
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
