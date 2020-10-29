@@ -302,8 +302,12 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     .then(keyData => {
       viewData.this_data.keyName = keyData.name;
       viewData.this_data.keyDescription = keyData.description;
-      viewData.this_data.restrictedIps = keyData.restrictedIPs;
-      viewData.this_data.javaScriptDomains = keyData.jsDomains;
+      if (keyType === 'key') {
+        viewData.this_data.restrictedIps = keyData.restrictedIPs;
+        viewData.this_data.javaScriptDomains = keyData.jsDomains;
+      } else if (keyType === 'stream') {
+        viewData.this_data.restrictedIps = keyData.restrictedIPs;
+      }
       res.render(`${routeViews}/update_key.njk`, viewData);
     }).catch(err => {
       viewData.this_errors = routeUtils.processException(err);
@@ -321,9 +325,8 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   const oauthToken = Utility.getOAuthToken(req);
   validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(data, appId, keyId, oauthToken, env);
+      return applicationsDeveloperService.updateKey(data, appId, keyId, keyType, oauthToken, env);
     }).then(updatedKey => {
-      console.log(updatedKey);
       notificationService.notify(`'${updatedKey.name}' key has been updated'`, req);
       return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
     }).catch(err => {
