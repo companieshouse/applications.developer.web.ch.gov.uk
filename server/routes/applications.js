@@ -305,6 +305,8 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
       if(viewData.this_data.keyType === 'key'){
         viewData.this_data.restrictedIps = keyData.restrictedIPs;
         viewData.this_data.javaScriptDomains = keyData.jsDomains;
+      }else if(viewData.this_data.keyType === 'web'){
+        viewData.this_data.redirectURIs = keyData.redirectURIs;
       }
       res.render(`${routeViews}/update_key.njk`, viewData);
     }).catch(err => {
@@ -323,7 +325,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
   const oauthToken = Utility.getOAuthToken(req);
   validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(data, appId, keyId, oauthToken, env);
+      return applicationsDeveloperService.updateKey(data, appId, keyId, keyType, oauthToken, env);
     }).then(updatedKey => {
       console.log(updatedKey);
       notificationService.notify(`'${updatedKey.name}' key has been updated'`, req);

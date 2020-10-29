@@ -109,7 +109,7 @@
               <a class="govuk-link" href="#">Copy<span class="govuk-visually-hidden">key</span>
             </a>
             </p>
-            
+
           </dd>
         </div>
         {% endif %}
@@ -132,17 +132,23 @@
               JavaScript domains
             </dt>
             <dd class="govuk-summary-list__value">
-              {{ key.js_domains }}
+              {% for domain in key.jsDomains %}
+                <p>{{ domain }}</p>
+              {% endfor %}
             </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
         {% endif %}
-        {% if not (key.kind === 'api-client#stream-key') %}
+        {% if not (key.kind === 'api-client#stream-key' or key.kind === 'api-client#key') %}
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
               Redirect URIs
             </dt>
-            <dd class="govuk-summary-list__value">{{ key.redirect_url }}</dd>
+            <dd class="govuk-summary-list__value">
+              {% for uri in key.redirectURIs %}
+                <p>{{ uri }}</p>
+              {% endfor %}
+            </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
         {% endif %}

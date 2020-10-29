@@ -358,6 +358,7 @@ describe('services/ApplicationDeveloper', () => {
     const mockURL = 'https://mocksite.com';
     const mockAppId = 'test';
     const mockKeyId = 'test-key';
+    const mockKeyType = 'key';
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
       apiKeysService: {
@@ -381,7 +382,7 @@ describe('services/ApplicationDeveloper', () => {
     };
 
     // Call method
-    expect(applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
+    expect(applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(privateSdkData.getAPIKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
