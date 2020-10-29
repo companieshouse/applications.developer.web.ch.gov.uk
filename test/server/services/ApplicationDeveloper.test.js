@@ -149,7 +149,6 @@ describe('services/ApplicationDeveloper', () => {
 
   it('should save an application using the applications.api service', () => {
     // static test vars
-    const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
@@ -352,7 +351,7 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledTwice;
   });
 
-  it('should update a key using the applications.api service', () => {
+  it('should update a rest key using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
     const mockURL = 'https://mocksite.com';
@@ -382,7 +381,7 @@ describe('services/ApplicationDeveloper', () => {
     };
 
     // Call method
-    expect(applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv))
+    expect(applicationDeveloper.updateRestApiKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
     // Assertions
       .to.eventually.eql(privateSdkData.getAPIKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
@@ -425,6 +424,46 @@ describe('services/ApplicationDeveloper', () => {
     expect(applicationDeveloper.updateWebKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
       // Assertions
       .to.eventually.eql(privateSdkData.getWebClient.resource);
+      expect(stubAPIClientHelper).to.have.been.calledOnce;
+      expect(stubLogger).to.have.been.calledTwice;
+    });
+    
+  it('should update a stream key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'test';
+    const mockKeyId = 'test-stream-key';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        putAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // update response is the same structure as get response
+        }
+      },
+      streamKeysService: {
+        putStreamKey: apiKeyPostRequest => {
+          return privateSdkData.getStreamKey; // update response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    const data = {
+      keyType: 'stream-key',
+      keyName: privateSdkData.getStreamKey.resource.name,
+      keyDescription: privateSdkData.getStreamKey.resource.description,
+      restrictedIps: privateSdkData.getStreamKey.resource.restricted_ips[0],
+      appId: mockAppId,
+      env: mockEnv,
+      keyId: mockKeyId
+    };
+
+    // Call method
+    expect(applicationDeveloper.updateStreamKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
+      // Assertions
+      .to.eventually.eql(privateSdkData.getStreamKey.resource);
     expect(stubAPIClientHelper).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
   });

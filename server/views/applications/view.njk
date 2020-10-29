@@ -80,7 +80,7 @@
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
             {{ 'API key' if key.kind === 'api-client#key' }}
-            {{ 'API key' if key.kind === 'api-client#stream-key' }}
+            {{ 'Stream key' if key.kind === 'api-client#stream-key' }}
             {{ 'Client Id' if key.kind === 'api-client#web' }}
           </dt>
           <dd class="govuk-summary-list__value">
@@ -109,7 +109,6 @@
               <a class="govuk-link" href="#">Copy<span class="govuk-visually-hidden">key</span>
             </a>
             </p>
-
           </dd>
         </div>
         {% endif %}
