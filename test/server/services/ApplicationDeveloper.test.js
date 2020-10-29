@@ -389,6 +389,46 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledTwice;
   });
 
+  it('should update a web key using the applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'test';
+    const mockKeyId = 'test-web-key';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        putAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // update response is the same structure as get response
+        }
+      },
+      webClientsService: {
+        putWebClient: apiKeyPostRequest => {
+          return privateSdkData.getWebClient; // update response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    const data = {
+      keyType: 'web-key',
+      keyName: privateSdkData.getWebClient.resource.name,
+      keyDescription: privateSdkData.getWebClient.resource.description,
+      redirectURIs: privateSdkData.getWebClient.resource.redirect_uris[0],
+      appId: mockAppId,
+      env: mockEnv,
+      keyId: mockKeyId
+    };
+
+    // Call method
+    expect(applicationDeveloper.updateWebKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
+      // Assertions
+      .to.eventually.eql(privateSdkData.getWebClient.resource);
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+
   it('should delete an Application using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
