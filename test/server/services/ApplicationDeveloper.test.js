@@ -112,15 +112,8 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.server.baseUrl.mock = mockURL;
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
-    applicationDeveloper.deleteAPIClient(mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv)
-      .then(rslt =>
-        assert(false, 'Method should error')
-      )
-      .catch(rslt => {
-        expect(rslt.message)
-          .to.be.equal('Incorrect Key Type');
-      }
-      );
+    const returnedPromise = applicationDeveloper.deleteAPIClient(mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv);
+    return returnedPromise.should.be.rejectedWith('Incorrect Key Type');
   });
 
   it('should fetch single Applications from the applications.api service', () => {
