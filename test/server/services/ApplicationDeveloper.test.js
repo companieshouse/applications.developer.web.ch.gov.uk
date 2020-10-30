@@ -100,6 +100,29 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
+  it('should return reject delete a specific key from applications.api service', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'test';
+    const mockKeyId = 'testkey';
+    const mockOauthToken = 'token';
+    const mockKeyType = 'incorrectKeyType';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns(null);
+    applicationDeveloper.server.baseUrl.mock = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    applicationDeveloper.deleteAPIClient(mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv)
+      .then(rslt =>
+        assert(false, 'Method should error')
+      )
+      .catch(rslt => {
+        expect(rslt.message)
+          .to.be.equal('Incorrect Key Type');
+      }
+      );
+  });
+
   it('should fetch single Applications from the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';

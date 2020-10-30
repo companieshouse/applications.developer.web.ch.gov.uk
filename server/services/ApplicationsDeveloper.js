@@ -247,8 +247,11 @@ class ApplicationsDeveloper {
       apiClient = await client.streamKeysService.deleteStreamKey(appId, keyId);
     } else if (keyType == 'web') {
       apiClient = await client.webClientsService.deleteWebClient(appId, keyId);
-    } else {
+    } else if (keyType == 'key') {
       apiClient = await client.apiKeysService.deleteAPIKey(appId, keyId);
+    } else {
+      logger.info(`Cannot delete Key of Type: ${keyType}`);
+      return Promise.reject(new Error('Incorrect Key Type'));
     }
 
     logger.debug(`apiClient=[${JSON.stringify(apiClient)}]`);
