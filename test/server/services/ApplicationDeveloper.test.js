@@ -351,6 +351,36 @@ describe('services/ApplicationDeveloper', () => {
     expect(stubLogger).to.have.been.calledTwice;
   });
 
+  it('should return a rejection if key type is not valid ', () => {
+    // static test vars
+    const mockEnv = 'mock';
+    const mockURL = 'https://mocksite.com';
+    const mockAppId = 'test';
+    const mockKeyId = 'test-key';
+    const mockKeyType = 'dud';
+    const mockOauthToken = 'token';
+    const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
+      apiKeysService: {
+        putAPIKey: apiKeyPostRequest => {
+          return privateSdkData.getAPIKey; // update response is the same structure as get response
+        }
+      }
+    });
+    applicationDeveloper.server.baseUrl.live = mockURL;
+    applicationDeveloper.APIClientHelper = stubAPIClientHelper;
+
+    const data = {
+      keyName: privateSdkData.getAPIKey.resource.name,
+      keyDescription: privateSdkData.getAPIKey.resource.description,
+      appId: mockAppId,
+      env: mockEnv,
+      keyId: mockKeyId
+    };
+    // Call method
+    const returnedPromise = applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv);
+    returnedPromise.should.be.rejectedWith('Could not match Key Type');
+  })
+
   it('should update a rest key using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
@@ -411,7 +441,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     const data = {
-      keyType: 'web-key',
+      keyType: 'web',
       keyName: privateSdkData.getWebClient.resource.name,
       keyDescription: privateSdkData.getWebClient.resource.description,
       redirectURIs: privateSdkData.getWebClient.resource.redirect_uris[0],
@@ -427,7 +457,7 @@ describe('services/ApplicationDeveloper', () => {
       expect(stubAPIClientHelper).to.have.been.calledOnce;
       expect(stubLogger).to.have.been.calledTwice;
     });
-    
+
   it('should update a stream key using the applications.api service', () => {
     // static test vars
     const mockEnv = 'mock';
