@@ -391,10 +391,10 @@ describe('routes/applications.js', () => {
         expect(stubNotifications).to.have.been.calledOnce;
       });
   });
-  it('should serve up the delete key page on the delete path when got with an error', () => {
+  it('should serve up the delete key page on the delete path when got with an Incorrect Key Type Error', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const genericServerException = exceptions.genericServerException;
-    const testErr = new Error('Test error');
+    const testErr = new Error('Could not match Key Type');
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
