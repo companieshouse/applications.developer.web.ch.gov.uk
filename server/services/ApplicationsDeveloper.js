@@ -171,9 +171,9 @@ class ApplicationsDeveloper {
 
   async updateKey (data, appId, keyId, keyType, oauthToken, environment) {
     if (keyType === 'key') {
-      return this.updateRestApiKey(data, appId, keyId, oauthToken, environment)
+      return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'web') {
-      return this.updateWebKey(data, appId, keyId, oauthToken, environment)
+      return this.updateWebKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'stream-key') {
       return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
     } else {
