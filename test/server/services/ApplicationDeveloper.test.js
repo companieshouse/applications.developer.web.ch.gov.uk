@@ -113,7 +113,7 @@ describe('services/ApplicationDeveloper', () => {
     applicationDeveloper.APIClientHelper = stubAPIClientHelper;
 
     const returnedPromise = applicationDeveloper.deleteAPIClient(mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv);
-    return returnedPromise.should.be.rejectedWith('Incorrect Key Type');
+    returnedPromise.should.be.rejectedWith('Could not match Key Type');
   });
 
   it('should fetch single Applications from the applications.api service', () => {

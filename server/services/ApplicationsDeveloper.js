@@ -251,7 +251,7 @@ class ApplicationsDeveloper {
       apiClient = await client.apiKeysService.deleteAPIKey(appId, keyId);
     } else {
       logger.info(`Cannot delete Key of Type: ${keyType}`);
-      return Promise.reject(new Error('Incorrect Key Type'));
+      return Promise.reject(new Error('Could not match Key Type'));
     }
 
     logger.debug(`apiClient=[${JSON.stringify(apiClient)}]`);

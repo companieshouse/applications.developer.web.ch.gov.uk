@@ -394,7 +394,7 @@ describe('routes/applications.js', () => {
   it('should serve up the delete key page on the delete path when got with an Incorrect Key Type Error', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const genericServerException = exceptions.genericServerException;
-    const testErr = new Error('Incorrect Key Type');
+    const testErr = new Error('Could not match Key Type');
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
