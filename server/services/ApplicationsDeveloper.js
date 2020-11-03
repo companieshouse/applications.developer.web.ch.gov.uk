@@ -172,12 +172,35 @@ class ApplicationsDeveloper {
   async updateKey (data, appId, keyId, keyType, oauthToken, environment) {
     if (keyType === 'key') {
       return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
+    } else if (keyType === 'web') {
+      return this.updateWebKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'stream-key') {
       return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
     } else {
       return Promise.reject(new Error('Could not match Key Type'));
     }
   }
+
+  async updateWebKey (data, appId, keyId, oauthToken, environment) {
+    const serverUrl = this.server.baseUrl[environment];
+    logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
+    const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
+
+    let redirectURIs = [];
+    redirectURIs = data.redirectURIs.split(',');
+    const apiKeyPutRequest = {
+      name: data.keyName,
+      description: data.keyDescription,
+      redirectURIs: redirectURIs
+    };
+
+    logger.info(`Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(apiKeyPutRequest)}]`);
+    const apiKey = await client.webClientsService.putWebClient(apiKeyPutRequest, appId, keyId);
+
+    logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
+    return apiKey.resource;
+  }
+
 
   async updateStreamKey (data, appId, keyId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];

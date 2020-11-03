@@ -118,8 +118,8 @@
             Restricted IPs
           </dt>
           <dd class="govuk-summary-list__value">
-            {% for ip in key.restrictedIPs %}
-              <p>{{ ip }}</p>
+            {% for ipGroup in key.restrictedIPs | batch(1) %}
+                <p>{{ ipGroup | join(", ") }}</p>
             {% endfor %}
           </dd>
           <dd class="govuk-summary-list__actions"></dd>
@@ -131,7 +131,9 @@
               JavaScript domains
             </dt>
             <dd class="govuk-summary-list__value">
-              {{ key.jsDomains }}
+              {% for domainGroup in key.jsDomains | batch(1) %}
+                <p>{{ domainGroup | join(", ") }}</p>
+              {% endfor %}
             </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
@@ -141,7 +143,11 @@
             <dt class="govuk-summary-list__key">
               Redirect URIs
             </dt>
-            <dd class="govuk-summary-list__value">{{ key.redirect_url }}</dd>
+            <dd class="govuk-summary-list__value">
+              {% for uriGroup in key.redirectURIs | batch(1) %}
+                <p>{{ uriGroup | join(", ") }}</p>
+              {% endfor %}
+            </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
         {% endif %}

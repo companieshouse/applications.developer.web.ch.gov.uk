@@ -58,6 +58,20 @@
             </span>
           {% endif %}
         </div>
+        <div class="govuk-form-group" {{'' if  this_data.keyType === 'web' else 'style=display:none;' }}>
+          <label class="govuk-label" for="redirectURI-detail">
+            Redirect URIs
+          </label>
+          <div id="redirectURI-detail-hint" class="govuk-hint">
+            Separate each domain with a comma.
+          </div>
+          <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.redirectURIs is not undefined }}" id="redirectURI-detail" name="redirectURIs" rows="5" aria-describedby="redirectURIs-detail-hint">{{ this_data.redirectURIs }}</textarea>
+          {% if this_errors.redirectURIs is not undefined %}
+            <span id="err-id-terms" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ this_errors.redirectURIs.inline }}
+            </span>
+          {% endif %}
+        </div>
         <input class="govuk-button" id="submitUpdatedKey" name="submitUpdatedKey" type="submit" value="Update key"/>
         <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">Cancel</a>
       </form>
