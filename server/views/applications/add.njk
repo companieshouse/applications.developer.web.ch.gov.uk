@@ -9,7 +9,7 @@
   <h1 class="govuk-heading-xl">New application</h1>
 
 <form action="/manage-applications/add" method="post" enctype="application/json" id="frm-add-application">
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.name is not undefined }}">
     <label class="govuk-label" for="applicationName">Application name</label>
 
     <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
@@ -20,7 +20,7 @@
     {% endif %}
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.description is not undefined }}">
     <label class="govuk-label" for="description">Description of application</label>
 
     <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
@@ -31,7 +31,7 @@
     {% endif %}
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.environment is not undefined }}">
 
     <fieldset class="govuk-fieldset">
 

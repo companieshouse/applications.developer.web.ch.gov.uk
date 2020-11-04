@@ -9,10 +9,20 @@ const ErrorManifest = {
       summary: 'Your request contains validation errors',
       inline: 'Your request contains validation errors'
     },
-    name: {
+    applicationName: {
       blank: {
-        summary: 'Enter a name',
-        inline: 'Enter a name'
+        summary: 'Enter your application name',
+        inline: 'Enter your application name'
+      },
+      invalid: {
+        summary: 'Name must only include letters a-z, A-Z, hyphens, spaces, apostrophes and full stops',
+        inline: 'Name must only include letters a-z, A-Z, hyphens, spaces, apostrophes and full stops'
+      }
+    },
+    keyName: {
+      blank: {
+        summary: 'Enter your key name',
+        inline: 'Enter your key name'
       },
       invalid: {
         summary: 'Name must only include letters a-z, A-Z, hyphens, spaces, apostrophes and full stops',
@@ -31,14 +41,14 @@ const ErrorManifest = {
     },
     environment: {
       blank: {
-        summary: 'Choose an environment',
-        inline: 'Choose an environment'
+        summary: 'Select an environment for your application',
+        inline: 'Select an environment for your application'
       }
     },
     type: {
       blank: {
-        summary: 'Choose a type',
-        inline: 'Choose a type'
+        summary: 'Select the type of API client key you want to add',
+        inline: 'Select the type of API client key you want to add'
       }
     },
     terms: {

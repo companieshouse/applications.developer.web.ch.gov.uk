@@ -81,9 +81,9 @@ class ManageApplication extends Validator {
     this._formatIncomingPayload(payload);
     if (!this.isValidKeyName(payload.keyName)) {
       if (payload.keyName.length === 0) {
-        this.errors.name = errorManifest.name.blank;
+        this.errors.name = errorManifest.keyName.blank;
       } else {
-        this.errors.name = errorManifest.name.invalid;
+        this.errors.name = errorManifest.keyName.invalid;
       }
     }
     if (!this.isValidDescription(payload.keyDescription)) {
@@ -132,9 +132,9 @@ class ManageApplication extends Validator {
     this._formatIncomingPayload(payload);
     if (!this.isValidAppName(payload.applicationName)) {
       if (payload.applicationName.length === 0) {
-        this.errors.name = errorManifest.name.blank;
+        this.errors.name = errorManifest.applicationName.blank;
       } else {
-        this.errors.name = errorManifest.name.invalid;
+        this.errors.name = errorManifest.applicationName.invalid;
       }
     }
     if (!this.isValidDescription(payload.description)) {
