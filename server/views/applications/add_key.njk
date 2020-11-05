@@ -12,25 +12,23 @@
   <label class="govuk-label" for="keyName">
     Key name
   </label>
-
-  <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="keyName" name="keyName" type="text" value="{{ this_data.body.keyName }}">
   {% if this_errors.name is not undefined %}
     <span id="err-id-name" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
     </span>
   {% endif %}
+  <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="keyName" name="keyName" type="text" value="{{ this_data.body.keyName }}">
 </div>
 <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.description is not undefined }}">
   <label class="govuk-label" for="keyDescription">
     Key description
   </label>
-
-  <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="keyDescription" name="keyDescription" rows="5">{{ this_data.body.keyDescription }}</textarea>
   {% if this_errors.description is not undefined %}
     <span id="err-id-description" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
     </span>
   {% endif %}
+  <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="keyDescription" name="keyDescription" rows="5">{{ this_data.body.keyDescription }}</textarea>
 </div>
 
 <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.type is not undefined }}">
@@ -66,7 +64,7 @@
   </fieldset>
   <br>
   <br>
-  <div class="govuk-form-group" id='restricted-ips' {{'' if  this_data.body.keyType === 'rest' or this_data.body.keyType === 'stream' else 'style=display:none;' }}>
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.restrictedIp is not undefined }}" id='restricted-ips' {{'' if  this_data.body.keyType === 'rest' or this_data.body.keyType === 'stream' else 'style=display:none;' }}>
     <label class="govuk-label" for="more-detail-ip">
       Restricted IPs
     </label>
@@ -74,15 +72,14 @@
     <span id="more-detail-hint-ip" class="govuk-hint">
       Separate each IP with a comma.
     </span>
-
-    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.restrictedIp is not undefined }}" id="more-detail-ip" name="restrictedIps" rows="5" aria-describedby="more-detail-hint-ip">{{ this_data.body.restrictedIps }}</textarea>
     {% if this_errors.restrictedIp is not undefined %}
       <span id="err-id-terms" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.restrictedIp.inline }}
       </span>
     {% endif %}
+    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.restrictedIp is not undefined }}" id="more-detail-ip" name="restrictedIps" rows="5" aria-describedby="more-detail-hint-ip">{{ this_data.body.restrictedIps }}</textarea>
   </div>
-  <div class="govuk-form-group" id='js-domains' {{'' if  this_data.body.keyType === 'rest' else 'style=display:none;' }}>
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.javaScriptDomain is not undefined }}" id='js-domains' {{'' if  this_data.body.keyType === 'rest' else 'style=display:none;' }}>
     <label class="govuk-label" for="more-detail-domain">
       JavaScript domains
     </label>
@@ -90,14 +87,14 @@
     <span id="more-detail-hint-domain" class="govuk-hint">
       Separate each domain with a comma.
     </span>
-    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.javaScriptDomain is not undefined }}" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain">{{ this_data.body.javaScriptDomains }}</textarea>
     {% if this_errors.javaScriptDomain is not undefined %}
       <span id="err-id-terms" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.javaScriptDomain.inline }}
       </span>
     {% endif %}
+    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.javaScriptDomain is not undefined }}" id="more-detail-domain" name="javaScriptDomains" rows="5" aria-describedby="more-detail-hint-domain">{{ this_data.body.javaScriptDomains }}</textarea>
   </div>
-  <div class="govuk-form-group" id='redirect-uris' {{'' if  this_data.body.keyType === 'web' else 'style=display:none;' }}>
+  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.redirectURIs is not undefined }}" id='redirect-uris' {{'' if  this_data.body.keyType === 'web' else 'style=display:none;' }}>
     <label class="govuk-label" for="more-detail-uri">
       Redirect URIs
     </label>
@@ -105,12 +102,12 @@
     <span id="more-detail-hint-uri" class="govuk-hint">
       Separate each URI with a comma.
     </span>
-    <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
     {% if this_errors.redirectURIs is not undefined %}
       <span id="err-id-terms" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.redirectURIs.inline }}
       </span>
     {% endif %}
+    <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
   </div>
 </div>
 <input class="govuk-button" id="submitKey" name="submitKey" type="submit" value="Add key"/>
