@@ -17,7 +17,7 @@
       <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
     </span>
   {% endif %}
-  <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="keyName" name="keyName" type="text" value="{{ this_data.body.keyName }}">
+  <input class="govuk-input{{ ' govuk-input--error' if this_errors.name is not undefined }}" id="keyName" name="keyName" type="text" value="{{ this_data.body.keyName }}">
 </div>
 <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.description is not undefined }}">
   <label class="govuk-label" for="keyDescription">
@@ -28,7 +28,7 @@
       <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
     </span>
   {% endif %}
-  <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="keyDescription" name="keyDescription" rows="5">{{ this_data.body.keyDescription }}</textarea>
+  <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.description is not undefined }}" id="keyDescription" name="keyDescription" rows="5">{{ this_data.body.keyDescription }}</textarea>
 </div>
 
 <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.type is not undefined }}">

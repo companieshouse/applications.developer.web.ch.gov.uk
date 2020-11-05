@@ -16,7 +16,7 @@
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
       </span>
     {% endif %}
-    <input class="govuk-input{{ 'govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
   </div>
 
   <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.description is not undefined }}">
@@ -26,7 +26,7 @@
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
       </span>
     {% endif %}
-    <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
+    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
   </div>
 
   <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.environment is not undefined }}">
@@ -87,7 +87,7 @@
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.privacyPolicy.inline }}
       </span>
     {% endif %}
-    <input class="govuk-input{{' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
   </div>
 
   <input class="govuk-button" id="submitApp" name="submitApp" type="submit" value="Create" />
