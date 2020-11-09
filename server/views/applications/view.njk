@@ -96,10 +96,10 @@
         {% if key.kind === 'api-client#web' %}
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
-            Client Secret
+            <label for="{{ key.id+"-secret" }}">Client Secret</label>
           </dt>
-          <dd class="govuk-summary-list__value">
-            <span class="api-value" style="-webkit-text-security: disc;" id={{ key.id+"-secret" }}>{{ key.clientSecret }}</span>
+          <dd class="govuk-summary-list__value" style="padding-right: 0">
+            <input type="password" class="api-value" style="border:none; background-color:white; width: 100%; " id="{{ key.id+"-secret" }}" value="{{ key.clientSecret }}" disabled>
           </dd>
           <dd class="govuk-summary-list__actions">
             <p class="govuk-body govuk-!-font-size-16">
