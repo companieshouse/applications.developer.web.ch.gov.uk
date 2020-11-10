@@ -38,10 +38,9 @@
   border-color:#00703c;
   padding: 1em;
 }
-#client-secret-item {
+.client-secret-item {
     padding-right: 0;
   }
-
 .client-secret-display {
     border: none;
     background-color: white;

@@ -98,8 +98,8 @@
           <dt class="govuk-summary-list__key">
             <label for="{{ loop.index }}">Client Secret</label>
           </dt>
-          <dd class="govuk-summary-list__value" id="client-secret-item" style="padding-right: 0">
-            <input type="password" class="api-value client-secret-display" style="border:none; background-color:white; width: 100%;" id="{{ loop.index }}" value="{{ key.clientSecret }}" disabled>
+          <dd class="govuk-summary-list__value client-secret-item">
+            <input type="password" class="api-value client-secret-display" id="{{ loop.index }}" value="{{ key.clientSecret }}" disabled>
           </dd>
           <dd class="govuk-summary-list__actions">
             <p class="govuk-body govuk-!-font-size-16">
