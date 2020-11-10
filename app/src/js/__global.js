@@ -41,9 +41,9 @@ function showElementById (id) {
 }
 
 function changeFieldSecurity (fieldId) {
-  var security = document.getElementById(fieldId).getAttribute('type');
+  var displayType = document.getElementById(fieldId).getAttribute('type');
   var linkId = fieldId + '-link';
-  if (security === 'password') {
+  if (displayType === 'password') {
     document.getElementById(fieldId).setAttribute('type', 'text');
     document.getElementById(linkId).innerHTML = 'Hide<span class="govuk-visually-hidden"> key</span>';
   } else {
