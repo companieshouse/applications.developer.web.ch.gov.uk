@@ -41,13 +41,13 @@ function showElementById (id) {
 }
 
 function changeFieldSecurity (fieldId) {
-  var security = document.getElementById(fieldId).style.webkitTextSecurity;
+  var displayType = document.getElementById(fieldId).getAttribute('type');
   var linkId = fieldId + '-link';
-  if (security !== 'none') {
-    document.getElementById(fieldId).style.webkitTextSecurity = 'none';
+  if (displayType === 'password') {
+    document.getElementById(fieldId).setAttribute('type', 'text');
     document.getElementById(linkId).innerHTML = 'Hide<span class="govuk-visually-hidden"> key</span>';
   } else {
-    document.getElementById(fieldId).style.webkitTextSecurity = 'disc';
+    document.getElementById(fieldId).setAttribute('type', 'password');
     document.getElementById(linkId).innerHTML = 'Show<span class="govuk-visually-hidden"> key</span>';
   }
 }
