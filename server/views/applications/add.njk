@@ -9,29 +9,27 @@
   <h1 class="govuk-heading-xl">New application</h1>
 
 <form action="/manage-applications/add" method="post" enctype="application/json" id="frm-add-application">
-  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.name is not undefined }}">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.name is not undefined }}">
     <label class="govuk-label" for="applicationName">Application name</label>
-
-    <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
     {% if this_errors.name is not undefined %}
       <span id="err-id-name" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.name.inline }}
       </span>
     {% endif %}
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
   </div>
 
-  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.description is not undefined }}">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.description is not undefined }}">
     <label class="govuk-label" for="description">Description of application</label>
-
-    <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
     {% if this_errors.description is not undefined %}
       <span id="err-id-description" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.description.inline }}
       </span>
     {% endif %}
+    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
   </div>
 
-  <div class="govuk-form-group{{' govuk-form-group--error' if this_errors.environment is not undefined }}">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.environment is not undefined }}">
 
     <fieldset class="govuk-fieldset">
 
@@ -72,26 +70,24 @@
 
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.terms is not undefined }}">
     <label class="govuk-label" for="terms">Terms &amp; Conditions URL (optional)</label>
-
-    <input class="govuk-input{{ ' govuk-input--error' if this_errors.terms is not undefined }}" id="terms" name="terms" value="{{ this_data.terms }}" type="text">
     {% if this_errors.terms is not undefined %}
       <span id="err-id-terms" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.terms.inline }}
       </span>
     {% endif %}
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.terms is not undefined }}" id="terms" name="terms" value="{{ this_data.terms }}" type="text">
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.privacyPolicy is not undefined }}">
     <label class="govuk-label" for="privacyPolicy">Privacy Policy URL (optional)</label>
-
-    <input class="govuk-input{{' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
     {% if this_errors.privacyPolicy is not undefined %}
       <span id="err-id-privacyPolicy" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.privacyPolicy.inline }}
       </span>
     {% endif %}
+    <input class="govuk-input{{ ' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
   </div>
 
   <input class="govuk-button" id="submitApp" name="submitApp" type="submit" value="Create" />
