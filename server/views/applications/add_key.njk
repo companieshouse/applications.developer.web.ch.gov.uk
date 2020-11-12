@@ -109,7 +109,7 @@
         <span class="govuk-visually-hidden">Error:</span> {{ this_errors.redirectURIs.inline }}
       </span>
     {% endif %}
-    <textarea class="govuk-textarea" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
+    <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.redirectURIs is not undefined }}" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
   </div>
 </div>
 <input class="govuk-button" id="submitKey" name="submitKey" type="submit" value="Add key"/>
