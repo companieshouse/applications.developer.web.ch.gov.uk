@@ -36,7 +36,7 @@ njk.addGlobal('Date', function (d) {
   const monthFormat = new Intl.DateTimeFormat('en', {
     month: 'long'
   });
-  const day = date.getDay();
+  const day = date.getDate();
   const month = monthFormat.format(date);
   const year = date.getFullYear();
   const hour = date.getHours();
