@@ -51,7 +51,7 @@ router.get('/manage-applications/add', (req, res, next) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = routeUtils.createViewData('Add an application', 'add-application', req);
   viewData.back_link = {
-    message: 'Back to all Applications',
+    message: 'Back to all applications',
     link: '/manage-applications'
   };
   res.render(`${routeViews}/add.njk`, viewData);
@@ -86,7 +86,7 @@ router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
     env: env
   };
   viewData.back_link = {
-    message: 'Back to all Applications',
+    message: 'Back to all applications',
     link: '/manage-applications'
   };
   viewData.this_errors = null;
@@ -119,7 +119,7 @@ router.get('/manage-applications/:appId/update/:env/:confirm?', (req, res) => {
     confirmDelete: confirmDelete
   };
   viewData.back_link = {
-    message: 'Back to all Applications',
+    message: 'Back to all applications',
     link: '/manage-applications'
   };
   applicationsDeveloperService.getApplication(id, oauthToken, env)
@@ -170,7 +170,7 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
       const viewData = routeUtils.createViewData('Update an application', 'application-overview', req);
       viewData.this_data = payload;
       viewData.back_link = {
-        message: 'Back to all Applications',
+        message: 'Back to all applications',
         link: '/manage-applications'
       };
       viewData.this_errors = routeUtils.processException(err);
@@ -192,7 +192,7 @@ router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
   };
   viewData.this_errors = null;
   viewData.back_link = {
-    message: 'Back to all Applications',
+    message: 'Back to all applications',
     link: '/manage-applications'
   };
   res.render(`${routeViews}/add_key.njk`, viewData);
@@ -215,7 +215,7 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
         env: req.params.env
       };
       viewData.back_link = {
-        message: 'Back to all Applications',
+        message: 'Back to all applications',
         link: '/manage-applications'
       };
       viewData.this_errors = routeUtils.processException(err);
@@ -232,7 +232,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
   const env = req.params.env;
   const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
   viewData.back_link = {
-    message: 'Back to all Applications',
+    message: 'Back to all applications',
     link: '/manage-applications'
   };
   applicationsDeveloperService.getAPIClient(appId, keyId, keyType, oauthToken, env)
@@ -271,7 +271,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
       err => {
         const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
         viewData.back_link = {
-          message: 'Back to all Applications',
+          message: 'Back to all applications',
           link: '/manage-applications'
         };
         viewData.this_errors = routeUtils.processException(err);
@@ -295,7 +295,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     keyId: keyId
   };
   viewData.back_link = {
-    message: 'Back to Application',
+    message: 'Back to application',
     link: `/manage-applications/${appId}/view/${env}`
   };
   applicationsDeveloperService.getAPIClient(appId, keyId, keyType, oauthToken, env)
@@ -305,7 +305,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
       if (keyType === 'key') {
         viewData.this_data.restrictedIps = keyData.restrictedIPs;
         viewData.this_data.javaScriptDomains = keyData.jsDomains;
-      }else if(keyType === 'web'){
+      } else if (keyType === 'web') {
         viewData.this_data.redirectURIs = keyData.redirectURIs;
       } else if (keyType === 'stream') {
         viewData.this_data.restrictedIps = keyData.restrictedIPs;
@@ -340,7 +340,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res
       viewData.this_data.keyId = keyId;
       viewData.this_errors = routeUtils.processException(err);
       viewData.back_link = {
-        message: 'Back to Application',
+        message: 'Back to application',
         link: `/manage-applications/${appId}/view/${env}`
       };
       res.render(`${routeViews}/update_key.njk`, viewData);

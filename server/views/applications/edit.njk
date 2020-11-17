@@ -4,8 +4,6 @@
 
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-  {# <a href="/manage-applications" class="govuk-back-link">Back to all applications</a> #}
-
   <h1 class="govuk-heading-xl">{{ this_data.applicationName }}</h1>
 
 <form action="/manage-applications/{{ this_data.appId }}/update/{{ this_data.env }}" method="post" enctype="application/json" id="frm-add-application">
