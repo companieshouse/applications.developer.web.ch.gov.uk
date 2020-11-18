@@ -53,14 +53,14 @@ const ErrorManifest = {
     },
     terms: {
       invalid: {
-        summary: 'The Terms and Conditions URL format is invalid. The format should consist of "http://" followed by text separated by a decimal point. For example,  http://example.com ',
-        inline: 'The Terms and Conditions URL format is invalid. The format should consist of "http://" followed by text separated by a decimal point. For example,  http://example.com'
+        summary: "The Terms and Conditions URL format is invalid. The format should consist of 'http://' followed by text separated by a decimal point. For example,  http://example.com ",
+        inline: "The Terms and Conditions URL format is invalid. The format should consist of 'http://' followed by text separated by a decimal point. For example,  http://example.com"
       }
     },
     privacyPolicy: {
       invalid: {
-        summary: 'The Privacy Policy URL format is invalid. The format should consist of "http://" followed by text separated by a decimal point. For example, http://example.com',
-        inline: 'The Privacy Policy URL format is invalid. The format should consist of "http://" followed by text separated by a decimal point. For example, http://example.com'
+        summary: "The Privacy Policy URL format is invalid. The format should consist of 'http://' followed by text separated by a decimal point. For example, http://example.com",
+        inline: "The Privacy Policy URL format is invalid. The format should consist of 'http://' followed by text separated by a decimal point. For example, http://example.com"
       }
     },
     restrictedIp: {
