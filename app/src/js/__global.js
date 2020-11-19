@@ -17,20 +17,24 @@ function showInDevelopmentOption () {
 
 function clearDivs () {
   document.getElementById('restricted-ips').style.display = 'none';
-  document.getElementById('js-domains').style.display = 'none';
   document.getElementById('redirect-uris').style.display = 'none';
+  document.getElementById('js-domains').style.display = 'none';
 }
-
 function restClick () {
+  document.getElementById('more-detail-uri').value = '';
   clearDivs();
   showElementById('restricted-ips');
   showElementById('js-domains');
 }
 function streamClick () {
+  document.getElementById('more-detail-uri').value = '';
+  document.getElementById('more-detail-domain').value = '';
   clearDivs();
   showElementById('restricted-ips');
 }
 function webClick () {
+  document.getElementById('more-detail-domain').value = '';
+  document.getElementById('more-detail-ip').value = '';
   clearDivs();
   showElementById('redirect-uris');
 }
