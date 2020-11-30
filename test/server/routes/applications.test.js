@@ -21,6 +21,7 @@ let stubLogger;
 let app;
 
 const signedInCookie = [`${process.env.COOKIE_NAME}=${SIGNED_IN_COOKIE}`];
+process.env.DEFAULT_SESSION_EXPIRATION = 3600;
 
 describe('routes/applications.js', () => {
   beforeEach(done => {

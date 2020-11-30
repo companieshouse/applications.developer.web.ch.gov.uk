@@ -61,7 +61,7 @@ const middleware = SessionMiddleware({
   cookieName: process.env.COOKIE_NAME,
   cookieDomain: process.env.COOKIE_DOMAIN,
   cookieSecureFlag: process.env.COOKIE_SECURE_ONLY,
-  cookieTimeToLiveInSeconds: process.env.DEFAULT_SESSION_EXPIRATION,
+  cookieTimeToLiveInSeconds: parseInt(process.env.DEFAULT_SESSION_EXPIRATION, 10),
   cookieSecret: process.env.COOKIE_SECRET
 }, sessionStore);
 
