@@ -41,7 +41,7 @@
   </dl>
   <a href="/manage-applications/{{ this_data.app.id }}/update/{{ this_data.env }}" class="govuk-button govuk-button--secondary" role="button" draggable="false">Manage application</a>
   <h2 class="govuk-heading-l">Keys for this application</h2>
-  {% if this_data.keys and this_data.keys.items and ( this_data.keys.length <= 0 ) %}
+  {% if ( this_data.keys ) %}
     {% for key in this_data.keys.items %}
       <div class="govuk-summary-list__row">
         <dl class="govuk-summary-list govuk-body govuk-!-font-size-16">
@@ -118,38 +118,44 @@
               Restricted IPs
             </dt>
             <dd class="govuk-summary-list__value">
+              {% if key.restrictedIPs %}
               {% for ipGroup in key.restrictedIPs | batch(1) %}
                   <p>{{ ipGroup | join(", ") }}</p>
               {% endfor %}
+              {% endif %}
             </dd>
             <dd class="govuk-summary-list__actions"></dd>
           </div>
           {% endif %}
           {% if not (key.kind === 'api-client#stream-key' or key.kind === 'api-client#web') %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                JavaScript domains
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {% for domainGroup in key.jsDomains | batch(1) %}
-                  <p>{{ domainGroup | join(", ") }}</p>
-                {% endfor %}
-              </dd>
-              <dd class="govuk-summary-list__actions"></dd>
-            </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              JavaScript domains
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {% if key.jsDomains %}
+              {% for domainGroup in key.jsDomains | batch(1) %}
+                <p>{{ domainGroup | join(", ") }}</p>
+              {% endfor %}
+              {% endif %}
+            </dd>
+            <dd class="govuk-summary-list__actions"></dd>
+          </div>
           {% endif %}
           {% if not (key.kind === 'api-client#stream-key' or key.kind === 'api-client#key') %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__key">
-                Redirect URIs
-              </dt>
-              <dd class="govuk-summary-list__value">
-                {% for uriGroup in key.redirectURIs | batch(1) %}
-                  <p>{{ uriGroup | join(", ") }}</p>
-                {% endfor %}
-              </dd>
-              <dd class="govuk-summary-list__actions"></dd>
-            </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Redirect URIs
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {% if key.redirectURIs %}
+              {% for uriGroup in key.redirectURIs | batch(1) %}
+                <p>{{ uriGroup | join(", ") }}</p>
+              {% endfor %}
+              {% endif %}
+            </dd>
+            <dd class="govuk-summary-list__actions"></dd>
+          </div>
           {% endif %}
           <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">
