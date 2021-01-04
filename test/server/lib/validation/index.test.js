@@ -68,7 +68,7 @@ describe('server/lib/validation/index', () => {
     expect(validator.isValidRedirectUri('https://example.com')).to.be.true;
     expect(stubLogger).to.have.been.calledTwice;
   });
-  it('should validate and return an error for an blank or Redirect Uri', () => {
+  it('should validate and return an error for an blank or invalid Redirect Uri', () => {
     expect(validator.isValidRedirectUri('@@!!()*&^%£$""><???~~`')).to.be.false;
     expect(validator.isValidRedirectUri('')).to.be.false;
     expect(stubLogger).to.have.been.calledTwice;
