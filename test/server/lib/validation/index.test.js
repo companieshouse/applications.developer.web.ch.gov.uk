@@ -38,7 +38,6 @@ describe('server/lib/validation/index', () => {
     expect(validator.isValidAppName(')))*//__@')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
-
   it('should validate a correctly formatted app description', () => {
     expect(validator.isValidDescription('Lorem ipsum dolor sit amet consectetur adipiscing elit.')).to.be.true;
     expect(validator.isValidDescription('Lorem-ipsum HYPHEN allowed.')).to.be.true;
@@ -53,7 +52,6 @@ describe('server/lib/validation/index', () => {
     expect(validator.isValidDescription('///))*@@£$;;;;;')).to.be.false;
     expect(stubLogger).to.have.been.calledOnce;
   });
-
   it('should validate a correctly formatted Url', () => {
     expect(validator.isValidUrl('https://example.com')).to.be.true;
     expect(validator.isValidUrl('example.com')).to.be.true;
@@ -65,14 +63,22 @@ describe('server/lib/validation/index', () => {
     expect(validator.isValidUrl(null)).to.be.false;
     expect(stubLogger).to.have.been.calledThrice;
   });
-
-  it.skip('should validate a correctly formatted domain', () => {
+  it('should validate a correctly formatted Redirect Uri', () => {
+    expect(validator.isValidRedirectUri('localhost:3000/user/callback')).to.be.true;
+    expect(validator.isValidRedirectUri('https://example.com')).to.be.true;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate and return an error for an blank or invalid Redirect Uri', () => {
+    expect(validator.isValidRedirectUri('@@!!()*&^%£$""><???~~`')).to.be.false;
+    expect(validator.isValidRedirectUri('')).to.be.false;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
+  it('should validate a correctly formatted domain', () => {
     // regex not completed
-    expect(validator.isValidDomain('d')).to.equal(true);
+    expect(validator.isValidDomain('https://app.com')).to.equal(true);
     expect(stubLogger).to.have.been.calledOnce;
   });
-
-  it.skip('should validate and return an error for an blank domain', () => {
+  it('should validate and return an error for an blank domain', () => {
     expect(validator.isValidDomain('')).to.be.false;
     expect(validator.isValidDomain(null)).to.be.false;
     expect(stubLogger).to.have.been.calledTwice;

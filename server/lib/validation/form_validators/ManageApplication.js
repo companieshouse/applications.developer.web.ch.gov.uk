@@ -117,7 +117,7 @@ class ManageApplication extends Validator {
       const redirectUris = payload.redirectURIs.split(',');
       for (const redirectUri of redirectUris) {
         if (redirectUri.length > 0) {
-          if (!this.isValidUrl(redirectUri)) {
+          if (!this.isValidRedirectUri(redirectUri)) {
             this.errors.redirectURIs = errorManifest.redirectURIs.invalid;
             break;
           }

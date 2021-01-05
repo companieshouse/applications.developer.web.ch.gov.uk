@@ -37,7 +37,16 @@ class Validator {
 
   isValidUrl (url) {
     logger.info('Validating Url: ', url);
-    if (/^(https?:\/\/)?[-a-z0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
+    if (/^(https?:\/\/)?[-aA-zZ0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isValidRedirectUri (uri) {
+    logger.info('Validating Uri: ', uri);
+    if (/^(https?:\/\/)?[-aA-zZ0-9@:%._+~#=]{1,256}[aA-zZ0-9()]{1,6}\b([-aA-zZ0-9()@:%_+.~#?&//=]*)/gi.test(uri)) {
       return true;
     } else {
       return false;

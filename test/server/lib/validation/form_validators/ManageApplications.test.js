@@ -309,18 +309,18 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       keyName: 'Hello',
       keyDescription: 'valid',
       keyType: 'web',
-      redirectURIs: '[notAUri]',
+      redirectURIs: 'http:/[notAUri]',
       javaScriptDomains: ''
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
-    const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(false);
+    const stubValidUri = sinon.stub(Validator.prototype, 'isValidRedirectUri').returns(false);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
     expect(ManageApplication.prototype.addNewKey(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
-    expect(stubValidUrl).to.have.been.calledOnce;
+    expect(stubValidUri).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
   });
@@ -329,13 +329,13 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       keyName: 'Hello',
       keyDescription: 'valid',
       keyType: 'web',
-      redirectURIs: '[http:valid.com, notAUri, notAUri]',
+      redirectURIs: '[http://valid.com, notAUri, notAUri]',
       javaScriptDomains: ''
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
-    const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl');
+    const stubValidUrl = sinon.stub(Validator.prototype, 'isValidRedirectUri');
     stubValidUrl.onFirstCall().returns(true);
     stubValidUrl.returns(false);
     // stubValidUrl.returns(true);

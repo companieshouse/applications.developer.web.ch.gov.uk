@@ -77,8 +77,8 @@ const ErrorManifest = {
     },
     redirectURIs: {
       invalid: {
-        summary: 'The Redirect URIs format for one or more entries is invalid. The format should consist of ’http://’ followed by text separated by a decimal point. For example, http://example.com',
-        inline: 'The Redirect URIs format for one or more entries is invalid. The format should consist of ’http://’ followed by text separated by a decimal point. For example, http://example.com'
+        summary: "The Redirect URIs format for one or more entries is invalid. The format should consist of an optional 'http://' or 'https://' followed by the domain name, optional port number and path. For example 'https://example.com/callback' or 'localhost:3000/user/callback'",
+        inline: "The Redirect URIs format for one or more entries is invalid. The format should consist of an optional 'http://' or 'https://' followed by the domain name, optional port number and path. For example 'https://example.com/callback' or 'localhost:3000/user/callback'"
       }
     }
   }
