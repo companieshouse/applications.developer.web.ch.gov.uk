@@ -7,7 +7,7 @@
         Update key
       </h1>
       <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/update/{{ this_data.env }}" method="post">
-        <div class="govuk-form-group">
+        <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.name is not undefined }}">
           <label class="govuk-label" for="update-key-name">
             Key name
           </label>
@@ -18,7 +18,7 @@
             </span>
           {% endif %}
         </div>
-        <div class="govuk-form-group">
+        <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.description is not undefined }}">
           <label class="govuk-label" for="update-key-description-detail">
             Key description
           </label>
@@ -29,7 +29,7 @@
             </span>
           {% endif %}
         </div>
-        <div class="govuk-form-group" {{'' if  this_data.keyType === 'key' or this_data.keyType === 'stream-key' else 'style=display:none;' }}>
+        <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.restrictedIp is not undefined }}" {{'' if  this_data.keyType === 'key' or this_data.keyType === 'stream-key' else 'style=display:none;' }}>
           <label class="govuk-label" for="restrictedIP-detail">
             Restricted IPs
           </label>
@@ -43,7 +43,7 @@
             </span>
           {% endif %}
         </div>
-        <div class="govuk-form-group" {{'' if  this_data.keyType === 'key' else 'style=display:none;' }}>
+        <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.javaScriptDomain is not undefined }}" {{'' if  this_data.keyType === 'key' else 'style=display:none;' }}>
           <label class="govuk-label" for="javascriptDomain-detail">
             JavaScript domains
           </label>
@@ -57,7 +57,7 @@
             </span>
           {% endif %}
         </div>
-        <div class="govuk-form-group" {{'' if  this_data.keyType === 'web' else 'style=display:none;' }}>
+        <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.redirectURIs is not undefined }}" {{'' if  this_data.keyType === 'web' else 'style=display:none;' }}>
           <label class="govuk-label" for="redirectURI-detail">
             Redirect URIs
           </label>
