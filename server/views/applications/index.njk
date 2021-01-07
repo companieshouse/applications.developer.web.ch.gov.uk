@@ -16,6 +16,7 @@
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header">Application name</th>
+        <th scope="col" class="govuk-table__header">Description</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -24,6 +25,7 @@
           <th scope="row" class="govuk-table__header">
             <a href="/manage-applications/{{ app.id }}/view/test">{{ app.name }}</a>
           </th>
+          <td scope="row" class="govuk-table__cell">{{ app.description }}</td>
         </tr>
       {% endfor %}
     </tbody>
@@ -35,6 +37,7 @@
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">Application name</th>
+          <th scope="col" class="govuk-table__header">Description</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -43,18 +46,20 @@
             <th scope="row" class="govuk-table__header">
               <a href="/manage-applications/{{ app.id }}/view/future">{{ app.name }}</a>
             </th>
+            <td scope="row" class="govuk-table__cell">{{ app.description }}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
     {% endif %}
-          
+
   <h2 class="govuk-heading-l">Live applications</h2>
   <p class="govuk-body">Released and in use publicly</p>
   <table class="govuk-table">
     <thead class="govuk-table__head">
       <tr class="govuk-table__row">
         <th scope="col" class="govuk-table__header">Application name</th>
+        <th scope="col" class="govuk-table__header">Description</th>
       </tr>
     </thead>
     <tbody class="govuk-table__body">
@@ -63,6 +68,7 @@
           <th scope="row" class="govuk-table__header">
             <a href="/manage-applications/{{ app.id }}/view/live">{{ app.name }}</a>
           </th>
+          <td scope="row" class="govuk-table__cell">{{ app.description }}</td>
         </tr>
       {% endfor %}
     </tbody>
