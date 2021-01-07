@@ -11,7 +11,7 @@
       Update application
   </h2>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.name is not undefined }}">
     <label class="govuk-label" for="applicationName">Application name</label>
 
     <input class="govuk-input{{' govuk-input--error' if this_errors.name is not undefined }}" id="applicationName" name="applicationName" value="{{ this_data.applicationName }}" type="text">
@@ -22,7 +22,7 @@
     {% endif %}
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.description is not undefined }}">
     <label class="govuk-label" for="description">Description of application</label>
 
     <textarea class="govuk-textarea{{' govuk-input--error' if this_errors.description is not undefined }}" id="description" name="description" rows="5">{{ this_data.description }}</textarea>
@@ -33,7 +33,7 @@
     {% endif %}
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.terms is not undefined }}">
     <label class="govuk-label" for="terms">Terms &amp; Conditions URL (optional)</label>
 
     <input class="govuk-input{{ ' govuk-input--error' if this_errors.terms is not undefined }}" id="terms" name="terms" value="{{ this_data.terms }}" type="text">
@@ -44,7 +44,7 @@
     {% endif %}
   </div>
 
-  <div class="govuk-form-group">
+  <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.privacyPolicy is not undefined }}">
     <label class="govuk-label" for="privacyPolicy">Privacy Policy URL (optional)</label>
 
     <input class="govuk-input{{' govuk-input--error' if this_errors.privacyPolicy is not undefined }}" id="privacyPolicy" name="privacyPolicy" value="{{ this_data.privacyPolicy }}" type="text">
