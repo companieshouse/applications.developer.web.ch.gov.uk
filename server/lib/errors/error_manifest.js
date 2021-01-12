@@ -1,7 +1,7 @@
 const ErrorManifest = {
   generic: {
     serverError: {
-      summary: 'Internal server error. Please try again'
+      summary: 'Sorry, there is a problem with this service. Try again.'
     }
   },
   validation: {
