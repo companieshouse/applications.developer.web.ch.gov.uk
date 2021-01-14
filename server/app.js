@@ -76,6 +76,7 @@ njk.addGlobal('cdnUrlCss', process.env.CDN_URL_CSS);
 njk.addGlobal('cdnUrlJs', process.env.CDN_URL_JS);
 njk.addGlobal('cdnHost', process.env.CDN_HOST);
 njk.addGlobal('devHubUrl', process.env.DEV_HUB_URL);
+njk.addGlobal('devSpecsUrl', process.env.DEVELOPER_SPECS_URL);
 njk.addGlobal('chsUrl', process.env.CHS_URL);
 njk.addGlobal('FUTURE_DISPLAY_FLAG', process.env.FUTURE_DISPLAY_FLAG);
 

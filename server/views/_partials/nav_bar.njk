@@ -9,7 +9,7 @@
             </li>
             <li class="app-subnav__section-item{{ ' app-subnav__section-item--current' if active_page === 'add-application' }}">
               <a class="app-subnav__link govuk-link " href="/manage-applications/add">
-                Add an application
+                Create an application
               </a>
             </li>
           </ul>
@@ -17,16 +17,26 @@
         <h4 class="app-subnav__theme">General documentation</h4>
         <ul class="app-subnav__section">
           <li class="app-subnav__section-item ">
-            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/get-started.html">Get started</a>
+            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/get-started">Get started</a>
           </li>
           <li class="app-subnav__section-item ">
-            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/overview.html">Companies House REST API overview</a>
+            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/overview">Companies House REST API overview</a>
           </li>
           <li class="app-subnav__section-item ">
-            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/authentication.html">How to add an API key</a>
+            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/how-to-create-an-application">How to create an application</a>
           </li>
           <li class="app-subnav__section-item ">
-            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/developer-guidelines.html">Developer guidelines</a>
+            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/authentication">API authentication</a>
+          </li>
+          <li class="app-subnav__section-item ">
+            <a class="app-subnav__link govuk-link" href="{{ devHubUrl }}/developer-guidelines">Developer guidelines</a>
+          </li>
+        </ul>
+
+        <h4 class="app-subnav__theme">API specifications</h4>
+        <ul class="app-subnav__section">
+          <li class="app-subnav__section-item ">
+            <a class="app-subnav__link govuk-link" href="{{ devSpecsUrl }}">API specifications list</a>
           </li>
         </ul>
 

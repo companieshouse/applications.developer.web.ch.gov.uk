@@ -35,7 +35,7 @@
   <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.type is not undefined }}">
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend">
-        Select the type of API client key you want to add:
+        Select the type of API client key you want to create:
       </legend>
       {% if this_errors.type is not undefined %}
         <span id="err-id-terms" class="govuk-error-message">
@@ -112,7 +112,7 @@
     <textarea class="govuk-textarea{{ ' govuk-input--error' if this_errors.redirectURIs is not undefined }}" id="more-detail-uri" name="redirectURIs" rows="5" aria-describedby="more-detail-hint-uri">{{ this_data.body.redirectURIs }}</textarea>
   </div>
 </div>
-<input class="govuk-button" id="submitKey" name="submitKey" type="submit" value="Add key"/>
+<input class="govuk-button" id="submitKey" name="submitKey" type="submit" value="Create key"/>
 
 <a href="/manage-applications" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
   Cancel
