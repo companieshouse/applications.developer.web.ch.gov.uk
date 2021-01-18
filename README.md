@@ -25,7 +25,7 @@ There are two ways to download, install and run this Web Service:
  Once Vagrant is up and running you can either start the service on its own:
 
  ```
- ubic start applications.developer.web.ch.gov.uk
+ ubic start chs.dev-hub.applications-developer-service
  ```
 
  Or you start it up as part of the chs dev-hub group (you will need to do this in order to be able to use the api functionality properly):
