@@ -1,6 +1,8 @@
-# API Filing Service
+# API Filing Service - applications.developer.web
 
-This is a Web Service (User Interface) that provides a means for registering and managing applications on the developer hub
+This is a Web Service that provides a means for registering and managing applications on the developer hub.
+It is written using the [NodeJS](https://nodejs.org/en/) framework, and is intended to act as the user interface
+through which developers can submit requests to the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk).
 
 ## Dependencies
 
@@ -20,23 +22,29 @@ There are two ways to download, install and run this Web Service:
 
  To run the app as part of the standard Companies House Vagrant set-up, follow [these set-up instructions](https://github.com/companieshouse/vagrant-chs-development-v2) on how to run Vagrant on your machine
 
- Once Vagrant is up and running, `ssh` into Vagrant by running:
+ Once Vagrant is up and running you can either start the service on its own:
+
  ```
-vagrant ssh chs-dev
+ ubic start applications.developer.web.ch.gov.uk
  ```
 
-Now run the `ubic status` command to see what services are running.
+ Or you start it up as part of the chs dev-hub group (you will need to do this in order to be able to use the api functionality properly):
 
-If no services are running, you can start them by typing the command:
-```
-ubic start chs && ubic start applications.developer.web.ch.gov.uk
-```
+ ```
+ ubic start chs.dev-hub
+ ```
+You should also make sure that the account service, cdn and path router are running in chs core:
 
-If services are running but patchy, you can restart them by typing the command:
+- `ubic start chs.core.account`
+- `ubic start chs.core.cdn`
+- `ubic start chs.core.path-router`
+
+Or you may prefer to simply start up all of chs.core:
+
 ```
-ubic restart chs && ubic restart applications.developer.web.ch.gov.uk
+ubic start chs.core
 ```
-After a short wait, the Web Service should be accessible in your browser at: http://web.chs-dev.internal:18555/
+Once the necessary applications have started up, the service should be accessible in you browser at: [http://dev.chs-dev.internal:4904](http://dev.chs-dev.internal:4904).
 
 ### Local installation
 
@@ -147,14 +155,9 @@ We are also in the process of plugging in Structured Logging which is the depart
 
 ### 3. Session handling
 
-We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data. In order to make it's integration into the app more transparent and linear, there's a wrapper around it and can be found at `server/lib/Session.js`
-
-Presently, this service is not yet behind sign in but eventually will be . When this happens, the session wrapper implementation might need a few tweaks to account for this change.
+We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data.
 
 ### To-do
 
 - [] Integrate Structured Logging
-- [] Form-based validation
-- [] Multple form submissions
-- [] Lock down major dependencies to specific versions that are proven to work well
 - [] Repurpose for Typescript
