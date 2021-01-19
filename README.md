@@ -119,6 +119,20 @@ If you're using a Mac, you can open (double-click) the above file via Finder and
 
 Test coverage thresholds are defined in the `nyc` stanza of `package.json` and are currently all set to 50 i.e. 50% coverage. Feel free to edit these as per project requirements.
 
+## Usage
+
+_The following instructions assume you are running the app in vagrant, hence the urls referred to have [http://dev.chs-dev.internal:4904](http://dev.chs-dev.internal:4904) as their base. If you are running it elsewhere substitute in the appropriate base url and use the same extensions as those given in the instructions below._
+
+Once the app is up and running you should be able to view of all applications currently saved in the database at [http://dev.chs-dev.internal:4904/manage-applications](http://dev.chs-dev.internal:4904/manage-applications).
+
+From there you should be able to use the _Create an application_ button navigate to [http://dev.chs-dev.internal:4904/add](http://dev.chs-dev.internal:4904/add) where you will be able to create the details for, and submit, a new application. Applications come in three varieties; _live_, _test_ and _future_ which should correspond to different collections in the database (see the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk) for more details on this).
+
+Returning to the list of applications at [http://dev.chs-dev.internal:4904/manage-applications](http://dev.chs-dev.internal:4904/manage-applications) you should be able to select each application and view its details, including the keys associated with it:
+
+- While viewing a specific application you should be able to select a _Manage application_ button above the list of keys, which will take you to a page from which you can edit or delete the application.
+- Below the list of keys belonging to a specific application there should be a _Create new key_ button enabling you to navigate to a page from which you will be able to create the details for, and submit, a new key associated with this application. Keys come in three varieties; _rest_, _stream_ and _web_. Unlike the case with applications, the three key types should be stored in the same collection in the database (again, see the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk) for more details on this).
+- Each key in the list associated with a specific application should be accompanied by an _Update key_ and _Delete key_ option, which will navigate you to pages from which you can edit the key's details or delete the key respectively.
+
 ## Linting
 
 ESLint is our preferred module for implementing and enforcing coding standards and, as per GovUk guidelines, extends the industry standard  [StandardJS](https://standardjs.com/). All JavaScript files follow its conventions, and it runs on CI as well to ensure that new pull requests are in line with them.
@@ -156,8 +170,3 @@ We are also in the process of plugging in Structured Logging which is the depart
 ### 3. Session handling
 
 We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data.
-
-### To-do
-
-- [] Integrate Structured Logging
-- [] Repurpose for Typescript
