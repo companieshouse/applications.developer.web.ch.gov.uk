@@ -173,3 +173,7 @@ We are also in the process of plugging in Structured Logging which is the depart
 ### 3. Session handling
 
 We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data.
+
+### 4. Application List configuration
+
+There is a maximum batch size for the number of applications (currently set to 1,000,000) which is stored a variable, called DEFAULT_BATCH_SIZE. It can be found, and it's value edited, in `server/config/.env`.
