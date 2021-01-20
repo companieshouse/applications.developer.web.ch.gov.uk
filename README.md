@@ -47,7 +47,7 @@ Or you may prefer to simply start up all of chs.core:
 ```
 ubic start chs.core
 ```
-Once the necessary applications have started up, the service should be accessible in you browser at: [http://dev.chs-dev.internal:4904](http://dev.chs-dev.internal:4904).
+Once the necessary applications have started up, the service should be accessible in you browser at: [http://dev.chs-dev.internal:4100/manage-applications](http://dev.chs-dev.internal:4100/manage-applications).
 
 ### Local installation
 
@@ -124,13 +124,13 @@ Test coverage thresholds are defined in the `nyc` stanza of `package.json` and a
 
 ## Usage
 
-_The following instructions assume you are running the app in vagrant, hence the urls referred to have [http://dev.chs-dev.internal:4904](http://dev.chs-dev.internal:4904) as their base. If you are running it elsewhere substitute in the appropriate base url and use the same extensions as those given in the instructions below._
+_The following instructions assume you are running the app in vagrant, hence the urls referred to have [http://dev.chs-dev.internal:4100](http://dev.chs-dev.internal:4100) as their base. If you are running it elsewhere substitute in the appropriate base url and use the same extensions as those given in the instructions below._
 
-Once the app is up and running, if you are also running the services for the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), you should be able to view of all applications currently saved in the database at [http://dev.chs-dev.internal:4904/manage-applications](http://dev.chs-dev.internal:4904/manage-applications).
+Once the app is up and running, if you are also running the services for the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), you should be able to view of all applications currently saved in the database at [http://dev.chs-dev.internal:4100/manage-applications](http://dev.chs-dev.internal:4100/manage-applications).
 
-From there you should be able to use the _Create an application_ button navigate to [http://dev.chs-dev.internal:4904/add](http://dev.chs-dev.internal:4904/add) where you will be able to create the details for, and submit, a new application to the api. Applications come in three varieties; _live_, _test_ and _future_ which, when processed by the api, should correspond to different collections in the database.
+From there you should be able to use the _Create an application_ button navigate to [http://dev.chs-dev.internal:4100/add](http://dev.chs-dev.internal:4100/add) where you will be able to create the details for, and submit, a new application to the api. Applications come in three varieties; _live_, _test_ and _future_ which, when processed by the api, should correspond to different collections in the database.
 
-Returning to the list of applications at [http://dev.chs-dev.internal:4904/manage-applications](http://dev.chs-dev.internal:4904/manage-applications) you should be able to select each application and view its details, including the keys associated with it:
+Returning to the list of applications at [http://dev.chs-dev.internal:4100/manage-applications](http://dev.chs-dev.internal:4100/manage-applications) you should be able to select each application and view its details, including the keys associated with it:
 
 - While viewing a specific application you should be able to select a _Manage application_ button above the list of keys, which will take you to a page from which you can edit or delete the application.
 - Below the list of keys belonging to a specific application there should be a _Create new key_ button enabling you to navigate to a page from which you will be able to create the details for, and submit, a new key associated with this application. Keys come in three varieties; _rest_, _stream_ and _web_. Unlike the case with applications, the three key types should be sent to the same collection in the database by the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), although it should process them by different routes and thus different api methods should be called by this web application depending on the key type in question.
