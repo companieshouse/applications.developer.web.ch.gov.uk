@@ -28,11 +28,14 @@ There are two ways to download, install and run this Web Service:
  ubic start chs.dev-hub.applications-developer-service
  ```
 
- Or you start it up as part of the chs dev-hub group (you will need to do this in order to be able to use the api functionality properly):
+ Or you start it up as part of the chs dev-hub group:
 
  ```
  ubic start chs.dev-hub
  ```
+
+It is advisable to start up the whole chs-dev hub group (as described above) since this application relies on the static docs.developer app in order to sign in, without which you will need to create a session before attempting to access the site as all pages require authorisation, and the various backend APIs to perform data operations, without which there will be no Applications visible and you will be unable to create new ones.
+
 You should also make sure that the account service, cdn and path router are running in chs core:
 
 - `ubic start chs.core.account`
