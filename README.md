@@ -1,6 +1,8 @@
-# API Filing Service
+# API Filing Service - applications.developer.web
 
-This is a Web Service (User Interface) that provides a means for registering and managing applications on the developer hub
+This is a Web Service that provides a means for registering and managing applications on the developer hub.
+It is written using the [NodeJS](https://nodejs.org/en/) framework, and is intended to act as the user interface
+through which developers can submit requests to the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk).
 
 ## Dependencies
 
@@ -20,23 +22,32 @@ There are two ways to download, install and run this Web Service:
 
  To run the app as part of the standard Companies House Vagrant set-up, follow [these set-up instructions](https://github.com/companieshouse/vagrant-chs-development-v2) on how to run Vagrant on your machine
 
- Once Vagrant is up and running, `ssh` into Vagrant by running:
+ Once Vagrant is up and running you can either start the service on its own:
+
  ```
-vagrant ssh chs-dev
+ ubic start chs.dev-hub.applications-developer-service
  ```
 
-Now run the `ubic status` command to see what services are running.
+ Or you start it up as part of the chs dev-hub group:
 
-If no services are running, you can start them by typing the command:
-```
-ubic start chs && ubic start applications.developer.web.ch.gov.uk
-```
+ ```
+ ubic start chs.dev-hub
+ ```
 
-If services are running but patchy, you can restart them by typing the command:
+It is advisable to start up the whole chs-dev hub group (as described above) since this application relies on the static docs.developer app in order to sign in, without which you will need to create a session before attempting to access the site as all pages require authorisation, and the various backend APIs to perform data operations, without which there will be no Applications visible and you will be unable to create new ones.
+
+You should also make sure that the account service, cdn and path router are running in chs core:
+
+- `ubic start chs.core.account`
+- `ubic start chs.core.cdn`
+- `ubic start chs.core.path-router`
+
+Or you may prefer to simply start up all of chs.core:
+
 ```
-ubic restart chs && ubic restart applications.developer.web.ch.gov.uk
+ubic start chs.core
 ```
-After a short wait, the Web Service should be accessible in your browser at: http://web.chs-dev.internal:18555/
+Once the necessary applications have started up, the service should be accessible in you browser at: http://dev.chs-dev.internal:4100/manage-applications.
 
 ### Local installation
 
@@ -111,6 +122,20 @@ If you're using a Mac, you can open (double-click) the above file via Finder and
 
 Test coverage thresholds are defined in the `nyc` stanza of `package.json` and are currently all set to 50 i.e. 50% coverage. Feel free to edit these as per project requirements.
 
+## Usage
+
+_The following instructions assume you are running the app in vagrant, hence the urls referred to have http://dev.chs-dev.internal:4100 as their base. If you are running it elsewhere substitute in the appropriate base url and use the same extensions as those given in the instructions below._
+
+Once the app is up and running, if you are also running the services for the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), you should be able to view of all applications currently saved in the database at http://dev.chs-dev.internal:4100/manage-applications.
+
+From there you should be able to use the _Create an application_ button navigate to http://dev.chs-dev.internal:4100/add where you will be able to create the details for, and submit, a new application to the api. Applications come in three varieties; _live_, _test_ and _future_ which, when processed by the api, should correspond to different collections in the database.
+
+Returning to the list of applications at http://dev.chs-dev.internal:4100/manage-applications you should be able to select each application and view its details, including the keys associated with it:
+
+- While viewing a specific application you should be able to select a _Manage application_ button above the list of keys, which will take you to a page from which you can edit or delete the application.
+- Below the list of keys belonging to a specific application there should be a _Create new key_ button enabling you to navigate to a page from which you will be able to create the details for, and submit, a new key associated with this application. Keys come in three varieties; _rest_, _stream_ and _web_. Unlike the case with applications, the three key types should be sent to the same collection in the database by the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), although it should process them by different routes and thus different api methods should be called by this web application depending on the key type in question.
+- Each key in the list associated with a specific application should be accompanied by an _Update key_ and _Delete key_ option, which will navigate you to pages from which you can edit the key's details or delete the key respectively.
+
 ## Linting
 
 ESLint is our preferred module for implementing and enforcing coding standards and, as per GovUk guidelines, extends the industry standard  [StandardJS](https://standardjs.com/). All JavaScript files follow its conventions, and it runs on CI as well to ensure that new pull requests are in line with them.
@@ -147,14 +172,8 @@ We are also in the process of plugging in Structured Logging which is the depart
 
 ### 3. Session handling
 
-We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data. In order to make it's integration into the app more transparent and linear, there's a wrapper around it and can be found at `server/lib/Session.js`
+We use the department-wide [Session Handler](https://github.com/companieshouse/node-session-handler) for managing session data.
 
-Presently, this service is not yet behind sign in but eventually will be . When this happens, the session wrapper implementation might need a few tweaks to account for this change.
+### 4. Application List configuration
 
-### To-do
-
-- [] Integrate Structured Logging
-- [] Form-based validation
-- [] Multple form submissions
-- [] Lock down major dependencies to specific versions that are proven to work well
-- [] Repurpose for Typescript
+There is a maximum batch size for the number of applications, and keys, per query (currently set to 1,000,000) which is stored a variable, called DEFAULT_BATCH_SIZE. It can be found, and it's value edited, in `server/config/.env`.
