@@ -4,6 +4,7 @@ const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
 class ApplicationsDeveloper {
   constructor () {
     this.server = {
+      batchSize: process.env.DEFAULT_BATCH_SIZE,
       apiKey: process.env.APPLICATIONS_DEVELOPER_SERVICE_API_KEY,
       baseUrl: {
         live: process.env.ACCOUNT_LOCAL_URL,
@@ -41,10 +42,9 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     // MVP pagination
-    const itemsPerPage = 20; // api currently limits to 20, this should be increased for MVP without pagination options in the UI
     const startIndex = 0;
     const applicationList = await client.applicationsService.getApplications(
-      itemsPerPage, startIndex);
+      this.server.batchSize, startIndex);
 
     logger.debug(`applicationList=[${JSON.stringify(applicationList)}]`);
     return applicationList.resource;
@@ -278,9 +278,8 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     // MVP pagination
-    const itemsPerPage = 20; // api currently limits to 20, this should be increased for MVP without pagination options in the UI
     const startIndex = 0;
-    const apiClientList = await client.applicationsService.getApplicationAPIClients(appId, itemsPerPage, startIndex);
+    const apiClientList = await client.applicationsService.getApplicationAPIClients(appId, this.server.batchSize, startIndex);
 
     logger.debug(`apiClientList=[${JSON.stringify(apiClientList)}]`);
     return apiClientList.resource;
@@ -314,7 +313,7 @@ class ApplicationsDeveloper {
       apiClient = await client.streamKeysService.deleteStreamKey(appId, keyId);
     } else if (keyType === 'web') {
       apiClient = await client.webClientsService.deleteWebClient(appId, keyId);
-    } else if (keyType == 'key') {
+    } else if (keyType === 'key') {
       apiClient = await client.apiKeysService.deleteAPIKey(appId, keyId);
     } else {
       logger.info(`Cannot delete Key of Type: ${keyType}`);
