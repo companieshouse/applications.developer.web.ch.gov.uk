@@ -2,7 +2,7 @@
 
 This is a Web Service that provides a means for registering and managing applications on the developer hub.
 It is written using the [NodeJS](https://nodejs.org/en/) framework, and is intended to act as the user interface
-through which developers can submit requests to the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk).
+through which developers can submit requests to the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk).
 
 ## Dependencies
 
@@ -126,14 +126,14 @@ Test coverage thresholds are defined in the `nyc` stanza of `package.json` and a
 
 _The following instructions assume you are running the app in vagrant, hence the urls referred to have http://dev.chs-dev.internal:4100 as their base. If you are running it elsewhere substitute in the appropriate base url and use the same extensions as those given in the instructions below._
 
-Once the app is up and running, if you are also running the services for the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), you should be able to view of all applications currently saved in the database at http://dev.chs-dev.internal:4100/manage-applications.
+Once the app is up and running, if you are also running the services for the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), you should be able to view of all applications currently saved in the database at http://dev.chs-dev.internal:4100/manage-applications.
 
 From there you should be able to use the _Create an application_ button navigate to http://dev.chs-dev.internal:4100/add where you will be able to create the details for, and submit, a new application to the api. Applications come in three varieties; _live_, _test_ and _future_ which, when processed by the api, should correspond to different collections in the database.
 
 Returning to the list of applications at http://dev.chs-dev.internal:4100/manage-applications you should be able to select each application and view its details, including the keys associated with it:
 
 - While viewing a specific application you should be able to select a _Manage application_ button above the list of keys, which will take you to a page from which you can edit or delete the application.
-- Below the list of keys belonging to a specific application there should be a _Create new key_ button enabling you to navigate to a page from which you will be able to create the details for, and submit, a new key associated with this application. Keys come in three varieties; _rest_, _stream_ and _web_. Unlike the case with applications, the three key types should be sent to the same collection in the database by the [developer hub api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), although it should process them by different routes and thus different api methods should be called by this web application depending on the key type in question.
+- Below the list of keys belonging to a specific application there should be a _Create new key_ button enabling you to navigate to a page from which you will be able to create the details for, and submit, a new key associated with this application. Keys come in three varieties; _rest_, _stream_ and _web_. Unlike the case with applications, the three key types should be sent to the same collection in the database by the [applications api](https://github.com/companieshouse/applications.api.identity.ch.gov.uk), although it should process them by different routes and thus different api methods should be called by this web application depending on the key type in question.
 - Each key in the list associated with a specific application should be accompanied by an _Update key_ and _Delete key_ option, which will navigate you to pages from which you can edit the key's details or delete the key respectively.
 
 ## Linting
