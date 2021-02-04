@@ -308,7 +308,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
       } else if (keyType === 'web') {
         viewData.this_data.redirectURIs = keyData.redirectURIs;
       } else if (keyType === 'stream-key') {
-        logger.info('VIEW DATA IPS ', viewData.this_data.restrictedIps);
+        viewData.this_data.restrictedIps = keyData.restrictedIPs;
       }
       res.render(`${routeViews}/update_key.njk`, viewData);
     }).catch(err => {
