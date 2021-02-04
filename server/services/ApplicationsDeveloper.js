@@ -1,5 +1,6 @@
 const logger = require(`${serverRoot}/config/winston`);
 const APIClientHelper = require(`${serverRoot}/lib/APIClientHelper`);
+const utility = require(`${serverRoot}/lib/Utility`);
 
 class ApplicationsDeveloper {
   constructor () {
@@ -102,8 +103,8 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(',');
-    javaScriptDomains = data.javaScriptDomains.split(',');
+    restrictedIps = utility.splitString(data.restrictedIps);
+    javaScriptDomains = utility.splitString(data.javaScriptDomains);
     const apiKeyPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -128,7 +129,7 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     let redirectURIs = [];
-    redirectURIs = data.redirectURIs.split(',');
+    redirectURIs = utility.splitString(data.redirectURIs);
     const webClientPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -150,9 +151,8 @@ class ApplicationsDeveloper {
     logger.info(
       `creating stream key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-
     let restrictedIps = [];
-    restrictedIps = data.restrictedIps.split(',');
+    restrictedIps = utility.splitString(data.restrictedIps);
     const streamKeyPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -187,7 +187,7 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
     let redirectURIs = [];
-    redirectURIs = data.redirectURIs.split(',');
+    redirectURIs = utility.splitString(data.redirectURIs);
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -201,13 +201,12 @@ class ApplicationsDeveloper {
     return apiKey.resource;
   }
 
-
   async updateStreamKey (data, appId, keyId, oauthToken, environment) {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating stream key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
     let restrictedIps = [];
-    restrictedIps = data.restrictedIps.split(',');
+    restrictedIps = utility.splitString(data.restrictedIps);
     const streamKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -227,8 +226,8 @@ class ApplicationsDeveloper {
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
     let restrictedIps = [];
     let javaScriptDomains = [];
-    restrictedIps = data.restrictedIps.split(',');
-    javaScriptDomains = data.javaScriptDomains.split(',');
+    restrictedIps = utility.splitString(data.restrictedIps);
+    javaScriptDomains = utility.splitString(data.javaScriptDomains);
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,

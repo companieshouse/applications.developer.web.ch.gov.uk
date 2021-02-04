@@ -4,6 +4,9 @@ describe('lib/Utility', () => {
 
   const ModuleUnderTest = require(`${serverRoot}/lib/Utility`);
 
+  const chai = require('chai');
+  const assert = chai.assert;
+
   beforeEach(() => {
     sinon.reset();
     sinon.restore();
@@ -44,6 +47,27 @@ describe('lib/Utility', () => {
       const stubLogger = sinon.stub(logger, 'error').returns(true);
       expect(ModuleUnderTest.logException(exceptionWithNoStatus)).to.be.undefined;
       expect(stubLogger).to.have.been.calledOnce;
+    });
+
+    it('splitString should return the string as an array with one entry', () => {
+      const restrictedIp = '1.1.1';
+      const expected = ['1.1.1'];
+      const actual = ModuleUnderTest.splitString(restrictedIp);
+      assert.equal(expected.length, actual.length);
+      assert.equal(expected[0], actual[0]);
+    });
+
+    it('splitString should return the string as an array with two entries', () => {
+      const restrictedIp = '1.1.1.1,2.2.2.2';
+      const expected = ['1.1.1.1', '2.2.2.2'];
+      const actual = ModuleUnderTest.splitString(restrictedIp);
+      assert.equal(expected.length, actual.length);
+    });
+
+    it('splitString should return an empty array when a null value is passed;', () => {
+      const restrictedIp = null;
+      const emptyArray = ModuleUnderTest.splitString(restrictedIp);
+      assert.isEmpty(emptyArray);
     });
   });
 });

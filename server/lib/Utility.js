@@ -33,19 +33,27 @@ class Utility {
 
   /**
    * Retrieve the oauth access token from a request
-   *  
+   *
    * @param {req} request
    */
   static getOAuthToken (req) {
     const signinInfo = req.session.data.signin_info;
-    if ( !signinInfo ) {
+    if (!signinInfo) {
       return;
     }
     const accessToken = signinInfo.access_token;
-    if ( !accessToken ) {
-      return
+    if (!accessToken) {
+      return;
     }
     return accessToken.access_token;
+  }
+
+  static splitString (string) {
+    if (string === null | string === '') {
+      return [];
+    } else {
+      return string.split(',');
+    }
   }
 }
 
