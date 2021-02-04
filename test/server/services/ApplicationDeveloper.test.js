@@ -395,7 +395,7 @@ describe('services/ApplicationDeveloper', () => {
     // Call method
     const returnedPromise = applicationDeveloper.updateKey(data, mockAppId, mockKeyId, mockKeyType, mockOauthToken, mockEnv);
     returnedPromise.should.be.rejectedWith('Could not match Key Type');
-  })
+  });
 
   it('should update a rest key using the applications.api service', () => {
     // static test vars
@@ -470,9 +470,9 @@ describe('services/ApplicationDeveloper', () => {
     expect(applicationDeveloper.updateWebKey(data, mockAppId, mockKeyId, mockOauthToken, mockEnv))
       // Assertions
       .to.eventually.eql(privateSdkData.getWebClient.resource);
-      expect(stubAPIClientHelper).to.have.been.calledOnce;
-      expect(stubLogger).to.have.been.calledTwice;
-    });
+    expect(stubAPIClientHelper).to.have.been.calledOnce;
+    expect(stubLogger).to.have.been.calledTwice;
+  });
 
   it('should update a stream key using the applications.api service', () => {
     // static test vars
