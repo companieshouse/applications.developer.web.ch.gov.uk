@@ -2,18 +2,23 @@
   <!--[if lt IE 9]><html class="lte-ie8" lang="en"><![endif]-->
   <!--[(if gt IE 8) | (!IE)]><!--><html lang="en" class="govuk-template"><!--<![endif]-->
   <head>
+    {% from 'govuk/components/cookie-banner/macro.njk'  import govukCookieBanner %}
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
     <title>{{ title }}</title>
-    <link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" />
-    <!--[if lte IE 8]><link href="{{cdnUrlCss}}/application-ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
-    <!--[if gt IE 8]><!--><link href="{{cdnUrlCss}}/application.css" media="all" rel="stylesheet" type="text/css" /><!--<![endif]-->
+    <link href="{{ cdnHost }}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet"/>
+
     <link href="{{cdnUrlCss}}/app.css" media="all" rel="stylesheet" type="text/css" />
     {# <link href="{{cdnHost}}/images/favicon.ico" rel="icon" type="image/x-icon" /> #}
     {% include "_partials/__styles.njk" %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {# <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /> #}
 
+    <script type="application/javascript">
+      window.SERVICE_NAME = 'applications.developer.web.ch.gov.uk'
+      window.PIWIK_URL = '{{ piwik.url }}'
+      window.PIWIK_SITE_ID = '{{ piwik.siteId }}'
+    </script>
     <script src="{{cdnUrlJs}}/../../vendor/jquery-3.3.1.min.js"></script>
 
     {# Set the page object to hold values exported from server to JS files #}
@@ -26,6 +31,7 @@
   <body class="govuk-template__body" >
 
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    {% include "_partials/cookie-consent-banner.njk" %}
     <a href="#main-page-content" class="govuk-skip-link">Skip to main content</a>
     {% include "_partials/__header.njk" %}
     <div class="govuk-width-container ">
@@ -49,6 +55,7 @@
     </div>
 
     {% include "_partials/__footer.njk" %}
-
+    <script src="{{ cdnHost }}/javascripts/app/cookie-consent/cookie-consent-1.0.0.js"></script>
+    <script src="{{ cdnHost }}/javascripts/app/cookie-consent/piwik-only-cookie-consent.js"></script>
   </body>
 </html>
