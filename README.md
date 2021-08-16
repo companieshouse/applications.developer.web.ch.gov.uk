@@ -98,6 +98,11 @@ npm run watch
 
 For SSL connections, navigate to https://localhost:3443
 
+## To build the Docker container
+
+1. `export SSH_PRIVATE_KEY_PASSPHRASE='[your SSH key passhprase goes here]'` (optional, set only if SSH key is passphrase protected)
+2. `DOCKER_BUILDKIT=0 docker build --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PRIVATE_KEY_PASSPHRASE -t 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/applications.developer.web.ch.gov.uk:latest .`
+
 ## Testing & coverage
 
 To run the tests, type the following command:
