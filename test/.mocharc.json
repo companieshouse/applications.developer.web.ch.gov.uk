@@ -1,0 +1,11 @@
+{
+"require": "test/setup.js",
+"extension": ["js"],
+"package": "../package.json",
+"reporter": "spec",
+"slow": 1500,
+"timeout": 2000,
+"recursive": true,
+"spec": "test/**/*.test.js",
+"watch-files": ["server/**/*.js", "test/**/*.js"]
+}
