@@ -16,7 +16,7 @@ class ManageApplication extends Validator {
       }
     }
   }
-  
+
   addApplication (payload) {
     return new Promise((resolve, reject) => {
       this.validateApplication(payload);
