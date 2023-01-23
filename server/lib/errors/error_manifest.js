@@ -9,6 +9,14 @@ const ErrorManifest = {
       summary: 'Your request contains validation errors',
       inline: 'Your request contains validation errors'
     },
+    appId: {
+      summary: 'The appId in the path is not valid',
+      inline: 'The appId in the path is not valid',
+    },
+    env: {
+      summary: 'The env identifier in the path is not valid',
+      inline: 'The env identifier in the path is not valid',
+    },
     applicationName: {
       blank: {
         summary: 'Enter your application name',

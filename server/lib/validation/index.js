@@ -79,5 +79,23 @@ class Validator {
       return false;
     }
   }
+
+  isValidAppId (appId) {
+    logger.info('Validating AppId: ', appId);
+    if (/^[a-z\d-_\.\+]{1,256}$/i.test(appId)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isValidEnv (env) {
+    logger.info('Validating Env: ', env);
+    if (/^[a-z\d-_\.\+]{1,256}$/i.test(env)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 module.exports = Validator;
