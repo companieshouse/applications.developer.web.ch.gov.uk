@@ -385,7 +385,7 @@ describe('routes/applications.js', () => {
       .post(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.callCount(4);
+        expect(stubLogger).to.have.callCount(6);
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -394,12 +394,13 @@ describe('routes/applications.js', () => {
   });
   it('should serve up the delete key page on the delete path when got with an Incorrect Key Type Error', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
-    const genericServerException = exceptions.genericServerException;
+    const stubDeleteValidator = sinon.stub(Validator.prototype, 'deleteApplication').returns(Promise.resolve(true));
+    const validationException = exceptions.validationException;
     const testErr = new Error('Could not match Key Type');
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient')
       .rejects(testErr);
     const stubProcessException = sinon.stub(routeUtils, 'processException')
-      .returns(genericServerException);
+      .returns(validationException.stack);
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
@@ -409,7 +410,7 @@ describe('routes/applications.js', () => {
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(stubProcessException).to.have.been.calledOnce;
         expect(stubProcessException).to.have.been.calledWith(testErr);
-        expect(response.text).to.include('Internal server error. Please try again');
+        expect(response.text).to.include(validationException.stack.sampleField.summary);
         expect(response).to.have.status(200);
       });
   });
