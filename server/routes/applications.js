@@ -154,18 +154,16 @@ router.post('/manage-applications/:appId/delete/:env', (req, res) => {
 
 router.post('/manage-applications/:appId/update/:env', (req, res) => {
   logger.info(`PUT request to update the application: ${req.path}`);
-  const appId = req.params.appId;
-  const env = req.params.env;
   const oauthToken = Utility.getOAuthToken(req);
   const payload = req.body;
-  payload.env = env;
-  payload.appId = appId;
+  payload.env = req.params.env;
+  payload.appId = req.params.appId;
   validator.updateApplication(payload)
     .then(_ => {
       return applicationsDeveloperService.updateApplication(payload, oauthToken);
     }).then(_ => {
       notificationService.notify(`'${payload.applicationName}' application has been updated.`, req);
-      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+      return res.redirect(302, `/manage-applications/${payload.appId}/view/${payload.env}`);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Update an application', 'application-overview', req);
       viewData.this_data = payload;
@@ -257,16 +255,21 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
 });
 
 router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
-  const appId = req.params.appId;
-  const keyId = req.params.keyId;
-  const keyType = req.params.keyType;
+  const payload = {
+    appId: req.params.appId,
+    env: req.params.env,
+    keyId: req.params.keyId,
+    keyType: req.params.keyType,
+    keyName: req.body.keyName,
+  };
   const oauthToken = Utility.getOAuthToken(req);
-  const env = req.params.env;
   logger.info(`POST request to delete a key: ${req.path}`);
-  applicationsDeveloperService.deleteAPIClient(appId, keyId, keyType, oauthToken, env)
-    .then(response => {
-      notificationService.notify(`'${req.body.keyName}' key has been deleted.`, req);
-      res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+  validator.deleteApplication(payload)
+    .then(_ => {
+      return applicationsDeveloperService.deleteAPIClient(payload.appId, payload.keyId, payload.keyType, oauthToken, payload.env);
+    }).then(_ => {
+      notificationService.notify(`'${payload.keyName}' key has been deleted.`, req);
+      res.redirect(302, `/manage-applications/${payload.appId}/view/${payload.env}`);
     }).catch(
       err => {
         const viewData = routeUtils.createViewData('Delete Key', 'view-application', req);
@@ -319,29 +322,29 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
 
 router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res, next) => {
   logger.info(`POST request to update a key: ${req.path}`);
-  const appId = req.params.appId;
-  const env = req.params.env;
-  const keyType = req.params.keyType;
-  const keyId = req.params.keyId;
   const data = req.body;
+  data.appId = req.params.appId;
+  data.env = req.params.env;
+  data.keyType = req.params.keyType;
+  data.keyId = req.params.keyId;
   const oauthToken = Utility.getOAuthToken(req);
   validator.updateKey(data)
     .then(_ => {
-      return applicationsDeveloperService.updateKey(data, appId, keyId, keyType, oauthToken, env);
+      return applicationsDeveloperService.updateKey(data, data.appId, data.keyId, data.keyType, oauthToken, data.env);
     }).then(updatedKey => {
       notificationService.notify(`'${updatedKey.name}' key has been updated'`, req);
-      return res.redirect(302, `/manage-applications/${appId}/view/${env}`);
+      return res.redirect(302, `/manage-applications/${data.appId}/view/${data.env}`);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Update Key', 'application-overview', req);
       viewData.this_data = data;
-      viewData.this_data.appId = appId;
-      viewData.this_data.env = env;
-      viewData.this_data.keyType = keyType;
-      viewData.this_data.keyId = keyId;
+      viewData.this_data.appId = data.appId;
+      viewData.this_data.env = data.env;
+      viewData.this_data.keyType = data.keyType;
+      viewData.this_data.keyId = data.keyId;
       viewData.this_errors = routeUtils.processException(err);
       viewData.back_link = {
         message: 'Back to application',
-        link: `/manage-applications/${appId}/view/${env}`
+        link: `/manage-applications/${data.appId}/view/${data.env}`
       };
       res.render(`${routeViews}/update_key.njk`, viewData);
     });
