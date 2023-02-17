@@ -439,7 +439,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
-        expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewRestKey);
+        expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewRestKey, {
+          appId: "mockAppId",
+          env: "mockEnv"
+        }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
         expect(stubGetList).to.have.been.calledOnce;
@@ -484,7 +487,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
-        expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewWebKey);
+        expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewWebKey, {
+          appId: "mockAppId",
+          env: "mockEnv"
+        }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
         expect(stubGetList).to.have.been.calledOnce;
@@ -507,7 +513,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledOnce;
-        expect(stubValidatorReject).to.have.been.calledWith(routeData.addNewWebKey);
+        expect(stubValidatorReject).to.have.been.calledWith(Object.assign(routeData.addNewWebKey, {
+          appId: "mockAppId",
+          env: "mockEnv"
+        }));
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
         expect(response.text).to.include('Summary message for sample field');
@@ -529,7 +538,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
-        expect(stubAddKeyValidator).to.have.been.calledWith(routeData.addNewStreamKey);
+        expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewStreamKey, {
+          appId: "mockAppId",
+          env: "mockEnv"
+        }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
         expect(stubGetList).to.have.been.calledOnce;
@@ -552,7 +564,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledOnce;
-        expect(stubValidatorReject).to.have.been.calledWith(routeData.addNewStreamKey);
+        expect(stubValidatorReject).to.have.been.calledWith(Object.assign(routeData.addNewStreamKey, {
+          appId: "mockAppId",
+          env: "mockEnv"
+        }));
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
         expect(response.text).to.include('Summary message for sample field');
