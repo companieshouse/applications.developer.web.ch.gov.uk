@@ -199,12 +199,16 @@ router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
 router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
   const oauthToken = Utility.getOAuthToken(req);
+  const payload = Object.assign(req.body, {
+    appId: req.params.appId,
+    env: req.params.env
+  });
   validator.addNewKey(req.body)
     .then(_ => {
-      applicationsDeveloperService.addNewKey(req.body, req.params.appId, oauthToken, req.params.env);
+      applicationsDeveloperService.addNewKey(payload, payload.appId, oauthToken, payload.env);
     }).then(_ => {
       notificationService.notify(`'${req.body.keyName}' key has been created.`, req);
-      return res.redirect(302, '/manage-applications/' + req.params.appId + '/view/' + req.params.env);
+      return res.redirect(302, `/manage-applications/${payload.appId}/view/${req.params.env}`);
     }).catch(err => {
       const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
       viewData.this_data = {
