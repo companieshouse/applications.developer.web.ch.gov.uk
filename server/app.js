@@ -25,7 +25,7 @@ app.set('views', [
 // set nunjucks options
 const nunjucksLoaderOpts = {
   watch: process.env.NUNJUCKS_LOADER_WATCH !== 'false',
-  noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== 'true'
+  noCache: process.env.NUNJUCKS_LOADER_NO_CACHE !== 'false'
 };
 const njk = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(app.get('views'),
