@@ -18,12 +18,6 @@ describe('lib/Utility', () => {
     done();
   });
 
-  describe('get randomString', () => {
-    it('should return a random alphanumeric string', () => {
-      expect(ModuleUnderTest.getRandomString(5, 8)).to.have.lengthOf.within(5, 8);
-    });
-  });
-
   describe('log an exception', () => {
     it('should correctly log a generic server exception', () => {
       const stubLogger = sinon.stub(logger, 'error').returns(true);
