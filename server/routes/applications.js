@@ -26,7 +26,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
   const futureFlag = process.env.FUTURE_DISPLAY_FLAG;
   if (futureFlag === 'true') {
     applicationQueries.push(applicationsDeveloperService.getApplicationList(oauthToken, 'future'));
-  };
+  }
   Promise.all(applicationQueries).then(([listLive, listTest, listFuture]) => {
     if (listFuture === undefined) {
       viewData.this_data = {
@@ -39,7 +39,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
         test: listTest,
         future: listFuture
       };
-    };
+    }
     res.render(`${routeViews}/index.njk`, viewData);
   }).catch(err => {
     viewData.this_errors = routeUtils.processException(err);
