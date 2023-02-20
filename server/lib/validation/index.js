@@ -72,7 +72,7 @@ class Validator {
 
   isValidAppId (appId) {
     logger.info('Validating AppId: ', appId);
-    if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,18}[a-z\d]{1}$/i.test(appId)) {
+    if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,254}[a-z\d]{1}$/gi.test(appId)) {
       return true;
     }
     return false;
@@ -80,7 +80,7 @@ class Validator {
 
   isValidEnv (env) {
     logger.info('Validating Env: ', env);
-    if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,18}[a-z\d]{1}$/i.test(env)) {
+    if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,254}[a-z\d]{1}$/gi.test(env)) {
       return true;
     }
     return false;
