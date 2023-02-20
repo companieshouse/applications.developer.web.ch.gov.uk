@@ -17,85 +17,73 @@ class Validator {
     };
   }
 
-  isValidAppName (name) {
-    logger.info('Validating app name: ', name);
-    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(name)) {
+  isValidAppName (appName) {
+    logger.info('Validating app name: ', appName);
+    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(appName)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
-  isValidKeyName (name) {
-    logger.info('Validating app name: ', name);
-    if (/^[a-z\s-\d\.\'\"]{1,72}$/gi.test(name)) {
-      return true;
-    } else {
-      return false;
-    }
+  isValidKeyName (keyName) {
+    logger.info('Validating key name: ', keyName);
+    return this.isValidAppName(keyName);
   }
 
   isValidUrl (url) {
     logger.info('Validating Url: ', url);
     if (/^(https?:\/\/)?[-aA-zZ0-9@:%._+~#=]{1,256}\.[a-z0-9()]{1,6}\b([-a-z0-9()@:%_+.~#?&//=]*)/gi.test(url)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidRedirectUri (uri) {
     logger.info('Validating Uri: ', uri);
     if (/^(https?:\/\/)?[-aA-zZ0-9@:%._+~#=]{1,256}[aA-zZ0-9()]{1,6}\b([-aA-zZ0-9()@:%_+.~#?&//=]*)/gi.test(uri)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidIp (ip) {
     logger.info('Validating Ip address: ', ip);
     if (/^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]$)/gi.test(ip)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidDomain (domain) {
     logger.info('Validating domain: ', domain);
     if (/^http(?:s){0,1}:\/\/(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}(?::\d{1,6}){0,1}$/.test(domain)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidDescription (description) {
     logger.info('Validating description: ', description);
     if (/^[a-z\s-\d\.\'\"]{1,256}$/i.test(description)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidAppId (appId) {
     logger.info('Validating AppId: ', appId);
     if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,18}[a-z\d]{1}$/i.test(appId)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   isValidEnv (env) {
     logger.info('Validating Env: ', env);
     if (/^[a-z\d]{1}[a-z\d-_\.\+]{0,18}[a-z\d]{1}$/i.test(env)) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 }
 module.exports = Validator;

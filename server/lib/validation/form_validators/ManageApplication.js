@@ -194,5 +194,5 @@ class ManageApplication extends Validator {
       }
     }
   }
-};
+}
 module.exports = ManageApplication;
