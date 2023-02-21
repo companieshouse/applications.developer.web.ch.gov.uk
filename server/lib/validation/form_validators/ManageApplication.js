@@ -98,15 +98,11 @@ class ManageApplication extends Validator {
     logger.info('Validating key payload data');
     this.errors = {};
     this._formatIncomingPayload(payload);
-    if ('appId' in payload) {
-      if (!this.isValidAppId(payload.appId)) {
-        this.errors.appId = errorManifest.appId.summary;
-      }
+    if ('appId' in payload && !this.isValidAppId(payload.appId)) {
+      this.errors.appId = errorManifest.appId.summary;
     }
-    if ('env' in payload) {
-      if (!this.isValidEnv(payload.env)) {
-        this.errors.env = errorManifest.env.summary;
-      }
+    if ('env' in payload && !this.isValidEnv(payload.env)) {
+      this.errors.env = errorManifest.env.summary;
     }
     if (!this.isValidKeyName(payload.keyName)) {
       if (payload.keyName.length === 0) {
@@ -159,15 +155,11 @@ class ManageApplication extends Validator {
     logger.info('Validating application payload data');
     this.errors = {};
     this._formatIncomingPayload(payload);
-    if ('appId' in payload) {
-      if (!this.isValidAppId(payload.appId)) {
-        this.errors.appId = errorManifest.appId.summary;
-      }
+    if ('appId' in payload && !this.isValidAppId(payload.appId)) {
+      this.errors.appId = errorManifest.appId.summary;
     }
-    if ('env' in payload) {
-      if (!this.isValidEnv(payload.env)) {
-        this.errors.env = errorManifest.env.summary;
-      }
+    if ('env' in payload && !this.isValidEnv(payload.env)) {
+      this.errors.env = errorManifest.env.summary;
     }
     if (!this.isValidAppName(payload.applicationName)) {
       if (payload.applicationName.length === 0) {
