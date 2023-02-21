@@ -96,4 +96,28 @@ describe('server/lib/validation/index', () => {
     expect(validator.isValidIp(null)).to.be.false;
     expect(stubLogger).to.have.callCount(4);
   });
+  it('should validate a correctly formatted appId', () => {
+    expect(validator.isValidAppId('abc123')).to.be.true;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+  it('should validate and return an error for an blank or invalid appId', () => {
+    expect(validator.isValidAppId('abc&123')).to.be.false;
+    expect(validator.isValidAppId('abc 123')).to.be.false;
+    expect(validator.isValidAppId('')).to.be.false;
+    expect(validator.isValidIp(null)).to.be.false;
+    expect(validator.isValidIp('a')).to.be.false;
+    expect(stubLogger).to.have.been.callCount(5);
+  });
+  it('should validate a correctly formatted env parameter', () => {
+    expect(validator.isValidAppId('abc123')).to.be.true;
+    expect(stubLogger).to.have.been.calledOnce;
+  });
+  it('should validate and return an error for an blank or invalid env parameter', () => {
+    expect(validator.isValidEnv('abc&123')).to.be.false;
+    expect(validator.isValidEnv('abc 123')).to.be.false;
+    expect(validator.isValidEnv('')).to.be.false;
+    expect(validator.isValidEnv(null)).to.be.false;
+    expect(validator.isValidEnv('a')).to.be.false;
+    expect(stubLogger).to.have.callCount(5);
+  });
 });
