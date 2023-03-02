@@ -1,4 +1,4 @@
-# API Filing Service - applications.developer.web
+# API Filing Service - applications.developer.web 
 
 This is a Web Service that provides a means for registering and managing applications on the developer hub.
 It is written using the [NodeJS](https://nodejs.org/en/) framework, and is intended to act as the user interface
