@@ -24,12 +24,11 @@ sonar:
 	npm run sonarqube
 
 .PHONY: test
-test:
-	npm run coverage
+test: test-unit
 
 .PHONY: test-unit
 test-unit:
-	npm run test
+	npm run coverage:report
 
 .PHONY: package
 package: build
