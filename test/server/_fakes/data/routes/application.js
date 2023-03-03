@@ -2,7 +2,9 @@ const routeData = {
   addApplication: {
     name: 'app demo',
     description: 'description',
-    environment: 'live'
+    environment: 'live',
+    appId: 'abc123',
+    env: 'test'
   },
   updateApplication: {
     applicationName: 'test',
@@ -17,7 +19,9 @@ const routeData = {
     keyDescription: 'description',
     keyType: 'rest',
     restrictedIps: '00000',
-    javaScriptDomains: 'javascriptDomain'
+    javaScriptDomains: 'javascriptDomain',
+    appId: 'app123',
+    env: 'test'
   },
   addNewWebKey: {
     keyType: 'web',
@@ -25,7 +29,9 @@ const routeData = {
     description: 'This application is used for blah',
     redirect_uris: [
       'https://app.domain/oauth/callback'
-    ]
+    ],
+    appId: 'app123',
+    env: 'test'
   },
   addNewStreamKey: {
     keyType: 'stream',
@@ -33,7 +39,9 @@ const routeData = {
     description: 'This application is used for blah',
     restricted_ips: [
       '192.168.0.1'
-    ]
+    ],
+    appId: 'app123',
+    env: 'test'
   },
   updateKey: {
     keyName: 'test',
