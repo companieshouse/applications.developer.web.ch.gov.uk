@@ -504,7 +504,6 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.addNewWebKey)
       .then(response => {
-        // expect(stubLogger).to.have.callCount(7);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewWebKey, {
           appId: 'mockAppId',
