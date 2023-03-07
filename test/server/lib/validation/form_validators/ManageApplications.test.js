@@ -34,16 +34,20 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubLogger).to.have.been.calledOnce;
   });
 
-  it('should validate the addApplication sucessfully and return true', () => {
+  it('should validate the addApplication successfully and return true', () => {
     const payload = {
       applicationName: 'hi',
       terms: 'https://eg.com',
       privacyPolicy: 'https://eg.com',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
@@ -51,23 +55,31 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubValidUrl).to.have.been.calledTwice;
     expect(stubLogger).to.have.been.calledOnce;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
   it('should validate the addApplication and return invalid environment validation error', () => {
     const payload = {
       applicationName: 'name',
       terms: '',
       privacyPolicy: '',
-      environment: ''
+      environment: '',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
 
   it('should validate the addApplication and return blank name validation error, ', () => {
@@ -75,34 +87,46 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       applicationName: '',
       terms: '',
       privacyPolicy: '',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(false);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
   it('should validate the addApplication and return invalid name validation error, ', () => {
     const payload = {
       applicationName: ')))))(((((******INVALID_NAME',
       terms: '',
       privacyPolicy: '',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(false);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
 
   it('should validate the addApplication and return blank description validation error, ', () => {
@@ -111,17 +135,23 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       description: '',
       terms: '',
       privacyPolicy: '',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
   it('should validate the addApplication and return invalid description validation error, ', () => {
     const payload = {
@@ -129,17 +159,23 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       description: '//@,///w//w/w/////////1!',
       terms: '',
       privacyPolicy: '',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(false);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
 
   it('should validate the addApplication and return invalid Url validation error, ', () => {
@@ -148,12 +184,16 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
       description: 'hi',
       terms: 'thisIsInvalidUrl',
       privacyPolicy: 'AlsoAnInvalidUrl',
-      environment: 'test'
+      environment: 'test',
+      appId: 'abc123',
+      env: 'test'
     };
     const validationException = exceptions.validationException;
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(false);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.addApplication(payload)).to.be.rejectedWith(validationException);
     expect(stubValidName).to.have.been.calledOnce;
@@ -161,18 +201,24 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledTwice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
 
-  it('should validate the updateApplication sucessfully, exclude the environment and return true', () => {
+  it('should validate the updateApplication successfully, exclude the environment and return true', () => {
     const payload = {
       applicationName: 'hi',
       description: 'Test description',
       terms: 'https://eg.com',
-      privacyPolicy: 'https://priv.com'
+      privacyPolicy: 'https://priv.com',
+      appId: 'abc123',
+      env: 'test'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidAppName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
     const stubValidUrl = sinon.stub(Validator.prototype, 'isValidUrl').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addApplication);
     expect(ManageApplication.prototype.updateApplication(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
@@ -180,39 +226,97 @@ describe('server/lib/validation/form_validators/ManageApplication', () => {
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubValidUrl).to.have.been.calledTwice;
     expect(stubLogger).to.have.been.calledOnce;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
-  it('should validate the updateKey sucessfully, exclude the type and return true', () => {
+  it('should validate app deletion successfully and return true', () => {
+    const payload = {
+      appId: 'abc123',
+      env: 'test'
+    };
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
+    expect(ManageApplication.prototype.deleteApplication(payload)).to.eventually.equal(true);
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
+  });
+  it('should fail to validate app deletion with invalid env and return false', () => {
+    const payload = {
+      appId: 'abc123',
+      env: ''
+    };
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(false);
+    expect(ManageApplication.prototype.deleteApplication(payload)).to.eventually.equal(false);
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
+  });
+  it('should fail to validate app deletion with invalid appId and return false', () => {
+    const payload = {
+      appId: '',
+      env: 'abc123'
+    };
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(false);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
+    expect(ManageApplication.prototype.deleteApplication(payload)).to.eventually.equal(false);
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
+  });
+  it('should fail to validate app deletion with invalid appId and invalid env and return false', () => {
+    const payload = {
+      appId: '',
+      env: ''
+    };
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(false);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(false);
+    expect(ManageApplication.prototype.deleteApplication(payload)).to.eventually.equal(false);
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
+  });
+  it('should validate the updateKey successfully, exclude the type and return true', () => {
     const payload = {
       keyName: 'test',
       description: 'Test description',
       restrictedIps: '192.168.0.1',
-      javaScriptDomains: 'http://app.domain'
+      javaScriptDomains: 'http://app.domain',
+      appId: 'abc123',
+      env: 'test'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
     expect(ManageApplication.prototype.updateKey(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.been.calledThrice;
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
-  it('should validate the addNewKey sucessfully and return true', () => {
+  it('should validate the addNewKey successfully and return true', () => {
     const payload = {
       keyName: 'Hello',
       keyDescription: 'World',
       keyType: 'rest',
       restrictedIps: '192.168.0.1, 192.168.0.2',
-      javaScriptDomains: 'http://app.domain, http://apb.domain'
+      javaScriptDomains: 'http://app.domain, http://apb.domain',
+      appId: 'abc123',
+      env: 'test'
     };
     const stubValidName = sinon.stub(Validator.prototype, 'isValidKeyName').returns(true);
     const stubValidDesc = sinon.stub(Validator.prototype, 'isValidDescription').returns(true);
+    const stubValidAppId = sinon.stub(Validator.prototype, 'isValidAppId').returns(true);
+    const stubValidEnv = sinon.stub(Validator.prototype, 'isValidEnv').returns(true);
     const stubKeys = sinon.stub(ManageApplication.prototype, '_formatIncomingPayload').returns(routeData.addNewKey);
     expect(ManageApplication.prototype.addNewKey(payload)).to.eventually.equal(true);
     expect(stubValidName).to.have.been.calledOnce;
     expect(stubValidDesc).to.have.been.calledOnce;
     expect(stubKeys).to.have.been.calledOnce;
     expect(stubLogger).to.have.callCount(6);
+    expect(stubValidAppId).to.have.been.calledOnce;
+    expect(stubValidEnv).to.have.been.calledOnce;
   });
   it('should validate the addNewKey and return invalid type validation error', () => {
     const payload = {

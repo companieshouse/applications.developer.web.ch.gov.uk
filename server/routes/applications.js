@@ -264,7 +264,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
     env: req.params.env,
     keyId: req.params.keyId,
     keyType: req.params.keyType,
-    keyName: req.body.keyName,
+    keyName: req.body.keyName
   };
   const oauthToken = Utility.getOAuthToken(req);
   logger.info(`POST request to delete a key: ${req.path}`);

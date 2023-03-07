@@ -378,14 +378,12 @@ describe('routes/applications.js', () => {
   it('should serve up the delete a key and then redirect to view application that owned the key on success', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient').returns(Promise.resolve(true));
-    const stubGetApplications = sinon.stub(ApplicationsDeveloperService.prototype, 'getApplication').returns(Promise.resolve(true));
-    const stubGetApplicationKeys = sinon.stub(ApplicationsDeveloperService.prototype, 'getAPIClientsForApplication').returns(Promise.resolve(true));
     const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.callCount(6);
+        expect(stubLogger).to.have.callCount(8);
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -394,7 +392,6 @@ describe('routes/applications.js', () => {
   });
   it('should serve up the delete key page on the delete path when got with an Incorrect Key Type Error', () => {
     const slug = '/manage-applications/mockAppId/mockKeyType/mockKeyId/delete/mockEnv';
-    const stubDeleteValidator = sinon.stub(Validator.prototype, 'deleteApplication').returns(Promise.resolve(true));
     const validationException = exceptions.validationException;
     const testErr = new Error('Could not match Key Type');
     const stubDeleteKey = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient')
@@ -405,13 +402,32 @@ describe('routes/applications.js', () => {
       .post(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.been.calledOnce;
+        expect(stubLogger).to.have.been.calledThrice;
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(stubProcessException).to.have.been.calledOnce;
         expect(stubProcessException).to.have.been.calledWith(testErr);
         expect(response.text).to.include(validationException.stack.sampleField.summary);
         expect(response).to.have.status(200);
+      });
+  });
+  it('should delete an application on the test environment and redirect to the application overview page on the /manage-applications mount path', () => {
+    const slug = '/manage-applications/abc123/type123/key123/delete/test';
+    process.env.FUTURE_DISPLAY_FLAG = 'true';
+    const stubValidateDeleteApplication = sinon.stub(Validator.prototype, 'deleteApplication').returns(Promise.resolve(true));
+    const stubDeleteApplication = sinon.stub(ApplicationsDeveloperService.prototype, 'deleteAPIClient').returns(Promise.resolve(true));
+    const stubNotifications = sinon.stub(NotificationService.prototype, 'notify');
+    return request(app)
+      .post(slug)
+      .set('Cookie', signedInCookie)
+      .send({ keyName: 'keyName' })
+      .then(response => {
+        expect(stubLogger).to.have.callCount(6);
+        expect(stubValidateDeleteApplication).to.have.been.calledOnce;
+        expect(response).to.redirectTo(/manage-applications/g);
+        expect(response).to.have.status(200);
+        expect(stubDeleteApplication).to.have.been.calledOnce;
+        expect(stubNotifications).to.have.been.calledOnce;
       });
   });
   it('should serve up the add new key page', () => {
@@ -440,8 +456,8 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewRestKey, {
-          appId: "mockAppId",
-          env: "mockEnv"
+          appId: 'mockAppId',
+          env: 'mockEnv'
         }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -465,7 +481,10 @@ describe('routes/applications.js', () => {
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledOnce;
-        expect(stubValidatorReject).to.have.been.calledWith(routeData.addNewRestKey);
+        expect(stubValidatorReject).to.have.been.calledWith(Object.assign(routeData.addNewRestKey, {
+          appId: 'mockAppId',
+          env: 'mockEnv'
+        }));
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
         expect(response.text).to.include('Summary message for sample field');
@@ -485,11 +504,10 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.addNewWebKey)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewWebKey, {
-          appId: "mockAppId",
-          env: "mockEnv"
+          appId: 'mockAppId',
+          env: 'mockEnv'
         }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -514,8 +532,8 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledWith(Object.assign(routeData.addNewWebKey, {
-          appId: "mockAppId",
-          env: "mockEnv"
+          appId: 'mockAppId',
+          env: 'mockEnv'
         }));
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
@@ -539,8 +557,8 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewStreamKey, {
-          appId: "mockAppId",
-          env: "mockEnv"
+          appId: 'mockAppId',
+          env: 'mockEnv'
         }));
         expect(stubSave).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -565,8 +583,8 @@ describe('routes/applications.js', () => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledOnce;
         expect(stubValidatorReject).to.have.been.calledWith(Object.assign(routeData.addNewStreamKey, {
-          appId: "mockAppId",
-          env: "mockEnv"
+          appId: 'mockAppId',
+          env: 'mockEnv'
         }));
         expect(stubProcessException).to.have.been.calledOnce;
         expect(response).to.have.status(200);
