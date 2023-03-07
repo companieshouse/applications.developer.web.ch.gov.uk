@@ -403,7 +403,6 @@ describe('services/ApplicationDeveloper', () => {
     const mockURL = 'https://mocksite.com';
     const mockAppId = 'test';
     const mockKeyId = 'test-key';
-    const mockKeyType = 'key';
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
       apiKeysService: {
