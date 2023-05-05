@@ -11,8 +11,8 @@ ARG AWS_REGION="eu-west-2"
 
 WORKDIR /opt
 
-RUN dnf install -y zip gzip tar aws-cli \
-    && dnf clean all \
+RUN yum install -y zip gzip tar aws-cli \
+    && yum clean all \
     && aws s3 cp s3://${S3_RELEASE_BUCKET}/applications.developer.web.ch.gov.uk/applications.developer.web.ch.gov.uk-${APPLICATION_VERSION}.zip . \
     && unzip applications.developer.web.ch.gov.uk-${APPLICATION_VERSION}.zip \
     && rm -f applications.developer.web.ch.gov.uk-${APPLICATION_VERSION}.zip
