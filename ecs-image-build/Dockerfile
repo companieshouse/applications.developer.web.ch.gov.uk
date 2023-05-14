@@ -21,7 +21,7 @@ RUN yum install -y zip gzip tar aws-cli \
     && rm -f ${FILE_NAME} 
 
 RUN npm config set registry http://registry.npmjs.org \
-      && npm -g install npm
+      && npm -g install npm \
       && npm install \
       && mkdir /opt/node_modules.runtime \
       && cp package.json package-lock.json /opt/node_modules.runtime \
