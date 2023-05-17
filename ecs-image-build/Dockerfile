@@ -13,6 +13,7 @@ ARG PORT="3000"
 ARG NODE_PORT="3000"
 
 WORKDIR /opt
+COPY docker_start.sh .
 
 RUN yum install -y zip gzip tar aws-cli \
     && yum clean all \
@@ -20,6 +21,4 @@ RUN yum install -y zip gzip tar aws-cli \
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} 
 
-RUN source "server/config/.env"
-
-CMD ["node", "server.js"]
+CMD ["./docker_start"]
