@@ -1,6 +1,5 @@
 ARG IMAGE_VERSION="latest"
-FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-build-14:${IMAGE_VERSION} as builder
-#FROM node:14-alpine as builder
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-node-build-14:${IMAGE_VERSION} 
 
 ARG S3_RELEASE_BUCKET=""
 ARG APPLICATION_NAME=applications.developer.web.ch.gov.uk
