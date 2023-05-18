@@ -21,4 +21,4 @@ RUN yum install -y zip gzip tar aws-cli \
     && unzip ${FILE_NAME} \
     && rm -f ${FILE_NAME} 
 
-CMD ["./docker_start"]
+CMD ["./docker_start.sh"]
