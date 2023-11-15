@@ -9,18 +9,18 @@ data "aws_vpc" "vpc" {
   }
 }
 
-data "aws_ecs_cluster" "ecs-cluster" {
+data "aws_ecs_cluster" "ecs_cluster" {
   cluster_name = "${local.name_prefix}-cluster"
 }
-data "aws_iam_role" "ecs-cluster-iam-role" {
+data "aws_iam_role" "ecs_cluster_iam_role" {
   name = "${local.name_prefix}-ecs-task-execution-role"
 }
 
-data "aws_lb" "dev-site-lb" {
+data "aws_lb" "dev_site_lb" {
   name = "dev-site-${var.environment}-lb"
 }
-data "aws_lb_listener" "dev-site-lb-listener" {
-  load_balancer_arn = data.aws_lb.dev-site-lb.arn
+data "aws_lb_listener" "dev_site_lb_listener" {
+  load_balancer_arn = data.aws_lb.dev_site_lb.arn
   port              = 443
 }
 
