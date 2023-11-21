@@ -4,7 +4,3 @@ aws_profile = "development-eu-west-2"
 # service configs
 use_set_environment_files = true
 log_level = "trace"
-// FIXME
-applications_developer_version = "0.1.90"
-docker_registry = "416670754337.dkr.ecr.eu-west-2.amazonaws.com"
-
