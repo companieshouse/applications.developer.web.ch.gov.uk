@@ -1,7 +1,7 @@
 describe('routes/utils/index', () => {
   const Utility = require(`${serverRoot}/lib/Utility`);
   const errorManifest = require(`${serverRoot}/lib/errors/error_manifest`).generic;
-  const { Session } = require('ch-node-session-handler');
+  const { Session } = require('@companieshouse/node-session-handler');
   const NotificationService = require(`${serverRoot}/services/Notification`);
 
   const { validationException, serviceException, genericServerException, exceptionWithNoStatus } = require(`${testRoot}/server/_fakes/mocks`);

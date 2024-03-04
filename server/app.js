@@ -9,7 +9,7 @@ const app = express();
 const morgan = require('morgan');
 global.serverRoot = __dirname;
 
-const { SessionStore, SessionMiddleware } = require('ch-node-session-handler');
+const { SessionStore, SessionMiddleware } = require('@companieshouse/node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
 const authentication = require(`${serverRoot}/routes/utils/authentication`);
 
