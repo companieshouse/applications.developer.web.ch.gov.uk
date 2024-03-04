@@ -61,8 +61,6 @@
     "morgan": "^1.9.0",
     "nunjucks": "^3.2.4",
     "private-api-sdk-node": "git+ssh://git@github.com/companieshouse/private-api-sdk-node.git#1.0.10",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
   },
@@ -97,6 +95,7 @@
   },
   "overrides": {
     "chokidar": "3.5.3",
-    "glob-parent": "6.0.2"
+    "glob-parent": "6.0.2",
+    "semver": "7.6.0"
   }
 }
