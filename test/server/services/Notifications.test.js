@@ -1,7 +1,7 @@
 const NotificationService = require(`${serverRoot}/services/Notification`);
 const notificationService = new NotificationService();
 
-const { Session } = require('ch-node-session-handler');
+const { Session } = require('@companieshouse/node-session-handler');
 
 const chai = require('chai');
 const assert = chai.assert;

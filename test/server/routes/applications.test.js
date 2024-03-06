@@ -383,7 +383,7 @@ describe('routes/applications.js', () => {
       .post(slug)
       .set('Cookie', signedInCookie)
       .then(response => {
-        expect(stubLogger).to.have.callCount(8);
+        expect(stubLogger).to.have.callCount(7);
         expect(stubDeleteKey).to.have.been.calledOnce;
         expect(stubDeleteKey).to.have.been.calledWith('mockAppId', 'mockKeyId', 'mockKeyType', 'oKi1z8KY0gXsXu__hy2-YU_JJSdtxOkJ4K5MAE-gOFVzpKt5lvqnFpVeUjhqhVHZ1K8Hkr7M4IYdzJUnOz2hQw', 'mockEnv');
         expect(response).to.redirectTo(/manage-applications\/mockAppId\/view\/mockEnv/g);
@@ -453,7 +453,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.addNewRestKey)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(4);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewRestKey, {
           appId: 'mockAppId',
@@ -554,7 +554,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.addNewStreamKey)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(4);
         expect(stubAddKeyValidator).to.have.been.calledOnce;
         expect(stubAddKeyValidator).to.have.been.calledWith(Object.assign(routeData.addNewStreamKey, {
           appId: 'mockAppId',
