@@ -323,7 +323,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send(routeData.updateApplication)
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(6);
         expect(stubValidateApplicationValidator).to.have.been.calledOnce;
         expect(stubValidateApplicationValidator).to.have.been.calledWith(routeData.updateApplication);
         expect(stubUpdate).to.have.been.calledOnce;
@@ -422,7 +422,7 @@ describe('routes/applications.js', () => {
       .set('Cookie', signedInCookie)
       .send({ keyName: 'keyName' })
       .then(response => {
-        expect(stubLogger).to.have.callCount(5);
+        expect(stubLogger).to.have.callCount(6);
         expect(stubValidateDeleteApplication).to.have.been.calledOnce;
         expect(response).to.redirectTo(/manage-applications/g);
         expect(response).to.have.status(200);
