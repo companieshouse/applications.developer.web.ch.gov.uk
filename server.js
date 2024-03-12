@@ -12,7 +12,7 @@ httpServer.listen(process.env.NODE_PORT, () => {
   logger.error(`${err.status} - HTTP Server error: ${err.message} - ${err.stack}`);
 });
 
-// Start the secure server - possibly not required if you run your app behind a loadbalancer
+// Start the secure server - possibly not required if you run your app behind a load-balancer
 if (process.env.NODE_SSL_ENABLED === 'ON') {
 
   const privateKey  = fs.readFileSync(process.env.NODE_SSL_PRIVATE_KEY, 'utf8');
