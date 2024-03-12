@@ -30,6 +30,10 @@ test: test-unit
 test-unit:
 	npm run coverage:report
 
+.PHONY: security-check
+security-check:
+	npm audit
+
 .PHONY: package
 package: build
 ifndef version
