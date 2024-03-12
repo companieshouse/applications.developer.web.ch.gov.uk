@@ -48,7 +48,7 @@
     "@companieshouse/node-session-handler": "^5.0.1",
     "@companieshouse/structured-logging-node": "^2.0.1",
     "axios": "^1.6.7",
-    "babel-eslint": "^8.2.6",
+    "babel-eslint": "^10.1.0",
     "body-parser": "1.20.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
