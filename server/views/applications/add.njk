@@ -7,6 +7,7 @@
   <h1 class="govuk-heading-xl">New application</h1>
 
 <form action="/manage-applications/add" method="post" enctype="application/json" id="frm-add-application">
+  {% include "_partials/csrf_token.njk" %}
   <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.name is not undefined }}">
     <label class="govuk-label" for="applicationName">Application name</label>
     {% if this_errors.name is not undefined %}

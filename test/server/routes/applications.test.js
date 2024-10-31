@@ -1,4 +1,5 @@
 const Redis = require('ioredis');
+const webSecurity = require('@companieshouse/web-security-node');
 
 const logger = require(`${serverRoot}/config/winston`);
 
@@ -14,11 +15,12 @@ const routeUtils = require(`${serverRoot}/routes/utils`);
 const serviceData = require(`${testRoot}/server/_fakes/data/services/ApplicationDeveloper`);
 const routeData = require(`${testRoot}/server/_fakes/data/routes/application`);
 const keyData = require(`${testRoot}/server/_fakes/data/services/apiKeys`);
-const { sessionSignedIn, SIGNED_IN_COOKIE } = require(`${testRoot}/server/_fakes/mocks/lib/session`);
+const { sessionSignedIn, SIGNED_IN_COOKIE, CSRF_TOKEN } = require(`${testRoot}/server/_fakes/mocks/lib/session`);
 const singleAppData = require(`${testRoot}/server/_fakes/data/services/singleApplication`);
 
 let stubLogger;
 let app;
+let sandbox;
 
 const signedInCookie = [`${process.env.COOKIE_NAME}=${SIGNED_IN_COOKIE}`];
 process.env.DEFAULT_SESSION_EXPIRATION = 3600;
@@ -30,6 +32,10 @@ describe('routes/applications.js', () => {
     sinon.stub(Redis.prototype, 'connect').returns(Promise.resolve());
     sinon.stub(Redis.prototype, 'get').returns(Promise.resolve(sessionSignedIn));
     app = require(`${serverRoot}/app`);
+    sandbox = sinon.createSandbox();
+    sandbox.replaceGetter(webSecurity, 'CsrfProtectionMiddleware', (options) => (req, res, next) => {
+      return next();
+    });
 
     stubLogger = sinon.stub(logger, 'info').returns(true);
     done();
@@ -38,6 +44,7 @@ describe('routes/applications.js', () => {
   afterEach(done => {
     sinon.reset();
     sinon.restore();
+    sandbox.restore();
     done();
   });
 
@@ -133,6 +140,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: 'csrfToken' })
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledTwice;
@@ -156,6 +164,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -321,6 +330,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.callCount(6);
@@ -342,6 +352,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -363,6 +374,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -382,6 +394,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .then(response => {
         expect(stubLogger).to.have.callCount(7);
         expect(stubDeleteKey).to.have.been.calledOnce;
@@ -401,6 +414,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .then(response => {
         expect(stubLogger).to.have.been.calledThrice;
         expect(stubDeleteKey).to.have.been.calledOnce;
@@ -420,6 +434,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send({ keyName: 'keyName' })
       .then(response => {
         expect(stubLogger).to.have.callCount(6);
@@ -451,6 +466,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewRestKey)
       .then(response => {
         expect(stubLogger).to.have.callCount(4);
@@ -477,6 +493,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewRestKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -502,6 +519,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewWebKey)
       .then(response => {
         expect(stubAddKeyValidator).to.have.been.calledOnce;
@@ -527,6 +545,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewWebKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -552,6 +571,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewStreamKey)
       .then(response => {
         expect(stubLogger).to.have.callCount(4);
@@ -578,6 +598,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewStreamKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -601,6 +622,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .then(response => {
         expect(stubLogger).to.have.callCount(5);
         expect(stubDeleteApplication).to.have.been.calledOnce;
@@ -619,6 +641,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
+      .send({ _csrf: CSRF_TOKEN })
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
         expect(stubDeleteApplication).to.have.been.calledOnce;

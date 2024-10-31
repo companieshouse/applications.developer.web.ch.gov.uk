@@ -7,6 +7,7 @@
         Update key
       </h1>
       <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/update/{{ this_data.env }}" method="post">
+        {% include "_partials/csrf_token.njk" %}
         <div class="govuk-form-group{{ ' govuk-form-group--error' if this_errors.name is not undefined }}">
           <label class="govuk-label" for="update-key-name">
             Key name
