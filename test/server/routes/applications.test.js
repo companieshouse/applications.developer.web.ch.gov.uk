@@ -429,8 +429,7 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
-      .send({ keyName: 'keyName' })
+      .send({ _csrf: CSRF_TOKEN, keyName: 'keyName' })
       .then(response => {
         expect(stubLogger).to.have.callCount(6);
         expect(stubValidateDeleteApplication).to.have.been.calledOnce;
