@@ -9,7 +9,7 @@ const app = express();
 const morgan = require('morgan');
 global.serverRoot = __dirname;
 
-const { CsrfProtectionMiddleware } = require('@companieshouse/web-security-node');
+const { CsrfProtectionMiddleware, CsrfError } = require('@companieshouse/web-security-node');
 const { SessionStore, SessionMiddleware } = require('@companieshouse/node-session-handler');
 const Utility = require(`${serverRoot}/lib/Utility`);
 const authentication = require(`${serverRoot}/routes/utils/authentication`);
@@ -80,6 +80,9 @@ app.use(csrfProtectionMiddleware);
 // unhandled errors
 app.use((err, req, res, next) => {
   Utility.logException(err);
+  if (err instanceof CsrfError) {
+    return res.status(403).render('applications/csrf-error.njk');
+  }
 });
 
 njk.addGlobal('cdnUrlCss', process.env.CDN_URL_CSS);
