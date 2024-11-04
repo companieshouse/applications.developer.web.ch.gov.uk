@@ -140,7 +140,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: 'csrfToken' })
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledTwice;
@@ -164,7 +163,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -330,7 +328,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.callCount(6);
@@ -352,7 +349,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateApplication)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -374,7 +370,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.updateKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -466,7 +461,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewRestKey)
       .then(response => {
         expect(stubLogger).to.have.callCount(4);
@@ -493,7 +487,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewRestKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -519,7 +512,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewWebKey)
       .then(response => {
         expect(stubAddKeyValidator).to.have.been.calledOnce;
@@ -545,7 +537,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewWebKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
@@ -571,7 +562,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewStreamKey)
       .then(response => {
         expect(stubLogger).to.have.callCount(4);
@@ -598,7 +588,6 @@ describe('routes/applications.js', () => {
     return request(app)
       .post(slug)
       .set('Cookie', signedInCookie)
-      .send({ _csrf: CSRF_TOKEN })
       .send(routeData.addNewStreamKey)
       .then(response => {
         expect(stubLogger).to.have.been.calledOnce;
