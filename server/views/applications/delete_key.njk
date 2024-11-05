@@ -27,6 +27,7 @@
     </div>
   </dl>
   <form action="/manage-applications/{{ this_data.appId }}/{{ this_data.keyType }}/{{ this_data.keyId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-key" class="inline-form">
+    {% include "_partials/csrf_token.njk" %}
     <input type="hidden" value="{{ this_data.keyName }}" name="keyName">
     <input class="govuk-button govuk-button--warning" id="submitApp" name="submitApp" type="submit" value="Yes, delete key" />
   </form>

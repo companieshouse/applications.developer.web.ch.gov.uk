@@ -4,7 +4,8 @@ const routeData = {
     description: 'description',
     environment: 'live',
     appId: 'abc123',
-    env: 'test'
+    env: 'test',
+    _csrf: 'csrfToken'
   },
   updateApplication: {
     applicationName: 'test',
@@ -12,7 +13,8 @@ const routeData = {
     terms: 'terms',
     privacyPolicy: 'priv',
     appId: 'app123',
-    env: 'test'
+    env: 'test',
+    _csrf: 'csrfToken'
   },
   addNewRestKey: {
     keyName: 'key demo',
@@ -21,7 +23,8 @@ const routeData = {
     restrictedIps: '00000',
     javaScriptDomains: 'javascriptDomain',
     appId: 'app123',
-    env: 'test'
+    env: 'test',
+    _csrf: 'csrfToken'
   },
   addNewWebKey: {
     keyType: 'web',
@@ -31,7 +34,8 @@ const routeData = {
       'https://app.domain/oauth/callback'
     ],
     appId: 'app123',
-    env: 'test'
+    env: 'test',
+    _csrf: 'csrfToken'
   },
   addNewStreamKey: {
     keyType: 'stream',
@@ -41,7 +45,8 @@ const routeData = {
       '192.168.0.1'
     ],
     appId: 'app123',
-    env: 'test'
+    env: 'test',
+    _csrf: 'csrfToken'
   },
   updateKey: {
     keyName: 'test',
@@ -51,7 +56,8 @@ const routeData = {
     javaScriptDomains: 'javascriptDomain',
     appId: 'app123',
     env: 'test',
-    keyId: 'key123'
+    keyId: 'key123',
+    _csrf: 'csrfToken'
   }
 };
 

@@ -64,6 +64,9 @@ module.exports.sessionStoreWriteRejects = {
   }
 };
 
+const CSRF_TOKEN = 'csrfToken';
+module.exports.CSRF_TOKEN = CSRF_TOKEN;
+
 const SIGNED_IN_ID = '4ZhJ6pAmB5NAJbjy/6fU1DWMqqrk';
 const SIGNED_IN_SIGNATURE = 'Ak4CCqkfPTY7VN6f9Lo5jHCUYpM';
 module.exports.SIGNED_IN_COOKIE = SIGNED_IN_ID + SIGNED_IN_SIGNATURE;
@@ -71,6 +74,7 @@ module.exports.SIGNED_IN_COOKIE = SIGNED_IN_ID + SIGNED_IN_SIGNATURE;
 module.exports.sessionSignedIn = Encoding.encode({
   '.client.signature': SIGNED_IN_SIGNATURE,
   '.id': SIGNED_IN_ID,
+  csrf_token: CSRF_TOKEN,
   expires: Date.now() + 3600 * 1000,
   signin_info: {
     access_token: {
@@ -90,6 +94,7 @@ module.exports.SIGNED_OUT_COOKIE = SIGNED_OUT_ID + SIGNED_OUT_SIGNATURE;
 module.exports.sessionSignedOut = Encoding.encode({
   '.client.signature': SIGNED_OUT_SIGNATURE,
   '.id': SIGNED_OUT_ID,
+  csrf_token: CSRF_TOKEN,
   expires: Date.now() + 3600 * 1000,
   signin_info: {
     access_token: {
