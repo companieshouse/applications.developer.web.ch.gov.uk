@@ -69,6 +69,7 @@
 
   {% if this_data.confirmDelete %}
     <form action="/manage-applications/{{ this_data.appId }}/delete/{{ this_data.env }}" method="post" enctype="application/json" id="frm-delete-application">
+      {% include "_partials/csrf_token.njk" %}
       <div class="govuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1" data-module="govuk-error-summary">
         <h2 class="govuk-error-summary__title" id="error-summary-title">
           Are you sure you want to delete this application?
