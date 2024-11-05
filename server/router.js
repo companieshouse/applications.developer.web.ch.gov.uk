@@ -1,4 +1,3 @@
-
 // Do route dispatch here
 
 module.exports = app => {
