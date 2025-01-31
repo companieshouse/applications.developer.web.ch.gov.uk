@@ -103,6 +103,27 @@ The Winston module (together with Morgan) are used for generating and managing t
 
 There is a maximum batch size for the number of applications, and keys, per query (currently set to 1,000,000) which is stored a variable, called DEFAULT_BATCH_SIZE. It can be found, and it's value edited, in `server/config/.env`.
 
+### Endpoints
+
+Path                                                                   | Method   | Description
+---------------------------------------------------------------------- | -------- | --------------------------------------------------------------------
+*` / `*                                                                | GET      | Show Companies House API overview
+*` /manage-applications `*                                             | GET      | Show all applications
+*` /manage-applications/add `*                                         | GET      | Show form to create an application
+*` /manage-applications/add `*                                         | POST     | Create an application
+*` /manage-applications/:appId/view/:env `*                            | GET      | Show selected application details
+*` /manage-applications/:appId/update/:env/:confirm? `*                | GET      | Show confirmation page for delete application
+*` /manage-applications/:appId/delete/:env `*                          | POST     | Delete application details and redirect to list
+*` /manage-applications/:appId/update/:env `*                          | GET      | Show form to update an application
+*` /manage-applications/:appId/update/:env `*                          | POST     | Update application details and redirect to view
+*` /manage-applications/:appId/api-key/add/:env `*                     | GET      | Show form to create a new API client key
+*` /manage-applications/:appId/api-key/add/:env `*                     | POST     | Save new API client key details and redirect to view
+*` /manage-applications/:appId/:keyType/:keyId/delete/:env `*          | GET      | Show form to delete key
+*` /manage-applications/:appId/:keyType/:keyId/delete/:env `*          | POST     | Delete key details and redirect to view
+*` /manage-applications/:appId/:keyType/:keyId/update/:env `*          | GET      | Show form to update key details
+*` /manage-applications/:appId/:keyType/:keyId/update/:env `*          | POST     | Update key details and redirect to view
+
+
 ### TO-DO
 
 
