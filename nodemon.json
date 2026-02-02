@@ -1,0 +1,9 @@
+{
+    "exec": "node -r dotenv/config ./server/bin/nodemon-entry.js",
+    "ext": "js,json,html,njk",
+    "watch": ["./server", "./app"],
+    "events": {
+        "restart": "echo '🔄 '  Nodemon Restarting...",
+        "crash": "echo '💥 '  Nodemon Crashed!"
+    }
+}
