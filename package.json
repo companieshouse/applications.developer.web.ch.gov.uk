@@ -34,22 +34,22 @@
     "coverage:report": "nyc --reporter=lcov --reporter=text npm run test",
     "lint": "eslint server/*.js server/**/*.js test/*.js test/**/*.js",
     "lint:fix": "eslint server/*.js server/**/*.js test/*.js test/**/*.js --fix",
-    "sonarqube": "sonar-scanner"
+    "sonarqube": "sonar-scanner",
+    "chs-dev": "nodemon --legacy-watch"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && npm run lint"
+      "pre-commit": "npm run lint && npm test"
     }
   },
   "author": "Moses Wejuli<mwejuli@companieshouse.gov.uk>",
   "license": "MIT",
   "dependencies": {
-    "@companieshouse/api-sdk-node": "^2.0.209",
-    "@companieshouse/node-session-handler": "^5.2.0",
-    "@companieshouse/structured-logging-node": "^2.0.1",
-    "@companieshouse/web-security-node": "^4.4.0",
-    "axios": "^1.7.7",
-    "babel-eslint": "^10.1.0",
+    "@companieshouse/api-sdk-node": "^2.0.324",
+    "@companieshouse/node-session-handler": "^5.2.8",
+    "@companieshouse/structured-logging-node": "^2.0.6",
+    "@companieshouse/web-security-node": "^4.4.14",
+    "axios": "^1.12.2",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.1",
@@ -61,7 +61,7 @@
     "moment-timezone": "^0.5.46",
     "morgan": "^1.10.0",
     "nunjucks": "^3.2.4",
-    "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.10",
+    "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.105",
     "uuid": "^3.4.0",
     "winston": "^3.16.0"
   },
@@ -69,7 +69,8 @@
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-http": "^4.4.0",
-    "eslint": "^6.8.0",
+    "eslint": "^9.39.2",
+    "babel-eslint": "^10.1.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.31.0",
@@ -82,17 +83,15 @@
     "gulp-exec": "^5.0.0",
     "gulp-minify": "3.0.0",
     "gulp-sass": "5.1.0",
-    "gulp-shell": "^0.6.3",
     "gulp-uglify": "^3.0.2",
     "husky": "^4.3.8",
     "mocha": "^10.8.2",
-    "nodemon": "^2.0.22",
+    "nodemon": "^3.0.3",
     "nyc": "^15.1.0",
-    "pre-commit": "^1.2.2",
     "sass": "1.80.2",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
-    "sonarqube-scanner": "^2.9.1"
+    "sonarqube-scanner": "^3.5.0"
   },
   "overrides": {
     "chokidar": "3.5.3",
