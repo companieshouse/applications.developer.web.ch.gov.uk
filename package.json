@@ -91,7 +91,7 @@
     "sass": "1.80.2",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
-    "sonarqube-scanner": "^2.9.1"
+    "sonarqube-scanner": "^3.5.0"
   },
   "overrides": {
     "chokidar": "3.5.3",
