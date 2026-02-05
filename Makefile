@@ -19,16 +19,16 @@ build:
 lint:
 	npm run lint
 
-.PHONY: sonar
-sonar:
-	npm run sonarqube
-
 .PHONY: test
 test: test-unit
 
 .PHONY: test-unit
 test-unit:
 	npm run coverage:report
+
+.PHONY: sonar
+sonar: build test
+	npm run sonarqube
 
 .PHONY: security-check
 security-check:
