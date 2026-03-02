@@ -32,7 +32,7 @@ describe('services/ApplicationDeveloper', () => {
     const mockOauthToken = 'token';
     const stubAPIClientHelper = sinon.stub(APIClientHelper, 'getPrivateAPIClient').returns({
       applicationsService: {
-        getApplicationAPIClients: (itemsPerPage, startIndex) => {
+        getApplicationAPIClients: () => {
           return privateSdkData.getApplicationAPIClients;
         }
       }

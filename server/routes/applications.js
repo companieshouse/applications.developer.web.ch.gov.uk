@@ -15,7 +15,7 @@ const validator = new Validator();
 const routeUtils = require(`${serverRoot}/routes/utils`);
 const routeViews = 'applications';
 
-router.get('(/manage-applications)?', (req, res, next) => {
+router.get('(/manage-applications)?', (req, res) => {
   logger.info(`GET request to serve index page: ${req.path}`);
   const oauthToken = Utility.getOAuthToken(req);
   const viewData = routeUtils.createViewData('Application overview', 'application-overview', req);
@@ -47,7 +47,7 @@ router.get('(/manage-applications)?', (req, res, next) => {
   });
 });
 
-router.get('/manage-applications/add', (req, res, next) => {
+router.get('/manage-applications/add', (req, res) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = routeUtils.createViewData('Add an application', 'add-application', req);
   viewData.back_link = {
@@ -57,7 +57,7 @@ router.get('/manage-applications/add', (req, res, next) => {
   res.render(`${routeViews}/add.njk`, viewData);
 });
 
-router.post('/manage-applications/add', (req, res, next) => {
+router.post('/manage-applications/add', (req, res) => {
   logger.info(`POST request to process add application page: ${req.path}`);
   const oauthToken = Utility.getOAuthToken(req);
   const viewData = routeUtils.createViewData('Add an application', 'add-application', req);
@@ -74,7 +74,7 @@ router.post('/manage-applications/add', (req, res, next) => {
     });
 });
 
-router.get('/manage-applications/:appId/view/:env', (req, res, next) => {
+router.get('/manage-applications/:appId/view/:env', (req, res) => {
   logger.info(`GET request to view a single application: ${req.path}`);
   const id = req.params.appId;
   const env = req.params.env;
@@ -176,12 +176,12 @@ router.post('/manage-applications/:appId/update/:env', (req, res) => {
     });
 });
 
-router.get('/manage-applications/:appId/delete', (req, res, next) => {
+router.get('/manage-applications/:appId/delete', (req, res) => {
   logger.info(`GET request to serve index page: ${req.path}`);
   res.render(`${routeViews}/index.njk`);
 });
 
-router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
+router.get('/manage-applications/:appId/api-key/add/:env', (req, res) => {
   logger.info(`GET request to serve add application page: ${req.path}`);
   const viewData = routeUtils.createViewData('Add Key', 'application-overview', req);
   viewData.this_data = {
@@ -196,7 +196,7 @@ router.get('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
   res.render(`${routeViews}/add_key.njk`, viewData);
 });
 
-router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => {
+router.post('/manage-applications/:appId/api-key/add/:env', (req, res) => {
   logger.info(`Post request to add new key and redirect to view application page: ${req.path}`);
   const oauthToken = Utility.getOAuthToken(req);
   const payload = Object.assign(req.body, {
@@ -225,7 +225,7 @@ router.post('/manage-applications/:appId/api-key/add/:env', (req, res, next) => 
     });
 });
 
-router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res) => {
   logger.info(`GET request to serve delete a key page: ${req.path}`);
   const appId = req.params.appId;
   const keyId = req.params.keyId;
@@ -258,7 +258,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res,
     );
 });
 
-router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res, next) => {
+router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res) => {
   const payload = {
     appId: req.params.appId,
     env: req.params.env,
@@ -287,7 +287,7 @@ router.post('/manage-applications/:appId/:keyType/:keyId/delete/:env', (req, res
     );
 });
 
-router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res, next) => {
+router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res) => {
   logger.info(`GET request to update a key: ${req.path}`);
   const appId = req.params.appId;
   const env = req.params.env;
@@ -324,7 +324,7 @@ router.get('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res,
     });
 });
 
-router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res, next) => {
+router.post('/manage-applications/:appId/:keyType/:keyId/update/:env', (req, res) => {
   logger.info(`POST request to update a key: ${req.path}`);
   const data = req.body;
   data.appId = req.params.appId;

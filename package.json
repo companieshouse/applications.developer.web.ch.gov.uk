@@ -49,7 +49,7 @@
     "@companieshouse/node-session-handler": "^5.2.8",
     "@companieshouse/structured-logging-node": "^2.0.6",
     "@companieshouse/web-security-node": "^4.4.14",
-    "axios": "^1.12.2",
+    "axios": "^1.13.5",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
     "express": "^4.21.1",
@@ -66,36 +66,30 @@
     "winston": "^3.16.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-http": "^4.4.0",
-    "eslint": "^9.39.2",
-    "babel-eslint": "^10.1.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-node": "^10.0.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "eslint-plugin-standard": "^4.1.0",
+    "eslint": "^10.0.2",
+    "globals": "^17.3.0",
     "gulp": "^5.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-concat": "^2.6.1",
     "gulp-exec": "^5.0.0",
-    "gulp-minify": "3.0.0",
+    "gulp-minify": "^0.0.0",
     "gulp-sass": "5.1.0",
     "gulp-uglify": "^3.0.2",
     "husky": "^4.3.8",
-    "mocha": "^10.8.2",
+    "mocha": "^11.3.0",
     "nodemon": "^3.0.3",
-    "nyc": "^15.1.0",
+    "nyc": "^18.0.0",
     "sass": "1.80.2",
     "sinon": "9.0.2",
     "sinon-chai": "3.5.0",
-    "sonarqube-scanner": "^3.5.0"
+    "sonarqube-scanner": "^3.5.0",
+    "typescript-eslint": "^8.56.1"
   },
   "overrides": {
-    "chokidar": "3.5.3",
-    "glob-parent": "6.0.2",
-    "semver": "7.6.0"
+    "serialize-javascript": "^7.0.3"
   }
 }

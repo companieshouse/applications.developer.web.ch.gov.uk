@@ -87,11 +87,11 @@ class ApplicationsDeveloper {
 
   async addNewKey (data, appId, oauthToken, environment) {
     if (data.keyType === 'rest') {
-      return this.addNewRestKey(data, appId, oauthToken, environment);
+      return await this.addNewRestKey(data, appId, oauthToken, environment);
     } else if (data.keyType === 'web') {
-      return this.addNewWebClient(data, appId, oauthToken, environment);
+      return await this.addNewWebClient(data, appId, oauthToken, environment);
     } else if (data.keyType === 'stream') {
-      return this.addNewStreamKey(data, appId, oauthToken, environment);
+      return await this.addNewStreamKey(data, appId, oauthToken, environment);
     }
     return Promise.reject(new Error('Could not match Key Type'));
   }
@@ -101,10 +101,8 @@ class ApplicationsDeveloper {
     logger.info(
       `creating api key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    let restrictedIps = [];
-    let javaScriptDomains = [];
-    restrictedIps = utility.splitString(data.restrictedIps);
-    javaScriptDomains = utility.splitString(data.javaScriptDomains);
+    const restrictedIps = utility.splitString(data.restrictedIps);
+    const javaScriptDomains = utility.splitString(data.javaScriptDomains);
     const apiKeyPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -116,7 +114,7 @@ class ApplicationsDeveloper {
       `Service request to save key data against application=[${appId}], with payload=[${JSON.stringify(
         apiKeyPostRequest)}]`);
     const apiKey = await client.apiKeysService.postAPIKey(apiKeyPostRequest,
-      appId);
+                                                          appId);
 
     logger.debug(`apiKey=[${JSON.stringify(apiKey)}]`);
     return apiKey.resource;
@@ -128,8 +126,7 @@ class ApplicationsDeveloper {
       `creating web client for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
-    let redirectURIs = [];
-    redirectURIs = utility.splitString(data.redirectURIs);
+    const redirectURIs = utility.splitString(data.redirectURIs);
     const webClientPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -151,8 +148,7 @@ class ApplicationsDeveloper {
     logger.info(
       `creating stream key for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    let restrictedIps = [];
-    restrictedIps = utility.splitString(data.restrictedIps);
+    const restrictedIps = utility.splitString(data.restrictedIps);
     const streamKeyPostRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -171,11 +167,11 @@ class ApplicationsDeveloper {
 
   async updateKey (data, appId, keyId, keyType, oauthToken, environment) {
     if (keyType === 'key') {
-      return this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
+      return await this.updateRestApiKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'web') {
-      return this.updateWebKey(data, appId, keyId, oauthToken, environment);
+      return await this.updateWebKey(data, appId, keyId, oauthToken, environment);
     } else if (keyType === 'stream-key') {
-      return this.updateStreamKey(data, appId, keyId, oauthToken, environment);
+      return await this.updateStreamKey(data, appId, keyId, oauthToken, environment);
     } else {
       return Promise.reject(new Error('Could not match Key Type'));
     }
@@ -186,8 +182,7 @@ class ApplicationsDeveloper {
     logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
 
-    let redirectURIs = [];
-    redirectURIs = utility.splitString(data.redirectURIs);
+    const redirectURIs = utility.splitString(data.redirectURIs);
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -205,8 +200,7 @@ class ApplicationsDeveloper {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating stream key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    let restrictedIps = [];
-    restrictedIps = utility.splitString(data.restrictedIps);
+    const restrictedIps = utility.splitString(data.restrictedIps);
     const streamKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,
@@ -224,10 +218,8 @@ class ApplicationsDeveloper {
     const serverUrl = this.server.baseUrl[environment];
     logger.info(`updating api key=[${keyId}] for application=[${appId}] in environment=[${environment}], using serverUrl=[${serverUrl}]`);
     const client = APIClientHelper.getPrivateAPIClient(oauthToken, serverUrl);
-    let restrictedIps = [];
-    let javaScriptDomains = [];
-    restrictedIps = utility.splitString(data.restrictedIps);
-    javaScriptDomains = utility.splitString(data.javaScriptDomains);
+    const restrictedIps = utility.splitString(data.restrictedIps);
+    const javaScriptDomains = utility.splitString(data.javaScriptDomains);
     const apiKeyPutRequest = {
       name: data.keyName,
       description: data.keyDescription,

@@ -31,7 +31,7 @@ const nunjucksLoaderOpts = {
 };
 const njk = new nunjucks.Environment(
   new nunjucks.FileSystemLoader(app.get('views'),
-    nunjucksLoaderOpts)
+                                nunjucksLoaderOpts)
 );
 njk.addGlobal('Date', function (d) {
   const date = new Date(Date.parse(d));
@@ -78,7 +78,7 @@ const csrfProtectionMiddleware = CsrfProtectionMiddleware({
 app.use(csrfProtectionMiddleware);
 
 // unhandled errors
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   Utility.logException(err);
   if (err instanceof CsrfError) {
     return res.status(403).render('applications/csrf-error.njk');

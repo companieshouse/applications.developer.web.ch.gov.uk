@@ -33,7 +33,7 @@ describe('routes/applications.js', () => {
     sinon.stub(Redis.prototype, 'get').returns(Promise.resolve(sessionSignedIn));
     app = require(`${serverRoot}/app`);
     sandbox = sinon.createSandbox();
-    sandbox.replaceGetter(webSecurity, 'CsrfProtectionMiddleware', (options) => (req, res, next) => {
+    sandbox.replaceGetter(webSecurity, 'CsrfProtectionMiddleware', () => (req, res, next) => {
       return next();
     });
 
