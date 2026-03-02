@@ -30,8 +30,8 @@ test-unit:
 sonar: build test
 	npm run sonarqube
 
-.PHONY: security-check
-security-check:
+.PHONY: dependency-check
+dependency-check:
 	npm audit
 
 .PHONY: package
