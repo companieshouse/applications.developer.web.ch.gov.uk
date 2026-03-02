@@ -59,7 +59,7 @@
     "ioredis": "^4.28.5",
     "moment": "2.29.4",
     "moment-timezone": "^0.5.46",
-    "morgan": "^1.10.0",
+    "morgan": "^1.10.1",
     "nunjucks": "^3.2.4",
     "private-api-sdk-node": "github:companieshouse/private-api-sdk-node#1.0.105",
     "uuid": "^3.4.0",
