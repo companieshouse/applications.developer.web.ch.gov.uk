@@ -31,7 +31,7 @@ You'll need the following software installed before-hand:
 4. Within the `applications-developer-web-ch-gov-uk` directory, run `make clean build`
 5. Run docker using `chs-dev up` in the `docker-chs-development directory`.
 6. Open your browser and go to page http://dev.chs.local/manage-applications
-7. Once the necessary applications have started up, the service should be accessible in you browser at: http://ches.local/manage-applications.
+7. Once the necessary applications have started up, the service should be accessible in you browser at: http://dev.chs.local/manage-applications.
 
 ### Config set-up
 
@@ -39,6 +39,19 @@ You'll need the following software installed before-hand:
 - In docker, this re-uses values located [in this yaml file](https://github.com/companieshouse/docker-chs-development/blob/master/services/modules/developer-hub/applications-developer-web-ch-gov-uk.docker-compose.yaml).
 
 ### Local installation and Development
+
+Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development)
+
+```
+cd applications.developer.web.ch.gov.uk
+npm install
+```
+
+Firstly, build client assets by running 
+
+```
+npm run build
+```
 
 Nodemon is configured for this service. To start in development mode, use:
 ```
