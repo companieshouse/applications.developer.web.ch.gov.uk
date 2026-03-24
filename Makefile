@@ -26,10 +26,6 @@ test: test-unit
 test-unit:
 	npm run coverage:report
 
-.PHONY: sonar
-sonar: build test
-	npm run sonarqube
-
 .PHONY: dependency-check
 dependency-check:
 	npm audit
