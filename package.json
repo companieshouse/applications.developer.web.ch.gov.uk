@@ -88,6 +88,7 @@
     "typescript-eslint": "^8.56.1"
   },
   "overrides": {
-    "serialize-javascript": "^7.0.3"
+    "serialize-javascript": "^7.0.3",
+    "diff": "8.0.3"
   }
 }
