@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const sass = require('gulp-sass');
-const clean = require('gulp-clean');
+const del = (...args) => import('del').then(m => m.deleteAsync(...args));
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const exec = require('child_process').exec;
@@ -14,9 +14,7 @@ const distDirAssets = './app/public';
 
 // Purge all before building
 gulp.task('clean', () => {
-  //return gulp.src([distDirJs, distDirCss], {read: false, allowEmpty: true})
-  return gulp.src([distDirJs], {read: false, allowEmpty: true})
-    .pipe(clean());
+  return del([distDirJs]);
 });
 
 // Build and minify all .scss files into application.css
