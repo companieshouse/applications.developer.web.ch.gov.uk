@@ -28,7 +28,7 @@ test-unit:
 
 .PHONY: dependency-check
 dependency-check:
-	npm audit
+	npm audit --audit-level=high
 
 .PHONY: package
 package: build
