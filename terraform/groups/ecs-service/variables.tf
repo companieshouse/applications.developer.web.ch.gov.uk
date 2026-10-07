@@ -28,50 +28,59 @@ variable "docker_registry" {
 # Service performance and scaling configs
 # ------------------------------------------------------------------------------
 variable "desired_task_count" {
-  type = number
+  type        = number
   description = "The desired ECS task count for this service"
-  default = 1 # defaulted low for dev environments, override for production
+  default     = 1 # defaulted low for dev environments, override for production
 }
+
 variable "max_task_count" {
   type        = number
   description = "The maximum number of tasks for this service."
   default     = 3
 }
+
 variable "required_cpus" {
-  type = number
+  type        = number
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
-  default = 256 # defaulted low for dev environments, override for production
+  default     = 256 # defaulted low for dev environments, override for production
 }
+
 variable "required_memory" {
-  type = number
+  type        = number
   description = "The required memory for this service"
-  default = 512 # defaulted low for node service in dev environments, override for production
+  default     = 512 # defaulted low for node service in dev environments, override for production
 }
+
 variable "use_fargate" {
   type        = bool
   description = "If true, sets the required capabilities for all containers in the task definition to use FARGATE, false uses EC2"
   default     = true
 }
+
 variable "use_capacity_provider" {
   type        = bool
   description = "Whether to use a capacity provider instead of setting a launch type for the service"
   default     = true
 }
+
 variable "service_autoscale_enabled" {
   type        = bool
   description = "Whether to enable service autoscaling, including scheduled autoscaling"
   default     = true
 }
+
 variable "service_autoscale_target_value_cpu" {
   type        = number
   description = "Target CPU percentage for the ECS Service to autoscale on"
   default     = 50 # 100 disables autoscaling using CPU as a metric
 }
+
 variable "service_scaledown_schedule" {
   type        = string
   description = "The schedule to use when scaling down the number of tasks to zero."
   default     = ""
 }
+
 variable "service_scaleup_schedule" {
   type        = string
   description = "The schedule to use when scaling up the number of tasks to their normal desired level."
@@ -112,4 +121,3 @@ variable "applications_developer_version" {
   type        = string
   description = "The version of the applications.developer.web.ch.gov.uk container to run."
 }
-
